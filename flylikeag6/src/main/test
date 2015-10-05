@@ -1,0 +1,5 @@
+#!/bin/bash
+
+export debug=1
+
+py.test
