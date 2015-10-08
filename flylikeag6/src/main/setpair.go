@@ -8,7 +8,7 @@ func updatecoupling(coupling *int, w int, s int, t int) int {
 	return 1
 }
 
-func union(visited *int, s int, t int) int {
+func union(set *int, s int, t int) int {
 	return 1
 }
 
@@ -24,7 +24,7 @@ func label(s int) int {
 	return 1
 }
 
-func setdistance(d [256][256]int, u int, v int, n int) int {
+func setdistance(d *[256][256]int, u int, v int, n int) int {
 	return 1
 }
 
@@ -38,7 +38,8 @@ func randommatching(m int, u int, v int) int {
 
 func setpair(m int, s int, t int, w int, exact *int, visited *int, coupling *int) {
 	fmt.Println("hi from setpair!")
-	var d [256][256] int
+	var _d [256][256] int
+	d := &_d
 	
 	updatecoupling(coupling, w, s ,t)
 	
@@ -51,11 +52,13 @@ func setpair(m int, s int, t int, w int, exact *int, visited *int, coupling *int
 		
 		if s == t {
 			setdistance(d, u, v, 0)
+			union(exact, u, v)
 		} else if label(s) == label(t) {
 			setdistance(d, u, v, 1)
+			union(exact, u, v)
 		} else if notexact(u, v, exact) {
 			w2 := randommatching(m, u, v)
-		    setpair(m, u, v, w2, exact, visited, coupling)
+			setpair(m, u, v, w2, exact, visited, coupling)
 		}
 	}
 }
