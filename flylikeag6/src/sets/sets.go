@@ -58,7 +58,7 @@ func UnionReal(A [][]bool, B [][]bool) *[][]bool {
 }
 
 
-func IntersecRealt(A [][]bool, B [][]bool) *[][]bool {
+func IntersectReal(A [][]bool, B [][]bool) *[][]bool {
 	if len(A) != len(B) {
 		panic("Union called with different size matrices")
 	}
