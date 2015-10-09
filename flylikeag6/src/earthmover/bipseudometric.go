@@ -3,6 +3,7 @@ package earthmover
 
 import (
 	"fmt"
+    "sets"
 )
 
 func initvisited() int {
@@ -25,9 +26,6 @@ func label(node int) string {
 	return "red"
 }
 
-func unionNode(a int, b int, c int) int{
-	return a + b
-}
 
 func removeedgesfromnodes(coupling *int, exact *int) int {
 	return 1
@@ -38,21 +36,8 @@ func getoptimalschedule(d [256][256] int, u int, v int) int {
 	return 1
 }
 
-var emptysetnotalways = 2
-
-func emptyset(set int) bool {
-	emptysetnotalways -= 1
-	if emptysetnotalways < 0 {
-		return true
-	} else {
-		return false
-	}
-}
 
 
-func intersect(a int, b int) int {
-	return 1
-}
 
 func BipseudoMetric() {
 	var d [256][256]int
@@ -62,16 +47,16 @@ func BipseudoMetric() {
 	tocompute := 0
 	lambda := 1
 	
-	for !emptyset(tocompute) {
+	for !sets.EmptySet(tocompute) {
 		s, t := extractrandomfromset(&tocompute)
 		if label(s) != label(t) {
 			d[s][t] = 1
-			exact = unionNode(exact, s, t)
-			visited = unionNode(visited, s, t)
+			exact = sets.UnionNode(exact, s, t)
+			visited = sets.UnionNode(visited, s, t)
 		} else if s == t {
 			d[s][t] = 0
-			exact = unionNode(exact, s, t)
-			visited = unionNode(visited, s, t)
+			exact = sets.UnionNode(exact, s, t)
+			visited = sets.UnionNode(visited, s, t)
 
 		} else {
 			// if s,t not in visited ...
@@ -84,10 +69,10 @@ func BipseudoMetric() {
 				setpair(1, s, t, w, &exact, &visited, &coupling)
 				disc(lambda, s, t, &exact, &coupling)
 			}
-			exact = union(exact, reachable(s, t, coupling))
+			exact = sets.Union(exact, reachable(s, t, coupling))
 			removeedgesfromnodes(&coupling, &exact)
 		}
-		tocompute = intersect(tocompute, exact)
+		tocompute = sets.Intersect(tocompute, exact)
 
 
 	}
