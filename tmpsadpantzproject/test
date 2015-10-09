@@ -1,6 +1,0 @@
-#!/bin/bash
-
-export debug=1
-export GOPATH=$PWD
-
-go test mypkg
