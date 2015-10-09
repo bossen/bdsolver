@@ -66,7 +66,7 @@ func bipseudometric() {
 	tocompute := 0
 	lambda := 1
 	
-	for ;!emptyset(tocompute); {
+	for !emptyset(tocompute) {
 		s, t := extractrandomfromset(&tocompute)
 		if label(s) == label(t) {
 			d[s][t] = 1
@@ -82,7 +82,7 @@ func bipseudometric() {
 			
 			disc(lambda, s, t, &exact, &coupling)
 
-			for ;; { // TODO: add u, v in for loop
+			for  { // TODO: add u, v in for loop
 				// w := getoptimalschedule(d, u, v)
 				w := 1
 				setpair(1, s, t, w, &exact, &visited, &coupling)
