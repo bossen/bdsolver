@@ -20,14 +20,6 @@ func union(a int, b int) int {
   return 1
 }
 
-func intersect(a int, b int) int {
-  return a
-}
-
-func nextdemandedpair(w int, i int) (int, int) {
-  return 1, 1
-}
-
 func setdistance(d *[256][256]int, u int, v int, value int) {
   d[u][v] = value
 }
@@ -49,7 +41,7 @@ func setZerosDistanceToZero(s int, t int, nonzero int, exact *int, d *[256][256]
   for i := 0; i < pairsize; i++ {
     u, v := nextdemandedpair(pairs, i)
     setdistance(d, u, v, 0)
-    *exact = 2
+    *exact = unionNode(*exact, u, v)
   }
 }
 
@@ -82,8 +74,8 @@ func disc(lambda int, s int, t int, exact *int, coupling *int) {
   d := &_d
   _d[1][1] = 1
   nonzero := 1
-  reversegraphfunc(s, t, *coupling, &nonzero, *exact, *d)
-  setdistancetozero(s, t, nonzero, exact, d, *coupling)
+  putUnreachableInNonzero(s, t, *coupling, &nonzero, *exact, *d)
+  setZerosDistanceToZero(s, t, nonzero, exact, d, *coupling)
   a := finda(*coupling, nonzero)
   b := findb(*exact, *d, *coupling, nonzero)
   x := solvelinearsystem(lambda, a, b)
