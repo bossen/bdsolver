@@ -2,6 +2,7 @@ package earthmover
 
 import (
 	"fmt"
+    "sets"
 )
 
 func updatecoupling(coupling *int, w int, s int, t int) int {
@@ -31,19 +32,19 @@ func setpair(m int, s int, t int, w int, exact *int, visited *int, coupling *int
 	
 	updatecoupling(coupling, w, s ,t)
 	
-	*visited = unionNode(*visited, s ,t)
+	*visited = sets.UnionNode(*visited, s ,t)
 	
 	for i := 0; i < matchcardinality(w); i++ {
 		u, v := nextdemandedpair(w, i)
 		
-		*visited = unionNode(*visited, u, v)
+		*visited = sets.UnionNode(*visited, u, v)
 		
 		if s == t {
 			setdistance(d, u, v, 0)
-			*exact = unionNode(*exact, u, v)
+			*exact = sets.UnionNode(*exact, u, v)
 		} else if label(s) == label(t) {
 			setdistance(d, u, v, 1)
-			*exact = unionNode(*exact, u, v)
+			*exact = sets.UnionNode(*exact, u, v)
 		} else if notexact(u, v, exact) {
 			w2 := randommatching(m, u, v)
 			setpair(m, u, v, w2, exact, visited, coupling)

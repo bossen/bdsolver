@@ -2,6 +2,7 @@ package earthmover
 
 import (
 	"fmt"
+    "sets"
 )
 
 func reachable(u int, v int, graph int) int {
@@ -12,36 +13,29 @@ func transposegraph(graph int) int {
   return graph
 }
 
-func minus(a int, b int) int {
-  return a
-}
-
-func union(a int, b int) int {
-  return 1
-}
 
 func setdistance(d *[256][256]int, u int, v int, value int) {
   d[u][v] = value
 }
 
 func putUnreachableInNonzero(s int, t int, coupling int, nonzero *int, exact int, d [256][256]int) {
-  pairs := intersect(reachable(s, t, coupling), exact)
+  pairs := sets.Intersect(reachable(s, t, coupling), exact)
   pairsize := 1 //len(pairs) TODO
   for i := 0; i < pairsize; i++ {
     u, v := nextdemandedpair(pairs, i)
     if d[u][v] > 0 {
-      *nonzero = union(*nonzero, reachable(u, v, transposegraph(coupling)))
+      *nonzero = sets.Union(*nonzero, reachable(u, v, transposegraph(coupling)))
     }
   }
 }
 
 func setZerosDistanceToZero(s int, t int, nonzero int, exact *int, d *[256][256]int, coupling int) {
-  pairs := minus(reachable(s, t, coupling), nonzero)
+  pairs := sets.Differens(reachable(s, t, coupling), nonzero)
   pairsize := 1 //len(pairs) TODO
   for i := 0; i < pairsize; i++ {
     u, v := nextdemandedpair(pairs, i)
     setdistance(d, u, v, 0)
-    *exact = unionNode(*exact, u, v)
+    *exact = sets.UnionNode(*exact, u, v)
   }
 }
 
