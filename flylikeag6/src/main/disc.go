@@ -32,7 +32,7 @@ func setdistance(d *[256][256]int, u int, v int, value int) {
   d[u][v] = value
 }
 
-func reversegraphfunc(s int, t int, coupling int, nonzero *int, exact int, d [256][256]int) {
+func putUnreachableInNonzero(s int, t int, coupling int, nonzero *int, exact int, d [256][256]int) {
   pairs := intersect(reachable(s, t, coupling), exact)
   pairsize := 1 //len(pairs) TODO
   for i := 0; i < pairsize; i++ {
@@ -43,7 +43,7 @@ func reversegraphfunc(s int, t int, coupling int, nonzero *int, exact int, d [25
   }
 }
 
-func setdistancetozero(s int, t int, nonzero int, exact *int, d *[256][256]int, coupling int) {
+func setZerosDistanceToZero(s int, t int, nonzero int, exact *int, d *[256][256]int, coupling int) {
   pairs := minus(reachable(s, t, coupling), nonzero)
   pairsize := 1 //len(pairs) TODO
   for i := 0; i < pairsize; i++ {
