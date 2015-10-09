@@ -31,7 +31,7 @@ func initToCompute(n int) *[][]bool {
 func extractrandomfromset(tocompute *[][]bool) (int, int) {
   for i := range *tocompute {
     for j:= range *tocompute {
-      if (*tocompute)[i][j] == true && i != j {
+      if (*tocompute)[i][j] == true {
         return i, j
       }
     }
