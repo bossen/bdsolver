@@ -29,3 +29,68 @@ func Differens(a int, b int) int {
   return a
 }
 
+
+
+func MakeMatrix(n int ) *[][]bool {
+	var d[][] bool;	
+
+	d = make([][]bool, n, n)
+	for i := range d {
+		d[i] = make([]bool, n)
+	}
+
+	return &d
+}
+
+
+func UnionReal(A [][]bool, B [][]bool) *[][]bool {
+	if len(A) != len(B) {
+		panic("Union called with different size matrices")
+	}
+
+	C := *MakeMatrix(len(A))
+	for i := range A {
+		for j := range A {
+			C[i][j] = A[i][j] || B[i][j]
+		}
+	}
+	return &C
+}
+
+
+func IntersecRealt(A [][]bool, B [][]bool) *[][]bool {
+	if len(A) != len(B) {
+		panic("Union called with different size matrices")
+	}
+
+	C := *MakeMatrix(len(A))
+	for i := range A {
+		for j := range A {
+			if A[i][j] == B[i][j] && A[i][j] == true {
+				C[i][j] = true
+			} else {
+				C[i][j] = false
+			}
+		}
+	}
+	return &C
+}
+
+
+func DifferensReal(A [][]bool, B [][]bool) *[][]bool {
+	if len(A) != len(B) {
+		panic("Union called with different size matrices")
+	}
+
+	C := *MakeMatrix(len(A))
+	for i := range A {
+		for j := range A {
+			if B[i][j] == true {
+				C[i][j] = false
+			} else {
+				C[i][j] = A[i][j]
+			}
+		}
+	}
+	return &C
+}
