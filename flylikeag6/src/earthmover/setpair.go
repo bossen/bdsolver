@@ -25,20 +25,20 @@ func randommatching(m int, u int, v int) int {
 	return 1
 }
 
-func setpair(m int, s int, t int, w int, exact *int, visited *int, coupling *int) {
+func setpair(m int, s int, t int, w int, exact *int, visited *[][]bool, coupling *int) {
 	fmt.Println("hi from setpair!")
 	var _d [256][256] int
 	d := &_d
-	
+
 	updatecoupling(coupling, w, s ,t)
-	
-	*visited = sets.UnionNode(*visited, s ,t)
-	
+
+	(*visited)[s][t] = true
+
 	for i := 0; i < matchcardinality(w); i++ {
 		u, v := nextdemandedpair(w, i)
-		
-		*visited = sets.UnionNode(*visited, u, v)
-		
+
+	    (*visited)[u][v] = true
+
 		if s == t {
 			setdistance(d, u, v, 0)
 			*exact = sets.UnionNode(*exact, u, v)
