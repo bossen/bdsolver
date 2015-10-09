@@ -5,5 +5,5 @@ import (
 )
 
 func main() {
-	earthmover.BipseudoMetric()
+	earthmover.BipseudoMetric(32)
 }

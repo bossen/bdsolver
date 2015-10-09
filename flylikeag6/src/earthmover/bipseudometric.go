@@ -6,10 +6,6 @@ import (
     "sets"
 )
 
-func initvisited() int {
-	return 1
-}
-
 func initexact() int {
 	return 1
 }
@@ -63,10 +59,9 @@ func isOptimal() bool {
 
 
 
-func BipseudoMetric() {
+func BipseudoMetric(n int) {
 	var d [256][256]int
-  n := 32
-	visited := initvisited()
+	visited := *sets.MakeMatrix(n)
 	exact := initexact()
 	coupling := initcoupling()
 	tocompute := initToCompute(n)
@@ -79,16 +74,16 @@ func BipseudoMetric() {
 		if label(s) != label(t) {
 			d[s][t] = 1
 			exact = sets.UnionNode(exact, s, t)
-			visited = sets.UnionNode(visited, s, t)
+			visited[s][t] = true
 		} else if s == t {
 			d[s][t] = 0
 			exact = sets.UnionNode(exact, s, t)
-			visited = sets.UnionNode(visited, s, t)
+			visited[s][t] = true
 
 		} else {
 			// if s,t not in visited ...
-			
-			disc(lambda, s, t, &exact, &coupling)
+
+            disc(lambda, s, t, &exact, &coupling)
 
 			for !isOptimal()  { // TODO: add u, v in for loop. While loop check for NOT optimal matching
 				// w := getoptimalschedule(d, u, v)
