@@ -7,7 +7,7 @@ func UnionNode(a int, b int, c int) int{
 
 
 var emptysetnotalways = 2
-func EmptySet(set int) bool {
+func EmptySet(set *[][]bool) bool {
 	emptysetnotalways -= 1
 	if emptysetnotalways < 0 {
 		return true
