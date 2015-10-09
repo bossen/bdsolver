@@ -1,6 +1,6 @@
 package markov
 
-func MakeMarkovChain() Markov {
+func MakeMarkovChain() MarkovChain {
 	n1 := Node{0, 1}
 	n2 := Node{1, 1}
 	nodes := []*Node{&n1, &n2}
@@ -22,7 +22,7 @@ func MakeMarkovChain() Markov {
 	transitionMatrix[0][1] = 0.3
 	transitionMatrix[1][1] = 0.5
 	
-	return Markov{nodes, edges, transitionMatrix}
+	return MarkovChain{nodes, edges, transitionMatrix}
 }
 
 type Node struct {
@@ -34,7 +34,7 @@ type Edge struct {
 	Prob float64
 }
 
-type Markov struct {
+type MarkovChain struct {
 	Nodes []*Node
 	Edges []*Edge
 	TransitionMatrix [][]float64
