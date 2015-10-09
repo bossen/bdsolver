@@ -14,6 +14,7 @@ func initcoupling() int {
 	return 1
 }
 
+//Computes all the possible combinations of the different nodes. This could be optimized, by setting everything below the i == j diagonal to false.
 func initToCompute(n int) *[][]bool {
   toCompute := *sets.MakeMatrix(n)
   for i := range toCompute {
@@ -36,7 +37,7 @@ func extractrandomfromset(tocompute *[][]bool) (int, int) {
       }
     }
   }
-  return -1, -1
+  panic("Tried to extract random element from empty set!")
 }
 
 func label(node int) string {
