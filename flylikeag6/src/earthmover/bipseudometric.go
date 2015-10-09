@@ -1,4 +1,4 @@
-package main
+package earthmover
 
 
 import (
@@ -54,7 +54,7 @@ func intersect(a int, b int) int {
 	return 1
 }
 
-func bipseudometric() {
+func BipseudoMetric() {
 	var d [256][256]int
 	visited := initvisited()
 	exact := initexact()
