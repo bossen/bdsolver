@@ -4,6 +4,7 @@ package earthmover
 import (
 	"fmt"
     "sets"
+    "markov"
 )
 
 func initexact() int {
@@ -58,7 +59,45 @@ func isOptimal() bool {
   return true
 }
 
+func randommatching(m markov.MarkovChain, u int, v int) [][]float64 {
+	j, k, n := 0, 0, len(m.Labels)
+	uTransitions := m.Transitions[u]
+	vTransitions := m.Transitions[v]
+	
+	matching := make([][]float64, n, n)
+	
+	for i := range matching {
+		matching[i] = make([]float64, n, n)
+	}
+	
+	for j < n && k < n {
+		if approxFloatEqual(uTransitions[j], vTransitions[k]) {
+			matching[j][k] = uTransitions[j]
+			j++
+			k++
+		} else if uTransitions[j] < vTransitions[k] {
+			matching[j][k] = uTransitions[j]
+			vTransitions[k] = vTransitions[k] - uTransitions[j]
+			j++
+		} else {
+			matching[j][k] = vTransitions[k]
+			uTransitions[j] = uTransitions[j] - vTransitions[k]
+			k++
+		}
+	}
+	
+	return matching
+}
 
+// credits to https://gist.github.com/cevaris/bc331cbe970b03816c6b
+func approxFloatEqual(a, b float64) bool {
+	var epsilon float64 = 0.00000001
+	
+	if ((a - b) < epsilon && (b - a) < epsilon) {
+		return true
+	}
+	return false
+}
 
 func BipseudoMetric(n int) {
 	var d [256][256]int
@@ -67,6 +106,10 @@ func BipseudoMetric(n int) {
 	coupling := initcoupling()
 	tocompute := initToCompute(n)
 	lambda := 1
+	m := markov.New()
+	w2 := randommatching(m, 0, 1)
+	
+	fmt.Println(w2)
 	
 	for !sets.EmptySet(tocompute) {
 		s, t := extractrandomfromset(tocompute)
@@ -88,8 +131,8 @@ func BipseudoMetric(n int) {
 
 			for !isOptimal()  { // TODO: add u, v in for loop. While loop check for NOT optimal matching
 				// w := getoptimalschedule(d, u, v)
-				w := 1
-				setpair(1, s, t, w, &exact, &visited, &coupling)
+				w := randommatching(m, s ,t)
+				setpair(m, s, t, w, &exact, &visited, &coupling)
 				disc(lambda, s, t, &exact, &coupling)
 			}
 			exact = sets.Union(exact, reachable(s, t, coupling))
@@ -99,7 +142,7 @@ func BipseudoMetric(n int) {
 		tocompute = sets.IntersectReal(*tocompute, *tocompute) //TODO THIS IS WRONG, use exact as second parameter, instead of tocompute twice
 
 	}
-	setpair(1, 1, 1, 1, &exact, &visited, &coupling)
+	setpair(m, 1, 1, w2, &exact, &visited, &coupling)
 	disc(1, 1, 1, &exact, &coupling)
 	fmt.Println("hello world!")
 	// return what?

@@ -22,7 +22,7 @@ func putUnreachableInNonzero(s int, t int, coupling int, nonzero *int, exact int
   pairs := sets.Intersect(reachable(s, t, coupling), exact)
   pairsize := 1 //len(pairs) TODO
   for i := 0; i < pairsize; i++ {
-    u, v := nextdemandedpair(pairs, i)
+    u, v := nextdemandedpairDisc(pairs, i)
     if d[u][v] > 0 {
       *nonzero = sets.Union(*nonzero, reachable(u, v, transposegraph(coupling)))
     }
@@ -33,7 +33,7 @@ func setZerosDistanceToZero(s int, t int, nonzero int, exact *int, d *[256][256]
   pairs := sets.Differens(reachable(s, t, coupling), nonzero)
   pairsize := 1 //len(pairs) TODO
   for i := 0; i < pairsize; i++ {
-    u, v := nextdemandedpair(pairs, i)
+    u, v := nextdemandedpairDisc(pairs, i)
     setdistance(d, u, v, 0)
     *exact = sets.UnionNode(*exact, u, v)
   }
@@ -58,9 +58,13 @@ func getvalue(x int, u int, v int) int {
 func updatedistances(nonzero int, d *[256][256]int, x int) {
   pairsize := 1 //len(x) TODO
   for i := 0; i < pairsize; i++ {
-    u, v := nextdemandedpair(x, i)
+    u, v := nextdemandedpairDisc(x, i)
     setdistance(d, u, v, getvalue(x, u, v))
   }
+}
+
+func nextdemandedpairDisc(w int, i int) (int, int) {
+	return 1, 1
 }
 
 func disc(lambda int, s int, t int, exact *int, coupling *int) {
