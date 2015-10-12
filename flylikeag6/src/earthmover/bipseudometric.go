@@ -15,20 +15,7 @@ func initcoupling() int {
 	return 1
 }
 
-//Computes all the possible combinations of the different nodes. This could be optimized, by setting everything below the i == j diagonal to false.
-func initToCompute(n int) *[][]bool {
-  toCompute := *sets.MakeMatrix(n)
-  for i := range toCompute {
-    for j := range toCompute {
-      if i == j {
-        toCompute[i][j] = false
-      } else {
-        toCompute[i][j] = true
-      }
-    }
-  }
-  return &toCompute
-}
+
 
 func extractrandomfromset(tocompute *[][]bool) (int, int) {
   for i := range *tocompute {
@@ -102,14 +89,12 @@ func approxFloatEqual(a, b float64) bool {
 	return false
 }
 
-func BipseudoMetric(n int) {
+func BipseudoMetric(m markov.MarkovChain,  lambda int, tocompute *[][]bool) {
 	var d [256][256]int
+    n := len(m.Transitions)
 	visited := *sets.MakeMatrix(n)
 	exact := initexact()
 	coupling := initcoupling()
-	tocompute := initToCompute(n)
-	lambda := 1
-	m := markov.New()
 	w2 := randommatching(m, 0, 1)
 	fmt.Println(w2)
 	
