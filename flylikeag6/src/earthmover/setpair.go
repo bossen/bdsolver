@@ -39,7 +39,7 @@ func setpair(m markov.MarkovChain, s int, t int, w [][]float64, exact *int, visi
 		if s == t {
 			setdistance(d, u, v, 0)
 			*exact = sets.UnionNode(*exact, u, v)
-		} else if label(s) == label(t) {
+		} else if m.Labels[s] == m.Labels[t] {
 			setdistance(d, u, v, 1)
 			*exact = sets.UnionNode(*exact, u, v)
 		} else if notexact(u, v, exact) {

@@ -15,8 +15,6 @@ func initcoupling() int {
 	return 1
 }
 
-
-
 func extractrandomfromset(tocompute *[][]bool) (int, int) {
   for i := range *tocompute {
     for j:= range *tocompute {
@@ -27,11 +25,6 @@ func extractrandomfromset(tocompute *[][]bool) (int, int) {
   }
   panic("Tried to extract random element from empty set!")
 }
-
-func label(node int) string {
-	return "red"
-}
-
 
 func removeedgesfromnodes(coupling *int, exact *int) int {
 	return 1
@@ -102,7 +95,7 @@ func BipseudoMetric(m markov.MarkovChain,  lambda int, tocompute *[][]bool) {
 		s, t := extractrandomfromset(tocompute)
     fmt.Println(s)
     fmt.Println(t)
-		if label(s) != label(t) {
+		if m.Labels[s] != m.Labels[t] {
 			d[s][t] = 1
 			exact = sets.UnionNode(exact, s, t)
 			visited[s][t] = true
