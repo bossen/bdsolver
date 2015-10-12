@@ -2,6 +2,8 @@ package main
 
 import (
     "earthmover"
+    "fmt"
+    "markov"
 )
 
 func main() {
