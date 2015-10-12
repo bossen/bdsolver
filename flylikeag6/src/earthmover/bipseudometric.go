@@ -121,6 +121,7 @@ func BipseudoMetric(m markov.MarkovChain,  lambda int, tocompute *[][]bool) {
     
 		tocompute = sets.IntersectReal(*tocompute, *tocompute) //TODO THIS IS WRONG, use exact as second parameter, instead of tocompute twice
 
+    break; //TODO remove this. This is for ending the code
 	}
 	setpair(m, 1, 1, w2, &exact, &visited, &coupling)
 	disc(1, 1, 1, &exact, &coupling)
