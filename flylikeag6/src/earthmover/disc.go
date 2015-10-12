@@ -18,8 +18,9 @@ func setdistance(d *[256][256]int, u int, v int, value int) {
   d[u][v] = value
 }
 
-func putUnreachableInNonzero(s int, t int, coupling int, nonzero *int, exact int, d [256][256]int) {
-  pairs := sets.Intersect(reachable(s, t, coupling), exact)
+func putUnreachableInNonzero(s int, t int, coupling int, nonzero *int, exact *[][]bool, d [256][256]int) {
+  pairs := 1 //TODO remove when reachable has been implemented
+  //pairs := sets.IntersectReal(reachable(s, t, coupling), exact) TODO update when reachable has been made
   pairsize := 1 //len(pairs) TODO
   for i := 0; i < pairsize; i++ {
     u, v := nextdemandedpairDisc(pairs, i)
@@ -29,13 +30,13 @@ func putUnreachableInNonzero(s int, t int, coupling int, nonzero *int, exact int
   }
 }
 
-func setZerosDistanceToZero(s int, t int, nonzero int, exact *int, d *[256][256]int, coupling int) {
+func setZerosDistanceToZero(s int, t int, nonzero int, exact *[][]bool, d *[256][256]int, coupling int) {
   pairs := sets.Differens(reachable(s, t, coupling), nonzero)
   pairsize := 1 //len(pairs) TODO
   for i := 0; i < pairsize; i++ {
     u, v := nextdemandedpairDisc(pairs, i)
     setdistance(d, u, v, 0)
-    *exact = sets.UnionNode(*exact, u, v)
+    (*exact)[u][v] = true
   }
 }
 
@@ -43,7 +44,7 @@ func finda(coupling int, nonzero int) int {
   return 1
 }
 
-func findb(exact int, d[256][256]int, coupling int, nonzero int) int {
+func findb(exact [][]bool, d[256][256]int, coupling int, nonzero int) int {
   return 1
 }
 
@@ -67,12 +68,12 @@ func nextdemandedpairDisc(w int, i int) (int, int) {
 	return 1, 1
 }
 
-func disc(lambda int, s int, t int, exact *int, coupling *int) {
+func disc(lambda int, s int, t int, exact *[][]bool, coupling *int) {
   var _d [256][256] int
   d := &_d
   _d[1][1] = 1
   nonzero := 1
-  putUnreachableInNonzero(s, t, *coupling, &nonzero, *exact, *d)
+  putUnreachableInNonzero(s, t, *coupling, &nonzero, exact, *d)
   setZerosDistanceToZero(s, t, nonzero, exact, d, *coupling)
   a := finda(*coupling, nonzero)
   b := findb(*exact, *d, *coupling, nonzero)
