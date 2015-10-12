@@ -5,7 +5,7 @@ func InitCoupling() int {
 }
 
 type StatePair struct {
-	S1, S2 int
+	S, T int
 }
 
 type Coupling struct {
@@ -13,6 +13,12 @@ type Coupling struct {
 }
 
 type CouplingEdge struct {
-	SP StatePair
+	S, T int
 	Prob float64
+}
+
+func New() Coupling {
+    c := Coupling{}
+    c.Matchings = make(map[StatePair][]CouplingEdge)
+    return c
 }
