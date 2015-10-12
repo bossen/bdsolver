@@ -61,8 +61,11 @@ func isOptimal() bool {
 
 func randommatching(m markov.MarkovChain, u int, v int) [][]float64 {
 	j, k, n := 0, 0, len(m.Labels)
-	uTransitions := m.Transitions[u]
-	vTransitions := m.Transitions[v]
+	uTransitions := make([]float64, n, n)
+	vTransitions := make([]float64, n, n)
+	
+	copy(uTransitions, m.Transitions[u])
+	copy(vTransitions, m.Transitions[v])
 	
 	matching := make([][]float64, n, n)
 	
@@ -108,7 +111,6 @@ func BipseudoMetric(n int) {
 	lambda := 1
 	m := markov.New()
 	w2 := randommatching(m, 0, 1)
-	
 	fmt.Println(w2)
 	
 	for !sets.EmptySet(tocompute) {
