@@ -58,7 +58,7 @@ func getvalue(x int, u int, v int) int {
 func updatedistances(nonzero int, d *[256][256]int, x int) {
   pairsize := 1 //len(x) TODO
   for i := 0; i < pairsize; i++ {
-    u, v := nextdemandedpairDisc(x, i)
+    u, v := nextdemandedpairDisc(nonzero, i)
     setdistance(d, u, v, getvalue(x, u, v))
   }
 }
