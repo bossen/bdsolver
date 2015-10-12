@@ -5,13 +5,10 @@ import (
 	"fmt"
     "sets"
     "markov"
+    "coupling"
 )
 
 func initexact() int {
-	return 1
-}
-
-func initcoupling() int {
 	return 1
 }
 
@@ -106,7 +103,7 @@ func BipseudoMetric(n int) {
 	var d [256][256]int
 	visited := *sets.MakeMatrix(n)
 	exact := initexact()
-	coupling := initcoupling()
+	coupling := coupling.InitCoupling()
 	tocompute := initToCompute(n)
 	lambda := 1
 	m := markov.New()
