@@ -98,6 +98,7 @@ func BipseudoMetric(n int) {
     
 		tocompute = sets.IntersectReal(*tocompute, *tocompute) //TODO THIS IS WRONG, use exact as second parameter, instead of tocompute twice
 
+    break; //TODO remove this. This is for ending the code
 	}
 	setpair(1, 1, 1, 1, &exact, &visited, &coupling)
 	disc(1, 1, 1, &exact, &coupling)

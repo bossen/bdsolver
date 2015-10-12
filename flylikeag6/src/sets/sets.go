@@ -8,6 +8,14 @@ func UnionNode(a int, b int, c int) int{
 
 var emptysetnotalways = 2
 func EmptySet(set *[][]bool) bool {
+  for i := range *set {
+    for j := range *set {
+      if (*set)[i][j] {
+        return false
+      }
+    }
+  }
+  return true
 	emptysetnotalways -= 1
 	if emptysetnotalways < 0 {
 		return true
