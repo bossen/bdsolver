@@ -4,6 +4,7 @@ import (
     "earthmover"
     "fmt"
     "markov"
+    "coupling"
     "sets"
 )
 
@@ -27,4 +28,8 @@ func main() {
 	tocompute := initToCompute(len(mymarkov.Transitions))
 	earthmover.BipseudoMetric(mymarkov, 32, tocompute)
     fmt.Printf("%+v", mymarkov)
+    
+    n1 := coupling.StatePair{0, 2}
+    n2 := coupling.StatePair{0, 2}
+    fmt.Println(n1 == n2)
 }

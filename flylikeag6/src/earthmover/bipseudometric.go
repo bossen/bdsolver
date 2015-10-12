@@ -5,11 +5,8 @@ import (
 	"fmt"
     "sets"
     "markov"
+    "coupling"
 )
-
-func initcoupling() int {
-	return 1
-}
 
 func extractrandomfromset(tocompute *[][]bool) (int, int) {
   for i := range *tocompute {
@@ -83,7 +80,8 @@ func BipseudoMetric(m markov.MarkovChain,  lambda int, tocompute *[][]bool) {
     n := len(m.Transitions)
 	visited := *sets.MakeMatrix(n)
 	exact := *sets.MakeMatrix(n)
-	coupling := initcoupling()
+	coupling := coupling.InitCoupling()
+
 	w2 := randommatching(m, 0, 1)
 	fmt.Println(w2)
 	
