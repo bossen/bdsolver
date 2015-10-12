@@ -6,7 +6,6 @@ func UnionNode(a int, b int, c int) int{
 }
 
 
-var emptysetnotalways = 2
 func EmptySet(set *[][]bool) bool {
   for i := range *set {
     for j := range *set {
@@ -16,12 +15,6 @@ func EmptySet(set *[][]bool) bool {
     }
   }
   return true
-	emptysetnotalways -= 1
-	if emptysetnotalways < 0 {
-		return true
-	} else {
-		return false
-	}
 }
 
 
