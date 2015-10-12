@@ -2,7 +2,6 @@ package earthmover
 
 import (
 	"fmt"
-    "sets"
     "markov"
 )
 
@@ -18,11 +17,11 @@ func nextdemandedpair(w [][]float64, i int) (int, int) {
 	return 1, 1
 }
 
-func notexact(u int, v int, exact *int) bool {
+func notexact(u int, v int, exact *[][]bool) bool {
 	return true
 }
 
-func setpair(m markov.MarkovChain, s int, t int, w [][]float64, exact *int, visited *[][]bool, coupling *int) {
+func setpair(m markov.MarkovChain, s int, t int, w [][]float64, exact *[][]bool, visited *[][]bool, coupling *int) {
 	fmt.Println("hi from setpair!")
 	var _d [256][256] int
 	d := &_d
@@ -38,10 +37,10 @@ func setpair(m markov.MarkovChain, s int, t int, w [][]float64, exact *int, visi
 
 		if s == t {
 			setdistance(d, u, v, 0)
-			*exact = sets.UnionNode(*exact, u, v)
+			(*exact)[u][v] = true
 		} else if m.Labels[s] != m.Labels[t] {
 			setdistance(d, u, v, 1)
-			*exact = sets.UnionNode(*exact, u, v)
+			(*exact)[u][v] = true
 		} else if notexact(u, v, exact) {
 			w2 := randommatching(m, u, v)
 			setpair(m, u, v, w2, exact, visited, coupling)

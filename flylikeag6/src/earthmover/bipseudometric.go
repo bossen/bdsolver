@@ -7,10 +7,6 @@ import (
     "markov"
 )
 
-func initexact() int {
-	return 1
-}
-
 func initcoupling() int {
 	return 1
 }
@@ -26,7 +22,7 @@ func extractrandomfromset(tocompute *[][]bool) (int, int) {
   panic("Tried to extract random element from empty set!")
 }
 
-func removeedgesfromnodes(coupling *int, exact *int) int {
+func removeedgesfromnodes(coupling *int, exact *[][]bool) int {
 	return 1
 }
 
@@ -86,7 +82,7 @@ func BipseudoMetric(m markov.MarkovChain,  lambda int, tocompute *[][]bool) {
 	var d [256][256]int
     n := len(m.Transitions)
 	visited := *sets.MakeMatrix(n)
-	exact := initexact()
+	exact := *sets.MakeMatrix(n)
 	coupling := initcoupling()
 	w2 := randommatching(m, 0, 1)
 	fmt.Println(w2)
@@ -97,11 +93,11 @@ func BipseudoMetric(m markov.MarkovChain,  lambda int, tocompute *[][]bool) {
     fmt.Println(t)
 		if m.Labels[s] != m.Labels[t] {
 			d[s][t] = 1
-			exact = sets.UnionNode(exact, s, t)
+			exact[s][t] = true
 			visited[s][t] = true
 		} else if s == t {
 			d[s][t] = 0
-			exact = sets.UnionNode(exact, s, t)
+			exact[s][t] = true
 			visited[s][t] = true
 
 		} else {
@@ -115,7 +111,7 @@ func BipseudoMetric(m markov.MarkovChain,  lambda int, tocompute *[][]bool) {
 				setpair(m, s, t, w, &exact, &visited, &coupling)
 				disc(lambda, s, t, &exact, &coupling)
 			}
-			exact = sets.Union(exact, reachable(s, t, coupling))
+			//exact = sets.UnionReal(exact, reachable(s, t, coupling)) TODO update when reachable has been made
 			removeedgesfromnodes(&coupling, &exact)
 		}
     
