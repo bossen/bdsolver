@@ -20,6 +20,7 @@ type CouplingEdge struct {
 	S, T int
 	Prob float64
     Color int
+	IsBasic bool
 }
 
 func New() Coupling {
