@@ -3,9 +3,10 @@ package earthmover
 import (
 	"fmt"
     "markov"
+    "coupling"
 )
 
-func updatecoupling(coupling *int, w [][]float64, s int, t int) int {
+func updatecoupling(c coupling.Coupling, w [][]float64, s int, t int) int {
 	return 1
 }
 
@@ -21,12 +22,12 @@ func notexact(u int, v int, exact *[][]bool) bool {
 	return true
 }
 
-func setpair(m markov.MarkovChain, s int, t int, w [][]float64, exact *[][]bool, visited *[][]bool, coupling *int) {
+func setpair(m markov.MarkovChain, s int, t int, w [][]float64, exact *[][]bool, visited *[][]bool, c *coupling.Coupling) {
 	fmt.Println("hi from setpair!")
 	var _d [256][256] int
 	d := &_d
 
-	updatecoupling(coupling, w, s ,t)
+	updatecoupling(*c, w, s ,t)
 
 	(*visited)[s][t] = true
 
@@ -43,7 +44,7 @@ func setpair(m markov.MarkovChain, s int, t int, w [][]float64, exact *[][]bool,
 			(*exact)[u][v] = true
 		} else if notexact(u, v, exact) {
 			w2 := randommatching(m, u, v)
-			setpair(m, u, v, w2, exact, visited, coupling)
+			setpair(m, u, v, w2, exact, visited, c)
 		}
 	}
 }
