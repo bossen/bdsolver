@@ -4,39 +4,46 @@ import (
     "log"
 )
 
-func InitCoupling() int {
-	return 1
+type Node struct {
+	S, T, Color int
+	Adj [][]Edge
 }
 
-type StatePair struct {
-	S, T int
+type Edge struct {
+	To *Node
+	Prob float64
+	IsBasic bool
 }
 
 type Coupling struct {
-	Matchings map[StatePair][]CouplingEdge
-}
-
-type CouplingEdge struct {
-	S, T int
-	Prob float64
-    Color int
-	IsBasic bool
+	Nodes []Node
 }
 
 func New() Coupling {
     c := Coupling{}
-    c.Matchings = make(map[StatePair][]CouplingEdge)
+    c.Nodes = make([]Node)
     return c
 }
 
 
-func Reachable(u, v int, c Coupling) []StatePair {
+func Reachable(u, v int, c Coupling) []Node {
     // Using slices might be slow. If we got performance problems we might
     // implement using lists instead.
-    var reachables []StatePair
+    var reachables []Node
+    
+    Root Node
+    
+    for i := range(c) {
+		if c.Nodes[i].S == u && c.Nodes[i].T == v {
+			Root = c.Nodes[i]
+			break
+		}
+	}
+	
+	Root.Color = i
 
     // Adding itself to reachables
-    reachables = append(reachables, StatePair{u, v})
+    reachables = append(reachables, Root)
 
     // Find all reachables from the  u,v node
     reachables = visit(u, v, c, reachables)
@@ -54,7 +61,7 @@ func Reachable(u, v int, c Coupling) []StatePair {
 }
 
 
-func visit(u, v int, c Coupling, results []StatePair)  []StatePair {
+func visit(u, v int, c Coupling, results []Node)  []Node {
     for _, ce := range c.Matchings[StatePair{u, v}] {
         if ce.Color == 0 {
             ce.Color = 1
