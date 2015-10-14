@@ -41,7 +41,7 @@ func main() {
     e3 := coupling.Edge{&n3, 0, false}
     e4 := coupling.Edge{&n4, 0.3, false}
     
-    n2.Adj = [][]coupling.Edge{[]coupling.Edge{e1, e2}, []coupling.Edge{e3, e4}}
+    n2.Adj = &[][]coupling.Edge{[]coupling.Edge{e1, e2}, []coupling.Edge{e3, e4}}
     
     c.Nodes = []coupling.Node{n1, n2, n3, n4}
     
