@@ -51,6 +51,10 @@ func Reachable(u, v int, c Coupling) []StatePair {
         log.Println(t)
 
     }
+
+    for _, ce := range c.Matchings[StatePair{u, v}] {
+        ce.Color = 0
+    }
   return reachables
 }
 
