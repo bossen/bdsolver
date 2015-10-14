@@ -19,7 +19,7 @@ func extractrandomfromset(tocompute *[][]bool) (int, int) {
   panic("Tried to extract random element from empty set!")
 }
 
-func removeedgesfromnodes(coupling *int, exact *[][]bool) int {
+func removeedgesfromnodes(c *coupling.Coupling, exact *[][]bool) int {
 	return 1
 }
 
@@ -80,7 +80,7 @@ func BipseudoMetric(m markov.MarkovChain,  lambda int, tocompute *[][]bool) {
     n := len(m.Transitions)
 	visited := *sets.MakeMatrix(n)
 	exact := *sets.MakeMatrix(n)
-	coupling := coupling.InitCoupling()
+	coupling := coupling.New()
 
 	w2 := randommatching(m, 0, 1)
 	fmt.Println(w2)

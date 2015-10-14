@@ -21,7 +21,7 @@ type Coupling struct {
 
 func New() Coupling {
     c := Coupling{}
-    c.Nodes = make([]Node)
+    c.Nodes = make([]Node, 0)
     return c
 }
 
@@ -31,22 +31,26 @@ func Reachable(u, v int, c Coupling) []Node {
     // implement using lists instead.
     var reachables []Node
     
-    Root Node
+    var root Node
     
-    for i := range(c) {
-		if c.Nodes[i].S == u && c.Nodes[i].T == v {
-			Root = c.Nodes[i]
+    for _, n := range c.Nodes {
+		if n.S == u && n.T == v {
+			root = n
 			break
 		}
 	}
 	
-	Root.Color = i
+	if root.Adj == nil {
+		panic("Root was not found")
+	}
+	
+	root.Color = 1
 
     // Adding itself to reachables
-    reachables = append(reachables, Root)
+    reachables = append(reachables, root)
 
     // Find all reachables from the  u,v node
-    reachables = visit(u, v, c, reachables)
+    reachables = visit(root, reachables)
 
     log.Println("reachables:")
     for _, t := range reachables {
@@ -54,20 +58,27 @@ func Reachable(u, v int, c Coupling) []Node {
 
     }
 
-    for _, ce := range c.Matchings[StatePair{u, v}] {
-        ce.Color = 0
+    for _, n := range c.Nodes {
+        n.Color = 0
     }
-  return reachables
+    
+    return reachables
 }
 
 
-func visit(u, v int, c Coupling, results []Node)  []Node {
-    for _, ce := range c.Matchings[StatePair{u, v}] {
-        if ce.Color == 0 {
-            ce.Color = 1
-            results = append(results, StatePair{ce.S, ce.T})
-            results = visit(ce.S, ce.T, c, results)
-        }
-    }
+func visit(root Node, results []Node)  []Node {
+	for i := range(root.Adj) {
+		for j := range(root.Adj[0]) {
+			edge := root.Adj[i][j]
+			toVisit := (*(root.Adj[i][j]).To)
+			
+			if edge.Prob > 0 && toVisit.Color == 0 {
+				toVisit.Color = 1
+				results = append(results, toVisit)
+				results = visit(toVisit, results)
+			}
+		}
+	}
+
     return results
 }

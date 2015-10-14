@@ -3,8 +3,9 @@ package main
 import (
     "earthmover"
     "markov"
-    "coupling"
     "sets"
+    "coupling"
+    "fmt"
 )
 
 
@@ -28,22 +29,21 @@ func main() {
 	earthmover.BipseudoMetric(mymarkov, 32, tocompute)
     // fmt.Printf("%+v", mymarkov)
     
-    testcoupling()
-}
-
-func testcoupling() {
     c := coupling.New()
-    // c.Matchings[StatePair{1, 4}] = append(c.Matchings[StatePair{1,4}], (CouplingEdge{2,4, 1.0, 1}))
-    c.Matchings[coupling.StatePair{1,4}] = append(c.Matchings[coupling.StatePair{1,4}], (coupling.CouplingEdge{2, 1, 1/3, 0}))
-    c.Matchings[coupling.StatePair{1,4}] = append(c.Matchings[coupling.StatePair{1,4}], (coupling.CouplingEdge{3, 2, 1/3, 0}))
-    c.Matchings[coupling.StatePair{1,4}] = append(c.Matchings[coupling.StatePair{1,4}], (coupling.CouplingEdge{4, 3, 1/6, 0}))
-    c.Matchings[coupling.StatePair{1,4}] = append(c.Matchings[coupling.StatePair{1,4}], (coupling.CouplingEdge{6, 3, 1/6, 0}))
-
-    c.Matchings[coupling.StatePair{3,4}] = append(c.Matchings[coupling.StatePair{3, 4}], (coupling.CouplingEdge{2, 1, 1/3, 0}))
-    c.Matchings[coupling.StatePair{3,4}] = append(c.Matchings[coupling.StatePair{3, 4}], (coupling.CouplingEdge{2, 2, 1/6, 0}))
-    c.Matchings[coupling.StatePair{3,4}] = append(c.Matchings[coupling.StatePair{3, 4}], (coupling.CouplingEdge{3, 2, 1/6, 0}))
-    c.Matchings[coupling.StatePair{3,4}] = append(c.Matchings[coupling.StatePair{3, 4}], (coupling.CouplingEdge{3, 3, 1/6, 0}))
-    coupling.Reachable(1, 4, c)
-    // fmt.Printf("%+v", c)
-
+    
+    n1 := coupling.Node{S: 0, T: 0}
+    n2 := coupling.Node{S: 0, T: 1}
+    n3 := coupling.Node{S: 1, T: 0}
+    n4 := coupling.Node{S: 1, T: 1}
+    
+    e1 := coupling.Edge{&n1, 0.5, false}
+    e2 := coupling.Edge{&n2, 0.2, false}
+    e3 := coupling.Edge{&n3, 0, false}
+    e4 := coupling.Edge{&n4, 0.3, false}
+    
+    n2.Adj = [][]coupling.Edge{[]coupling.Edge{e1, e2}, []coupling.Edge{e3, e4}}
+    
+    c.Nodes = []coupling.Node{n1, n2, n3, n4}
+    
+    fmt.Println(coupling.Reachable(0, 1, c))
 }
