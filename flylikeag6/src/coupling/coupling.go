@@ -6,7 +6,7 @@ import (
 
 type Node struct {
 	S, T, Color int
-	Adj [][]Edge
+	Adj *[][]Edge
 }
 
 type Edge struct {
@@ -50,7 +50,7 @@ func Reachable(u, v int, c Coupling) []Node {
     reachables = append(reachables, root)
 
     // Find all reachables from the  u,v node
-    reachables = visit(root, reachables)
+    reachables = visit(&root, reachables)
 
     log.Println("reachables:")
     for _, t := range reachables {
@@ -66,15 +66,19 @@ func Reachable(u, v int, c Coupling) []Node {
 }
 
 
-func visit(root Node, results []Node)  []Node {
-	for i := range(root.Adj) {
-		for j := range(root.Adj[0]) {
-			edge := root.Adj[i][j]
-			toVisit := (*(root.Adj[i][j]).To)
+func visit(root *Node, results []Node)  []Node {
+    // log.Printf("%s, %s", root.S, root.T)
+    if (*root).Adj == nil {
+        return results
+    }
+	for i := range(*root.Adj) {
+		for j := range((*root.Adj)[0]) {
+			edge := (*root.Adj)[i][j]
+			toVisit := (*root.Adj)[i][j].To
 			
 			if edge.Prob > 0 && toVisit.Color == 0 {
 				toVisit.Color = 1
-				results = append(results, toVisit)
+				results = append(results, *toVisit)
 				results = visit(toVisit, results)
 			}
 		}
