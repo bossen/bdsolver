@@ -4,42 +4,53 @@ import (
     "log"
 )
 
-func InitCoupling() int {
-	return 1
+type Node struct {
+	S, T, Color int
+	Adj *[][]Edge
 }
 
-type StatePair struct {
-	S, T int
+type Edge struct {
+	To *Node
+	Prob float64
+	IsBasic bool
 }
 
 type Coupling struct {
-	Matchings map[StatePair][]CouplingEdge
-}
-
-type CouplingEdge struct {
-	S, T int
-	Prob float64
-    Color int
-	IsBasic bool
+	Nodes []Node
 }
 
 func New() Coupling {
     c := Coupling{}
-    c.Matchings = make(map[StatePair][]CouplingEdge)
+    c.Nodes = make([]Node, 0)
     return c
 }
 
 
-func Reachable(u, v int, c Coupling) []StatePair {
+func Reachable(u, v int, c Coupling) []Node {
     // Using slices might be slow. If we got performance problems we might
     // implement using lists instead.
-    var reachables []StatePair
+    var reachables []Node
+    
+    var root Node
+    
+    for _, n := range c.Nodes {
+		if n.S == u && n.T == v {
+			root = n
+			break
+		}
+	}
+	
+	if root.Adj == nil {
+		panic("Root was not found")
+	}
+	
+	root.Color = 1
 
     // Adding itself to reachables
-    reachables = append(reachables, StatePair{u, v})
+    reachables = append(reachables, root)
 
     // Find all reachables from the  u,v node
-    reachables = visit(u, v, c, reachables)
+    reachables = visit(&root, reachables)
 
     log.Println("reachables:")
     for _, t := range reachables {
@@ -47,20 +58,31 @@ func Reachable(u, v int, c Coupling) []StatePair {
 
     }
 
-    for _, ce := range c.Matchings[StatePair{u, v}] {
-        ce.Color = 0
+    for _, n := range c.Nodes {
+        n.Color = 0
     }
-  return reachables
+    
+    return reachables
 }
 
 
-func visit(u, v int, c Coupling, results []StatePair)  []StatePair {
-    for _, ce := range c.Matchings[StatePair{u, v}] {
-        if ce.Color == 0 {
-            ce.Color = 1
-            results = append(results, StatePair{ce.S, ce.T})
-            results = visit(ce.S, ce.T, c, results)
-        }
+func visit(root *Node, results []Node)  []Node {
+    // log.Printf("%s, %s", root.S, root.T)
+    if (*root).Adj == nil {
+        return results
     }
+	for i := range(*root.Adj) {
+		for j := range((*root.Adj)[0]) {
+			edge := (*root.Adj)[i][j]
+			toVisit := (*root.Adj)[i][j].To
+			
+			if edge.Prob > 0 && toVisit.Color == 0 {
+				toVisit.Color = 1
+				results = append(results, *toVisit)
+				results = visit(toVisit, results)
+			}
+		}
+	}
+
     return results
 }

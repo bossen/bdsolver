@@ -3,13 +3,14 @@ package earthmover
 import (
 	"fmt"
     "sets"
+    "coupling"
 )
 
-func reachable(u int, v int, graph int) int {
-  return graph
+func reachable(u int, v int, graph coupling.Coupling) int {
+  return 1
 }
 
-func transposegraph(graph int) int {
+func transposegraph(graph coupling.Coupling) coupling.Coupling {
   return graph
 }
 
@@ -18,20 +19,20 @@ func setdistance(d *[256][256]int, u int, v int, value int) {
   d[u][v] = value
 }
 
-func putUnreachableInNonzero(s int, t int, coupling int, nonzero *int, exact *[][]bool, d [256][256]int) {
+func putUnreachableInNonzero(s int, t int, c coupling.Coupling, nonzero *int, exact *[][]bool, d [256][256]int) {
   pairs := 1 //TODO remove when reachable has been implemented
   //pairs := sets.IntersectReal(reachable(s, t, coupling), exact) TODO update when reachable has been made
   pairsize := 1 //len(pairs) TODO
   for i := 0; i < pairsize; i++ {
     u, v := nextdemandedpairDisc(pairs, i)
     if d[u][v] > 0 {
-      *nonzero = sets.Union(*nonzero, reachable(u, v, transposegraph(coupling)))
+      *nonzero = sets.Union(*nonzero, reachable(u, v, transposegraph(c)))
     }
   }
 }
 
-func setZerosDistanceToZero(s int, t int, nonzero int, exact *[][]bool, d *[256][256]int, coupling int) {
-  pairs := sets.Differens(reachable(s, t, coupling), nonzero)
+func setZerosDistanceToZero(s int, t int, nonzero int, exact *[][]bool, d *[256][256]int, c coupling.Coupling) {
+  pairs := sets.Differens(reachable(s, t, c), nonzero)
   pairsize := 1 //len(pairs) TODO
   for i := 0; i < pairsize; i++ {
     u, v := nextdemandedpairDisc(pairs, i)
@@ -40,11 +41,11 @@ func setZerosDistanceToZero(s int, t int, nonzero int, exact *[][]bool, d *[256]
   }
 }
 
-func finda(coupling int, nonzero int) int {
+func finda(c coupling.Coupling, nonzero int) int {
   return 1
 }
 
-func findb(exact [][]bool, d[256][256]int, coupling int, nonzero int) int {
+func findb(exact [][]bool, d[256][256]int, c coupling.Coupling, nonzero int) int {
   return 1
 }
 
@@ -68,15 +69,15 @@ func nextdemandedpairDisc(w int, i int) (int, int) {
 	return 1, 1
 }
 
-func disc(lambda int, s int, t int, exact *[][]bool, coupling *int) {
+func disc(lambda int, s int, t int, exact *[][]bool, c *coupling.Coupling) {
   var _d [256][256] int
   d := &_d
   _d[1][1] = 1
   nonzero := 1
-  putUnreachableInNonzero(s, t, *coupling, &nonzero, exact, *d)
-  setZerosDistanceToZero(s, t, nonzero, exact, d, *coupling)
-  a := finda(*coupling, nonzero)
-  b := findb(*exact, *d, *coupling, nonzero)
+  putUnreachableInNonzero(s, t, *c, &nonzero, exact, *d)
+  setZerosDistanceToZero(s, t, nonzero, exact, d, *c)
+  a := finda(*c, nonzero)
+  b := findb(*exact, *d, *c, nonzero)
   x := solvelinearsystem(lambda, a, b)
   updatedistances(nonzero, d, x)
   fmt.Println("discrepancy!")
