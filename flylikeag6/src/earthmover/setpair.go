@@ -1,9 +1,9 @@
 package earthmover
 
 import (
+	"coupling"
 	"fmt"
-    "markov"
-    "coupling"
+	"markov"
 )
 
 func updatecoupling(c coupling.Coupling, w [][]float64, s int, t int) int {
@@ -11,7 +11,7 @@ func updatecoupling(c coupling.Coupling, w [][]float64, s int, t int) int {
 }
 
 func matchcardinality(w [][]float64) int {
-	return 0 
+	return 0
 }
 
 func nextdemandedpair(w [][]float64, i int) (int, int) {
@@ -24,17 +24,17 @@ func notexact(u int, v int, exact *[][]bool) bool {
 
 func setpair(m markov.MarkovChain, s int, t int, w [][]float64, exact *[][]bool, visited *[][]bool, c *coupling.Coupling) {
 	fmt.Println("hi from setpair!")
-	var _d [256][256] int
+	var _d [256][256]int
 	d := &_d
 
-	updatecoupling(*c, w, s ,t)
+	updatecoupling(*c, w, s, t)
 
 	(*visited)[s][t] = true
 
 	for i := 0; i < matchcardinality(w); i++ {
 		u, v := nextdemandedpair(w, i)
 
-	    (*visited)[u][v] = true
+		(*visited)[u][v] = true
 
 		if s == t {
 			setdistance(d, u, v, 0)

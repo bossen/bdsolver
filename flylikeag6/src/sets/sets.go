@@ -1,39 +1,34 @@
 package sets
 
-
-func UnionNode(a int, b int, c int) int{
+func UnionNode(a int, b int, c int) int {
 	return a + b
 }
 
-
 func EmptySet(set *[][]bool) bool {
-  for i := range *set {
-    for j := range *set {
-      if (*set)[i][j] {
-        return false
-      }
-    }
-  }
-  return true
+	for i := range *set {
+		for j := range *set {
+			if (*set)[i][j] {
+				return false
+			}
+		}
+	}
+	return true
 }
-
 
 func Intersect(a int, b int) int {
 	return 1
 }
 
 func Union(a int, b int) int {
-  return 1
+	return 1
 }
 
 func Differens(a int, b int) int {
-  return a
+	return a
 }
 
-
-
-func MakeMatrix(n int ) *[][]bool {
-	var d[][] bool;	
+func MakeMatrix(n int) *[][]bool {
+	var d [][]bool
 
 	d = make([][]bool, n, n)
 	for i := range d {
@@ -42,7 +37,6 @@ func MakeMatrix(n int ) *[][]bool {
 
 	return &d
 }
-
 
 func UnionReal(A [][]bool, B [][]bool) *[][]bool {
 	if len(A) != len(B) {
@@ -57,7 +51,6 @@ func UnionReal(A [][]bool, B [][]bool) *[][]bool {
 	}
 	return &C
 }
-
 
 func IntersectReal(A [][]bool, B [][]bool) *[][]bool {
 	if len(A) != len(B) {
@@ -76,7 +69,6 @@ func IntersectReal(A [][]bool, B [][]bool) *[][]bool {
 	}
 	return &C
 }
-
 
 func DifferensReal(A [][]bool, B [][]bool) *[][]bool {
 	if len(A) != len(B) {

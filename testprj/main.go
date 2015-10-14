@@ -2,14 +2,13 @@ package main
 
 import (
 	"fmt"
-     "testing"
+	"testing"
 )
 
 func main() {
 	fmt.Println("hello world!")
 }
 
-
 func TestMy(t *testing.T) {
-    t.Fail()
+	t.Fail()
 }
