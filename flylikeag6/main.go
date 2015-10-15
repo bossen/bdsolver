@@ -6,8 +6,12 @@ import (
     "sets"
     "coupling"
     "fmt"
+    "log"
 )
 
+func TestUVmethod(node *coupling.Node) {
+  log.Println(earthmover.Uvmethod(node))
+}
 
 //Computes all the possible combinations of the different nodes. This could be optimized, by setting everything below the i == j diagonal to false.
 func initToCompute(n int) *[][]bool {
@@ -36,14 +40,15 @@ func main() {
     n3 := coupling.Node{S: 1, T: 0}
     n4 := coupling.Node{S: 1, T: 1}
     
-    e1 := coupling.Edge{&n1, 0.5, false}
-    e2 := coupling.Edge{&n2, 0.2, false}
+    e1 := coupling.Edge{&n1, 0.5, true}
+    e2 := coupling.Edge{&n2, 0.2, true}
     e3 := coupling.Edge{&n3, 0, false}
-    e4 := coupling.Edge{&n4, 0.3, false}
+    e4 := coupling.Edge{&n4, 0.3, true}
     
     n2.Adj = &[][]coupling.Edge{[]coupling.Edge{e1, e2}, []coupling.Edge{e3, e4}}
     
     c.Nodes = []coupling.Node{n1, n2, n3, n4}
     
     fmt.Println(coupling.Reachable(0, 1, c))
+    TestUVmethod(&n2)
 }
