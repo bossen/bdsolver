@@ -2,10 +2,10 @@ package earthmover
 
 
 import (
-	"fmt"
-    "sets"
-    "markov"
-    "coupling"
+	"log"
+  "sets"
+  "markov"
+  "coupling"
 )
 
 func extractrandomfromset(tocompute *[][]bool) (int, int) {
@@ -75,20 +75,28 @@ func approxFloatEqual(a, b float64) bool {
 	return false
 }
 
+func SteppingStone(node *coupling.Node, i int, j int) {
+}
+
+func findNode(s int, t int, c *coupling.Coupling) coupling.Node {
+  newnode := coupling.Node{S:0, T: 0}
+  return newnode
+}
+
 func BipseudoMetric(m markov.MarkovChain,  lambda int, tocompute *[][]bool) {
 	var d [256][256]int
     n := len(m.Transitions)
 	visited := *sets.MakeMatrix(n)
 	exact := *sets.MakeMatrix(n)
-	coupling := coupling.New()
+	c := coupling.New()
 
 	w2 := randommatching(m, 0, 1)
-	fmt.Println(w2)
+	log.Println(w2)
 	
 	for !sets.EmptySet(tocompute) {
 		s, t := extractrandomfromset(tocompute)
-    fmt.Println(s)
-    fmt.Println(t)
+    log.Println(s)
+    log.Println(t)
 		if m.Labels[s] != m.Labels[t] {
 			d[s][t] = 1
 			exact[s][t] = true
@@ -101,24 +109,31 @@ func BipseudoMetric(m markov.MarkovChain,  lambda int, tocompute *[][]bool) {
 		} else {
 			// if s,t not in visited ...
 
-            disc(lambda, s, t, &exact, &coupling)
+            disc(lambda, s, t, &exact, &c)
 
-			for !isOptimal()  { // TODO: add u, v in for loop. While loop check for NOT optimal matching
-				// w := getoptimalschedule(d, u, v)
+      node := findNode(s, t, &c)
+      minimumvalue := 1.0 //TODO remove when 
+      _ = node
+      //minimumvalue, iindex, jindex := Uvmethod(&node)
+			for (minimumvalue < 0) {
+        //SteppingStone(&node, iindex, jindex)
+
+				// w := getoptimalschedule(d, u, v) TODO this instead of next line
 				w := randommatching(m, s ,t)
-				setpair(m, s, t, w, &exact, &visited, &coupling)
-				disc(lambda, s, t, &exact, &coupling)
+				setpair(m, s, t, w, &exact, &visited, &c)
+				disc(lambda, s, t, &exact, &c)
+        //minimumvalue, iindex, jindex = Uvmethod(&node)
 			}
-			//exact = sets.UnionReal(exact, reachable(s, t, coupling)) TODO update when reachable has been made
-			removeedgesfromnodes(&coupling, &exact)
+			//exact = sets.UnionReal(exact, reachable(s, t, c)) TODO update when reachable has been made
+			removeedgesfromnodes(&c, &exact)
 		}
     
 		tocompute = sets.IntersectReal(*tocompute, *tocompute) //TODO THIS IS WRONG, use exact as second parameter, instead of tocompute twice
 
     break; //TODO remove this. This is for ending the code
 	}
-	setpair(m, 1, 1, w2, &exact, &visited, &coupling)
-	disc(1, 1, 1, &exact, &coupling)
-	fmt.Println("hello world!")
+	setpair(m, 1, 1, w2, &exact, &visited, &c)
+	disc(1, 1, 1, &exact, &c)
+	log.Println("hello world!")
 	// return what?
 }
