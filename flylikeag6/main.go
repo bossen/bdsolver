@@ -9,8 +9,8 @@ import (
 	"sets"
 )
 
-func TestUVmethod(node *coupling.Node) {
-	log.Println(earthmover.Uvmethod(node))
+func TestUVmethod(node *coupling.Node, d *[256][256]float64) {
+	log.Println(earthmover.Uvmethod(node, d))
 }
 
 //Computes all the possible combinations of the different nodes. This could be optimized, by setting everything below the i == j diagonal to false.
@@ -50,5 +50,10 @@ func main() {
 	c.Nodes = []coupling.Node{n1, n2, n3, n4}
 
 	fmt.Println(coupling.Reachable(0, 1, c))
-	TestUVmethod(&n2)
+  var d [256][256]float64
+  d[0][0] = 5
+  d[0][1] = 2
+  d[1][0] = 0
+  d[1][1] = 3
+	TestUVmethod(&n2, &d)
 }
