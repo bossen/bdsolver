@@ -5,14 +5,15 @@ import (
 )
 
 type Node struct {
-	S, T, Color int
+	S, T int
+	Color bool
 	Adj [][]*Edge
 }
 
 type Edge struct {
 	To *Node
 	Prob float64
-	IsBasic bool
+	Basic bool
 }
 
 type Coupling struct {
@@ -44,7 +45,7 @@ func Reachable(u, v int, c Coupling) []*Node {
 		panic("Root was not found")
 	}
 	
-	root.Color = 1
+	root.Color = true
 
     // Adding itself to reachables
     reachables = append(reachables, root)
@@ -59,7 +60,7 @@ func Reachable(u, v int, c Coupling) []*Node {
     }
 
     for _, n := range c.Nodes {
-        n.Color = 0
+        n.Color = false
     }
     
     return reachables
@@ -76,8 +77,8 @@ func visit(root *Node, results []*Node)  []*Node {
 			edge := root.Adj[i][j]
 			toVisit := root.Adj[i][j].To
 			
-			if edge.Prob > 0 && toVisit.Color == 0 {
-				toVisit.Color = 1
+			if edge.Prob > 0 && !(toVisit.Color) {
+				toVisit.Color = true
 				results = append(results, toVisit)
 				results = visit(toVisit, results)
 			}
