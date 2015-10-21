@@ -71,7 +71,10 @@ func goVertical(n *coupling.Node, s, t, u, v, rBound, cBound, pLen int, min *flo
 			continue
 		}
 		
-		if i == s && v == t && pLen > 3 {
+		if i == s && v == t {
+			if pLen % 2 == 1 {
+				panic("stepping stone path cannot be uneven, since the intial node cannot be reached if the path is uneven")
+			}
 			// we have finished the path
 			updateEdge(edge, false, *min)
 			return true	
@@ -112,9 +115,8 @@ func updateEdge(edge *coupling.Edge, signal bool, min float64) {
 		edge.Basic = true
 		
 	} else {
-		// decrase and set the node to non-basic if not bigger than 0
 		edge.Prob -= min
-		
+		// if the line edge.Prob -= min, makes edge.Prob to zero, it is not a basic cell
 		edge.Basic = edge.Prob > 0
 	}
 	
