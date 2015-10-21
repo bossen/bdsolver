@@ -73,9 +73,6 @@ func approxFloatEqual(a, b float64) bool {
 	return false
 }
 
-func SteppingStone(node *coupling.Node, i int, j int) {
-}
-
 func findNode(s int, t int, c *coupling.Coupling) coupling.Node {
 	newnode := coupling.Node{S: 0, T: 0}
 	return newnode
