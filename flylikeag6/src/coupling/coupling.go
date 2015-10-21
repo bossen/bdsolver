@@ -6,7 +6,7 @@ import (
 
 type Node struct {
 	S, T int
-	Color bool
+	Visited bool
 	Adj [][]*Edge
 }
 
@@ -45,7 +45,7 @@ func Reachable(u, v int, c Coupling) []*Node {
 		panic("Root was not found")
 	}
 	
-	root.Color = true
+	root.Visited = true
 
     // Adding itself to reachables
     reachables = append(reachables, root)
@@ -60,7 +60,7 @@ func Reachable(u, v int, c Coupling) []*Node {
     }
 
     for _, n := range c.Nodes {
-        n.Color = false
+        n.Visited = false
     }
     
     return reachables
@@ -77,8 +77,8 @@ func visit(root *Node, results []*Node)  []*Node {
 			edge := root.Adj[i][j]
 			toVisit := root.Adj[i][j].To
 			
-			if edge.Prob > 0 && !(toVisit.Color) {
-				toVisit.Color = true
+			if edge.Prob > 0 && !(toVisit.Visited) {
+				toVisit.Visited = true
 				results = append(results, toVisit)
 				results = visit(toVisit, results)
 			}

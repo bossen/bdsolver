@@ -13,7 +13,7 @@ func SteppingStone(n *coupling.Node, s int, t int) {
 func goHorizontal(n *coupling.Node, s, t, u, v, rBound, cBound, pLen int, min *float64) bool {
 	var localmin float64
 	edge := n.Adj[u][v]
-	edge.To.Color = true
+	edge.To.Visited = true
 	
 	for i:= 0; i < cBound; i++ {
 		if i == v {
@@ -21,7 +21,7 @@ func goHorizontal(n *coupling.Node, s, t, u, v, rBound, cBound, pLen int, min *f
 			continue
 		}
 		
-		if n.Adj[u][i].To.Color {
+		if n.Adj[u][i].To.Visited {
 			// (u,i) has already been visited
 			continue
 		}
@@ -55,14 +55,14 @@ func goHorizontal(n *coupling.Node, s, t, u, v, rBound, cBound, pLen int, min *f
 		*min = localmin
 	}
 	
-	edge.To.Color = false
+	edge.To.Visited = false
 	return false
 }
 
 func goVertical(n *coupling.Node, s, t, u, v, rBound, cBound, pLen int, min *float64) bool {
 	var localmin float64
 	edge := n.Adj[u][v]
-	edge.To.Color = true
+	edge.To.Visited = true
 	
 	for i:= 0; i < rBound; i++ {
 		if i == u {
@@ -76,7 +76,7 @@ func goVertical(n *coupling.Node, s, t, u, v, rBound, cBound, pLen int, min *flo
 			return true	
 		} 
 		
-		if n.Adj[i][v].To.Color {
+		if n.Adj[i][v].To.Visited {
 			// (i,v) has already been visited
 			continue
 		}
@@ -100,6 +100,7 @@ func goVertical(n *coupling.Node, s, t, u, v, rBound, cBound, pLen int, min *flo
 		*min = localmin
 	}
 	
+	edge.To.Visited = false
 	return false	
 }
 
@@ -120,7 +121,7 @@ func updateEdge(edge *coupling.Edge, signal bool, min float64) {
 		}
 	}
 	
-	edge.To.Color = false
+	edge.To.Visited = false
 }
 
 func findMin(a float64, b float64) float64 {
