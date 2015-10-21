@@ -2,6 +2,7 @@ package earthmover
 
 import (
 	"coupling"
+	"math"
 )
 
 func SteppingStone(n *coupling.Node, s int, t int) {
@@ -43,7 +44,7 @@ func goHorizontal(n *coupling.Node, s, t, u, v, rBound, cBound, pLen int, min *f
 		localmin = *min
 		
 		// if next step is decrease update the global minimum
-		*min = findMin(*min, n.Adj[u][i].Prob)
+		*min = math.Min(*min, n.Adj[u][i].Prob)
 		
 		if goVertical(n, s, t, u, i, rBound, cBound, pLen + 1, min) {
 			// the path was finished
@@ -107,27 +108,15 @@ func goVertical(n *coupling.Node, s, t, u, v, rBound, cBound, pLen int, min *flo
 func updateEdge(edge *coupling.Edge, signal bool, min float64) {
 	if signal {
 		// increase and set the node to basic
-		edge.Prob = edge.Prob + min
+		edge.Prob += min
 		edge.Basic = true
 		
 	} else {
 		// decrase and set the node to non-basic if not bigger than 0
-		edge.Prob = edge.Prob - min
-				
-		if edge.Prob > 0 {
-			edge.Basic = true
-		} else {
-			edge.Basic = false
-		}
+		edge.Prob -= min
+		
+		edge.Basic = edge.Prob > 0
 	}
 	
 	edge.To.Visited = false
-}
-
-func findMin(a float64, b float64) float64 {
-	if a < b {
-		return a
-	} else {
-		return b
-	}
 }
