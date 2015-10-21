@@ -95,6 +95,7 @@ func BipseudoMetric(m markov.MarkovChain, lambda int, tocompute *[][]bool) {
 		s, t := extractrandomfromset(tocompute)
 		log.Println(s)
 		log.Println(t)
+
 		if m.Labels[s] != m.Labels[t] {
 			d[s][t] = 1
 			exact[s][t] = true

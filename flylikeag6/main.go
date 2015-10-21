@@ -3,8 +3,7 @@ package main
 import (
 	"coupling"
 	"earthmover"
-	"fmt"
-	"log"
+  "log"
 	"markov"
 	"sets"
 )
@@ -49,7 +48,7 @@ func main() {
 
 	c.Nodes = []coupling.Node{n1, n2, n3, n4}
 
-	fmt.Println(coupling.Reachable(0, 1, c))
+	log.Println(coupling.Reachable(0, 1, c))
   var d [256][256]float64
   d[0][0] = 5
   d[0][1] = 2
