@@ -1,9 +1,5 @@
 package coupling
 
-import (
-	"log"
-)
-
 type Node struct {
 	S, T    int
 	Visited bool
@@ -39,24 +35,18 @@ func Reachable(u, v int, c Coupling) []*Node {
 			break
 		}
 	}
-
-	if root.Adj == nil {
-		panic("Root was not found")
-	}
-
+	
 	root.Visited = true
-
+	
 	// Adding itself to reachables
 	reachables = append(reachables, root)
 
+	if root.Adj == nil {
+		return reachables
+	}
+
 	// Find all reachables from the  u,v node
 	reachables = visit(root, reachables)
-
-	log.Println("reachables:")
-	for _, t := range reachables {
-		log.Println(t)
-
-	}
 
 	for _, n := range c.Nodes {
 		n.Visited = false
@@ -67,13 +57,13 @@ func Reachable(u, v int, c Coupling) []*Node {
 
 func visit(root *Node, results []*Node) []*Node {
 	// log.Printf("%s, %s", root.S, root.T)
-	if (*root).Adj == nil {
+	if root.Adj == nil {
 		return results
 	}
 	for i := range root.Adj {
 		for j := range root.Adj[0] {
 			edge := root.Adj[i][j]
-			toVisit := root.Adj[i][j].To
+			toVisit := edge.To
 
 			if edge.Prob > 0 && !(toVisit.Visited) {
 				toVisit.Visited = true
