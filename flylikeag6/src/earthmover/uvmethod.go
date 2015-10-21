@@ -2,7 +2,7 @@ package earthmover
 
 import (
 	"coupling"
-  "log"
+	"log"
 )
 
 func findMinimum(tableu *[][]coupling.Edge, u []float64, v []float64) (float64, int, int) {
@@ -36,8 +36,8 @@ func calculateuv(tableu *[][]coupling.Edge, u *[]float64, v *[]float64, udefined
 				continue
 			}
 
-      node := (*tableu)[i][j].To
-      log.Println(node)
+			node := (*tableu)[i][j].To
+			log.Println(node)
 
 			if first {
 				(*u)[i] = 0
