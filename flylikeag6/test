@@ -3,4 +3,4 @@
 export debug=1
 export GOPATH=$PWD
 
-go test ./tests
+go test $(for folder in $(ls src/ | grep -v github);do echo -n "./src/$folder/... ";done)
