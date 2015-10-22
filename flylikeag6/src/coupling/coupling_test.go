@@ -59,3 +59,24 @@ func TestReachableSetCardinality(t *testing.T) {
     
     assert.Equal(t, len(r), 2, "the cardinality of the reachable set should be 2")
 }
+
+func TestVisitRetunsIfAdjNil(t *testing.T) {
+	c := setUpCoupling()
+	n := c.Nodes[0]
+	res := []*Node{n}
+	
+	r := visit(n, res)
+	
+	assert.Equal(t, len(r), 1, "visit function does not return immediately")
+}
+
+func TestVisitReturnsCorrectCardinality(t *testing.T) {
+	c := setUpCoupling()
+	n := c.Nodes[1]
+	n.Visited = true
+	res := []*Node{n}
+	
+	r := visit(n, res)
+	
+	assert.Equal(t, len(r), 3, "visit returns a result set that does not have size 3")
+}
