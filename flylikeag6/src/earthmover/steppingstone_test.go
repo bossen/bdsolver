@@ -85,12 +85,12 @@ func TestSteppingStoneReturnsFalse(t *testing.T) {
 	assert.False(t, done, "a stepping stone path were found even though it does not exist")
 }
 
-func TestpSteppingStoneRestoresVisited(t *testint.T) {
+func TestpSteppingStoneRestoresVisited(t *testing.T) {
 	c := setUpCoupling()
 	
 	n2 := c.Nodes[1]
 	
-	done := SteppingStone(n2, 1, 0)
+	SteppingStone(n2, 1, 0)
 	
 	v1 := n2.Adj[0][0].To.Visited
 	v2 := n2.Adj[0][1].To.Visited
