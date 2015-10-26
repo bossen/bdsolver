@@ -3,7 +3,6 @@ package earthmover
 import (
 	"coupling"
 	"markov"
-	"log"
 )
 
 func updatecoupling(c *coupling.Coupling, w [][]float64, s int, t int) int {
