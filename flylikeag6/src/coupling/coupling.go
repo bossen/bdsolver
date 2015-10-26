@@ -1,5 +1,9 @@
 package coupling
 
+import (
+	"log"
+)
+
 type Node struct {
 	S, T    int
 	Visited bool
@@ -36,6 +40,10 @@ func Reachable(u, v int, c Coupling) []*Node {
 		}
 	}
 	
+	if root == nil {
+		panic("root was not found")
+	}
+	
 	root.Visited = true
 	
 	// Adding itself to reachables
@@ -47,6 +55,11 @@ func Reachable(u, v int, c Coupling) []*Node {
 
 	// Find all reachables from the  u,v node
 	reachables = visit(root, reachables)
+
+	log.Println("reachables:")
+	for _, t := range reachables {
+		log.Println(t)
+	}
 
 	for _, n := range c.Nodes {
 		n.Visited = false
