@@ -79,11 +79,14 @@ func findNode(s int, t int, c *coupling.Coupling) coupling.Node {
 }
 
 func BipseudoMetric(m markov.MarkovChain, lambda int, tocompute *[][]bool) {
-	var d [256][256]int //TODO should be float64
 	n := len(m.Transitions)
 	visited := *sets.MakeMatrix(n)
 	exact := *sets.MakeMatrix(n)
 	c := coupling.New()
+	d := make([][]float64, n, n)
+	for i := 0; i < n; i++ {
+		d[i] = make([]float64, n, n)
+	}
 
 	w2 := randommatching(m, 0, 1)
 	log.Println(w2)
@@ -105,7 +108,7 @@ func BipseudoMetric(m markov.MarkovChain, lambda int, tocompute *[][]bool) {
 		} else {
 			// if s,t not in visited ...
 
-			disc(lambda, s, t, &exact, &c)
+			disc(lambda, s, t, exact, d, &c)
 
 			node := findNode(s, t, &c)
 			minimumvalue := 1.0 //TODO remove when
@@ -116,8 +119,8 @@ func BipseudoMetric(m markov.MarkovChain, lambda int, tocompute *[][]bool) {
 
 				// w := getoptimalschedule(d, u, v) TODO this instead of next line
 				w := randommatching(m, s, t)
-				setpair(m, s, t, w, &exact, &visited, &c)
-				disc(lambda, s, t, &exact, &c)
+				setpair(m, s, t, w, exact, visited, d, &c)
+				disc(lambda, s, t, exact, d, &c)
 				//minimumvalue, iindex, jindex = Uvmethod(&node)
 			}
 			//exact = sets.UnionReal(exact, reachable(s, t, c)) TODO update when reachable has been made
@@ -128,8 +131,8 @@ func BipseudoMetric(m markov.MarkovChain, lambda int, tocompute *[][]bool) {
 
 		break //TODO remove this. This is for ending the code
 	}
-	setpair(m, 1, 1, w2, &exact, &visited, &c)
-	disc(1, 1, 1, &exact, &c)
+	setpair(m, 0, 1, w2, exact, visited, d, &c)
+	disc(1, 1, 1, exact, d, &c)
 	log.Println("hello world!")
 	// return what?
 }
