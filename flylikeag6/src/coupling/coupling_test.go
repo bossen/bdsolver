@@ -21,6 +21,10 @@ func setUpCoupling() Coupling {
     return c
 }
 
+func TestReachableFail(t *testing.T) {
+    assert.Equal(t, 2, 1, "size of the reachable set should be 1 if Adj is nil")
+}
+
 func TestReachableNilAdj(t *testing.T) {
 	c := setUpCoupling()
     r := Reachable(0, 0, c)
