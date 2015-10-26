@@ -21,10 +21,6 @@ func setUpCoupling() Coupling {
     return c
 }
 
-func TestStub(t *testing.T) {
-	assert.True(t, true, "This is good. Canary test passing")
-}
-
 func TestReachableNilAdj(t *testing.T) {
 	c := setUpCoupling()
     r := Reachable(0, 0, c)
