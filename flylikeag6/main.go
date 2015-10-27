@@ -58,7 +58,7 @@ func main() {
 
 	TestUVmethod(&n2, d)
 
-	log.Println(coupling.Reachable(0, 1, c))
+	log.Println(coupling.Reachable(0, 1, &c))
 
 	log.Println(n2.Adj[0][0], n2.Adj[0][1], n2.Adj[1][0], n2.Adj[1][1])
 	earthmover.SteppingStone(&n2, 1, 0)
