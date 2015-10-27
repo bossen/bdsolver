@@ -27,7 +27,7 @@ func initToCompute(n int) *[][]bool {
 	return &toCompute
 }
 func main() {
-    log.SetFlags(log.Lshortfile | log.Ltime)
+    log.SetFlags(log.Lshortfile)
     
 	mymarkov := markov.New()
 	tocompute := initToCompute(len(mymarkov.Transitions))
