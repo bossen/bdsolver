@@ -27,6 +27,8 @@ func initToCompute(n int) *[][]bool {
 	return &toCompute
 }
 func main() {
+    log.SetFlags(log.Lshortfile | log.Ldate | log.Ltime)
+    
 	mymarkov := markov.New()
 	tocompute := initToCompute(len(mymarkov.Transitions))
 	earthmover.BipseudoMetric(mymarkov, 32, tocompute)
