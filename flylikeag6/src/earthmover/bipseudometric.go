@@ -30,38 +30,6 @@ func isOptimal() bool {
 	return true
 }
 
-func randommatching(m markov.MarkovChain, u int, v int) [][]float64 {
-	j, k, n := 0, 0, len(m.Labels)
-	uTransitions := make([]float64, n, n)
-	vTransitions := make([]float64, n, n)
-
-	copy(uTransitions, m.Transitions[u])
-	copy(vTransitions, m.Transitions[v])
-
-	matching := make([][]float64, n, n)
-
-	for i := range matching {
-		matching[i] = make([]float64, n, n)
-	}
-
-	for j < n && k < n {
-		if approxFloatEqual(uTransitions[j], vTransitions[k]) {
-			matching[j][k] = uTransitions[j]
-			j++
-			k++
-		} else if uTransitions[j] < vTransitions[k] {
-			matching[j][k] = uTransitions[j]
-			vTransitions[k] = vTransitions[k] - uTransitions[j]
-			j++
-		} else {
-			matching[j][k] = vTransitions[k]
-			uTransitions[j] = uTransitions[j] - vTransitions[k]
-			k++
-		}
-	}
-
-	return matching
-}
 
 // credits to https://gist.github.com/cevaris/bc331cbe970b03816c6b
 func approxFloatEqual(a, b float64) bool {
