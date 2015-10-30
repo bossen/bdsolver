@@ -6,8 +6,6 @@ import (
     "log"
 )
 
-
-
 func randommatching(m markov.MarkovChain, u int, v int) [][]float64 {
 	j, k, n := 0, 0, len(m.Labels)
 	uTransitions := make([]float64, n, n)
@@ -53,6 +51,9 @@ func randommatchingnew(m markov.MarkovChain, u int, v int, c *coupling.Coupling)
 
 	copy(uTransitions, m.Transitions[u])
 	copy(vTransitions, m.Transitions[v])
+	
+	log.Println(uTransitions)
+	log.Println(vTransitions)
     
     for i := 0; i < n; i++ {
         if m.Transitions[u][i] > 0 {
@@ -62,7 +63,7 @@ func randommatchingnew(m markov.MarkovChain, u int, v int, c *coupling.Coupling)
 			lencol += 1
 		}
     }
-    log.Printf("row and column length are: %v", lenrow)
+    log.Printf("row and column length are: %v and %v", lenrow, lencol)
     
     rowindex := make([]int, lenrow, lenrow)
     colindex := make([]int, lencol, lencol)
@@ -82,12 +83,13 @@ func randommatchingnew(m markov.MarkovChain, u int, v int, c *coupling.Coupling)
 
     log.Printf("earthmover.randommatching Making the matching matrix")
     matching := make([][]*coupling.Edge, lenrow, lenrow)
+    
     for i := range(matching) {
         matching[i] = make([]*coupling.Edge, lencol, lencol)
     }
     
     for i := 0; i < lenrow; i++ {
-		for j := 0; j < lencol; i++ {
+		for j := 0; j < lencol; j++ {
 			node := coupling.FindNode(rowindex[i], colindex[j], c)
 			
 			if node == nil {
@@ -105,23 +107,29 @@ func randommatchingnew(m markov.MarkovChain, u int, v int, c *coupling.Coupling)
 		if approxFloatEqual(uTransitions[rowindex[l]], vTransitions[colindex[k]]) {
 			matching[l][k].Prob = uTransitions[rowindex[l]]
 			
-			if l + 1 == lenrow && k + 1 == lencol {
-				matching[l+1][k].Basic = true
+			if !(l + 1 == lenrow && k + 1 == lencol) {
+				matching[l][k+1].Basic = true
 			}
+			
+			matching[l][k].Basic = true
 			
 			l++
 			k++
 		} else if uTransitions[rowindex[l]] < vTransitions[colindex[k]] {
 			matching[l][k].Prob = uTransitions[rowindex[l]]
 			vTransitions[colindex[k]] = vTransitions[colindex[k]] - uTransitions[rowindex[l]]
+			
+			matching[l][k].Basic = true
+			
 			l++
 		} else {
 			matching[l][k].Prob = vTransitions[colindex[k]]
 			uTransitions[rowindex[l]] =  uTransitions[rowindex[l]] - vTransitions[colindex[k]]
+			
+			matching[l][k].Basic = true
+			
 			k++
 		}
-		
-		matching[l][k].Basic = true
 	}
 	
 	node := coupling.FindNode(u, v, c)
@@ -129,6 +137,13 @@ func randommatchingnew(m markov.MarkovChain, u int, v int, c *coupling.Coupling)
 	if node == nil {
 		node = &coupling.Node{S: u, T: v}
 		c.Nodes = append(c.Nodes, node)
+	}
+	
+	for i := 0; i < lenrow; i++ {
+		for j := 0; j < lencol; j++ {
+			log.Println("At: %v and %v", i, j)
+			log.Println(matching[i][j].Basic)
+		}
 	}
 	
 	node.Adj = matching
