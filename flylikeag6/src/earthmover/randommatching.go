@@ -90,7 +90,13 @@ func randommatchingnew(m markov.MarkovChain, u int, v int, c *coupling.Coupling)
     
     for i := 0; i < lenrow; i++ {
 		for j := 0; j < lencol; j++ {
-			node := coupling.FindNode(rowindex[i], colindex[j], c)
+			var node *coupling.Node
+			
+			if rowindex[i] <= rowindex[j] {
+				node = coupling.FindNode(rowindex[i], colindex[j], c)
+			} else {
+				node = coupling.FindNode(colindex[j], rowindex[i], c)
+			}
 			
 			if node == nil {
 				node = &coupling.Node{S: rowindex[i], T: colindex[j]}
