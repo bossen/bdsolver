@@ -6,42 +6,6 @@ import (
     "log"
 )
 
-/*
-func randommatching(m markov.MarkovChain, u int, v int) [][]float64 {
-	j, k, n := 0, 0, len(m.Labels)
-	uTransitions := make([]float64, n, n)
-	vTransitions := make([]float64, n, n)
-
-	copy(uTransitions, m.Transitions[u])
-	copy(vTransitions, m.Transitions[v])
-
-	matching := make([][]float64, n, n)
-
-	for i := range matching {
-		matching[i] = make([]float64, n, n)
-	}
-
-	for j < n && k < n {
-		if approxFloatEqual(uTransitions[j], vTransitions[k]) {
-			matching[j][k] = uTransitions[j]
-			j++
-			k++
-		} else if uTransitions[j] < vTransitions[k] {
-			matching[j][k] = uTransitions[j]
-			vTransitions[k] = vTransitions[k] - uTransitions[j]
-			j++
-		} else {
-			matching[j][k] = vTransitions[k]
-			uTransitions[j] = uTransitions[j] - vTransitions[k]
-			k++
-		}
-	}
-
-	return matching
-}
-*/
-
-
 func randomMatching(m markov.MarkovChain, u int, v int, c *coupling.Coupling) *coupling.Node {
     n := len(m.Transitions[u])
     lenrow, lencol := 0, 0
@@ -93,14 +57,18 @@ func randomMatching(m markov.MarkovChain, u int, v int, c *coupling.Coupling) *c
 		for j := 0; j < lencol; j++ {
 			var node *coupling.Node
 			
-			if rowindex[i] <= rowindex[j] {
+			if rowindex[i] <= colindex[j] {
 				node = coupling.FindNode(rowindex[i], colindex[j], c)
 			} else {
 				node = coupling.FindNode(colindex[j], rowindex[i], c)
 			}
 			
 			if node == nil {
-				node = &coupling.Node{S: rowindex[i], T: colindex[j]}
+				if rowindex[i] <= colindex[j] {
+					node = &coupling.Node{S: rowindex[i], T: colindex[j]}
+				} else {
+					node = &coupling.Node{S: colindex[j], T: rowindex[i]}
+				}
 				c.Nodes = append(c.Nodes, node)
 			}
 			

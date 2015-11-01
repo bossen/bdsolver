@@ -8,10 +8,8 @@ import (
 
 func setpair(m markov.MarkovChain, s int, t int, w *coupling.Node, exact [][]bool, visited [][]bool, dist [][]float64, c *coupling.Coupling) {
 	log.Println("s and t in setPair: ", s, t)
-	log.Println("Visited: ", visited)
 	visited[s][t] = true
 	visited[t][s] = true
-	log.Println("Visited: ", visited)
 	
 	for _, rows := range w.Adj {
 		for _, edge := range rows {
@@ -19,7 +17,17 @@ func setpair(m markov.MarkovChain, s int, t int, w *coupling.Node, exact [][]boo
 				continue
 			}
 			
+			if approxFloatEqual(edge.Prob, 0.0) {
+				continue
+			}
+			
 			u, v := edge.To.S, edge.To.T
+			
+			if u > v {
+				temp := v
+				v = u
+				u = temp
+			}
 			
 			if visited[u][v] || visited[v][u] {
 				continue
@@ -33,7 +41,7 @@ func setpair(m markov.MarkovChain, s int, t int, w *coupling.Node, exact [][]boo
 				setdistance(dist, u, v, 0)
 				exact[v][u] = true
 				
-			} else if m.Labels[s] != m.Labels[t] {
+			} else if m.Labels[u] != m.Labels[v] {
 				log.Println("u and v has different labels ", u, v)
 				setdistance(dist, u, v, 1)
 				exact[u][v] = true
@@ -46,6 +54,4 @@ func setpair(m markov.MarkovChain, s int, t int, w *coupling.Node, exact [][]boo
 			}
 		}
 	}
-	log.Println("Visited: ", visited)
-	log.Println("Exact: ", exact)
 }

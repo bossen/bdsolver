@@ -12,7 +12,9 @@ func setUpCoupling() coupling.Coupling {
 }
 
 func setUpMarkov() markov.MarkovChain {
-	return markov.MarkovChain{Transitions: [][]float64{
+	return markov.MarkovChain{
+		Labels: []int {0, 1, 0, 0, 0, 1, 0},
+		Transitions: [][]float64{
 		[]float64{0.0, 0.33, 0.33, 0.17, 0.0, 0.17, 0.0},
 		[]float64{0.0, 0.0, 0.4, 0.4, 0.0, 0.2, 0.0},
 		[]float64{0.0, 0.5, 0.5, 0.0, 0.0, 0.0, 0.0},
