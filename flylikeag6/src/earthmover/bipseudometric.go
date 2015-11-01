@@ -56,7 +56,7 @@ func BipseudoMetric(m markov.MarkovChain, lambda int, tocompute *[][]bool) {
 		d[i] = make([]float64, n, n)
 	}
 
-	w2 := randommatching(m, 0, 1)
+	w2 := randomMatching(m, 0, 1, &c)
 	log.Println(w2)
 
 	for !sets.EmptySet(tocompute) {
@@ -86,7 +86,7 @@ func BipseudoMetric(m markov.MarkovChain, lambda int, tocompute *[][]bool) {
 				//SteppingStone(&node, iindex, jindex)
 
 				// w := getoptimalschedule(d, u, v) TODO this instead of next line
-				w := randommatching(m, s, t)
+				w := randomMatching(m, s, t, &c)
 				setpair(m, s, t, w, exact, visited, d, &c)
 				disc(lambda, s, t, exact, d, &c)
 				//minimumvalue, iindex, jindex = Uvmethod(&node)

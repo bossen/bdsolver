@@ -32,7 +32,7 @@ func TestCorrectMatchingFound(t *testing.T) {
 	c := setUpCoupling()
 	m := setUpMarkov()
 	
-	w := randommatchingnew(m, 0, 3, &c)
+	w := randomMatching(m, 0, 3, &c)
 	
 	for i := 0; i < len(expected); i++ {
 		for j := 0; j < len(expected[0]); j++ {
@@ -51,7 +51,7 @@ func TestCorrectBasicFound(t *testing.T) {
 	c := setUpCoupling()
 	m := setUpMarkov()
 	
-	w := randommatchingnew(m, 0, 3, &c)
+	w := randomMatching(m, 0, 3, &c)
 	
 		for i := 0; i < len(expected); i++ {
 			for j := 0; j < len(expected[0]); j++ {

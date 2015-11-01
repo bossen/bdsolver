@@ -6,6 +6,7 @@ import (
     "log"
 )
 
+/*
 func randommatching(m markov.MarkovChain, u int, v int) [][]float64 {
 	j, k, n := 0, 0, len(m.Labels)
 	uTransitions := make([]float64, n, n)
@@ -38,9 +39,10 @@ func randommatching(m markov.MarkovChain, u int, v int) [][]float64 {
 
 	return matching
 }
+*/
 
 
-func randommatchingnew(m markov.MarkovChain, u int, v int, c *coupling.Coupling) *coupling.Node {
+func randomMatching(m markov.MarkovChain, u int, v int, c *coupling.Coupling) *coupling.Node {
     n := len(m.Transitions[u])
     lenrow, lencol := 0, 0
     l, k := 0, 0
@@ -81,7 +83,6 @@ func randommatchingnew(m markov.MarkovChain, u int, v int, c *coupling.Coupling)
 	log.Printf("row index: %s", rowindex)
 	log.Printf("column index: %s", colindex)
 
-    log.Printf("earthmover.randommatching Making the matching matrix")
     matching := make([][]*coupling.Edge, lenrow, lenrow)
     
     for i := range(matching) {
@@ -141,7 +142,8 @@ func randommatchingnew(m markov.MarkovChain, u int, v int, c *coupling.Coupling)
 	
 	for i := 0; i < lenrow; i++ {
 		for j := 0; j < lencol; j++ {
-			log.Println("At: %v and %v", i, j)
+			log.Println("At: u and v", matching[i][j].To.S, matching[i][j].To.T)
+			log.Println(matching[i][j].Prob)
 			log.Println(matching[i][j].Basic)
 		}
 	}
