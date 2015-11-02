@@ -26,7 +26,17 @@ func New() Coupling {
 	return c
 }
 
-func Reachable(u, v int, c Coupling) []*Node {
+func FindNode(u, v int, c *Coupling) *Node {
+	for _, n := range c.Nodes {
+		if n.S == u && n.T == v {
+			return n
+		}
+	}
+	
+	return nil
+}
+
+func Reachable(u, v int, c *Coupling) []*Node {
 	// Using slices might be slow. If we got performance problems we might
 	// implement using lists instead.
 	var reachables []*Node

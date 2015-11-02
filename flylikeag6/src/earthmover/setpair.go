@@ -2,49 +2,56 @@ package earthmover
 
 import (
 	"coupling"
-	"fmt"
 	"markov"
+	"log"
 )
 
-func updatecoupling(c coupling.Coupling, w [][]float64, s int, t int) int {
-	return 1
-}
-
-func matchcardinality(w [][]float64) int {
-	return 0
-}
-
-func nextdemandedpair(w [][]float64, i int) (int, int) {
-	return 1, 1
-}
-
-func notexact(u int, v int, exact *[][]bool) bool {
-	return true
-}
-
-func setpair(m markov.MarkovChain, s int, t int, w [][]float64, exact *[][]bool, visited *[][]bool, c *coupling.Coupling) {
-	fmt.Println("hi from setpair!")
-	var _d [256][256]int
-	d := &_d
-
-	updatecoupling(*c, w, s, t)
-
-	(*visited)[s][t] = true
-
-	for i := 0; i < matchcardinality(w); i++ {
-		u, v := nextdemandedpair(w, i)
-
-		(*visited)[u][v] = true
-
-		if s == t {
-			setdistance(d, u, v, 0)
-			(*exact)[u][v] = true
-		} else if m.Labels[s] != m.Labels[t] {
-			setdistance(d, u, v, 1)
-			(*exact)[u][v] = true
-		} else if notexact(u, v, exact) {
-			w2 := randommatching(m, u, v)
-			setpair(m, u, v, w2, exact, visited, c)
+func setpair(m markov.MarkovChain, s int, t int, w *coupling.Node, exact [][]bool, visited [][]bool, dist [][]float64, c *coupling.Coupling) {
+	log.Println("s and t in setPair: ", s, t)
+	visited[s][t] = true
+	visited[t][s] = true
+	
+	for _, rows := range w.Adj {
+		for _, edge := range rows {
+			if approxFloatEqual(0, edge.Prob) {
+				continue
+			}
+			
+			if approxFloatEqual(edge.Prob, 0.0) {
+				continue
+			}
+			
+			u, v := edge.To.S, edge.To.T
+			
+			if u > v {
+				temp := v
+				v = u
+				u = temp
+			}
+			
+			if visited[u][v] || visited[v][u] {
+				continue
+			}
+			
+			visited[u][v] = true
+			visited[v][u] = true
+			
+			if u == v {
+				log.Println("u and v is the same state ", u ,v)
+				setdistance(dist, u, v, 0)
+				exact[v][u] = true
+				
+			} else if m.Labels[u] != m.Labels[v] {
+				log.Println("u and v has different labels ", u, v)
+				setdistance(dist, u, v, 1)
+				exact[u][v] = true
+				exact[v][u] = true
+				
+			} else if !(exact[u][v] || exact[v][u]) {
+				log.Println("u and v has the same label ", u, v)
+				w2 := randomMatching(m, u, v, c)
+				setpair(m, u, v, w2, exact, visited, dist, c)
+			}
 		}
 	}
 }
