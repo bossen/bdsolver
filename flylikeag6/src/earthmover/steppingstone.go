@@ -5,10 +5,10 @@ import (
 	"math"
 )
 
-func SteppingStone(n *coupling.Node, s int, t int) {
+func SteppingStone(n *coupling.Node, s int, t int) bool {
 	min, rowBound, colBound := 2.0, len(n.Adj), len(n.Adj[0])
 
-	goHorizontal(n, s, t, s, t, rowBound, colBound, 1, &min)
+	return goHorizontal(n, s, t, s, t, rowBound, colBound, 1, &min)
 }
 
 func goHorizontal(n *coupling.Node, s, t, u, v, rBound, cBound, pLen int, min *float64) bool {
