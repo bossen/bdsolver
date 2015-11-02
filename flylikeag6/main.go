@@ -3,7 +3,7 @@ package main
 import (
 	"coupling"
 	"earthmover"
-  "log"
+	"log"
 	"markov"
 	"sets"
 )
@@ -34,33 +34,33 @@ func main() {
 
 	c := coupling.New()
 
-    n1 := coupling.Node{S: 0, T: 0}
-    n2 := coupling.Node{S: 0, T: 1}
-    n3 := coupling.Node{S: 1, T: 0}
-    n4 := coupling.Node{S: 1, T: 1}
-    
-    e1 := coupling.Edge{&n1, 0.5, true}
-    e2 := coupling.Edge{&n2, 0.2, true}
-    e3 := coupling.Edge{&n3, 0, false}
-    e4 := coupling.Edge{&n4, 0.3, true}
-    
-    n2.Adj = [][]*coupling.Edge{[]*coupling.Edge{&e1, &e2}, []*coupling.Edge{&e3, &e4}}
-    
-    c.Nodes = []*coupling.Node{&n1, &n2, &n3, &n4}
-    
-    d := make([][]float64, 2, 2)
-    d[0] = make([]float64, 2, 2)
-    d[1] = make([]float64, 2, 2)
-    d[0][0] = 5.0
-    d[0][1] = 2.0
-    d[1][0] = 0.0
-    d[1][1] = 3.0
+	n1 := coupling.Node{S: 0, T: 0}
+	n2 := coupling.Node{S: 0, T: 1}
+	n3 := coupling.Node{S: 1, T: 0}
+	n4 := coupling.Node{S: 1, T: 1}
+
+	e1 := coupling.Edge{&n1, 0.5, true}
+	e2 := coupling.Edge{&n2, 0.2, true}
+	e3 := coupling.Edge{&n3, 0, false}
+	e4 := coupling.Edge{&n4, 0.3, true}
+
+	n2.Adj = [][]*coupling.Edge{[]*coupling.Edge{&e1, &e2}, []*coupling.Edge{&e3, &e4}}
+
+	c.Nodes = []*coupling.Node{&n1, &n2, &n3, &n4}
+
+	d := make([][]float64, 2, 2)
+	d[0] = make([]float64, 2, 2)
+	d[1] = make([]float64, 2, 2)
+	d[0][0] = 5.0
+	d[0][1] = 2.0
+	d[1][0] = 0.0
+	d[1][1] = 3.0
 
 	TestUVmethod(&n2, d)
-    
-    log.Println(coupling.Reachable(0, 1, c))
-    
-    log.Println(n2.Adj[0][0], n2.Adj[0][1], n2.Adj[1][0], n2.Adj[1][1])
-    earthmover.SteppingStone(&n2, 1, 0)
-    log.Println(n2.Adj[0][0], n2.Adj[0][1], n2.Adj[1][0], n2.Adj[1][1])
+
+	log.Println(coupling.Reachable(0, 1, c))
+
+	log.Println(n2.Adj[0][0], n2.Adj[0][1], n2.Adj[1][0], n2.Adj[1][1])
+	earthmover.SteppingStone(&n2, 1, 0)
+	log.Println(n2.Adj[0][0], n2.Adj[0][1], n2.Adj[1][0], n2.Adj[1][1])
 }
