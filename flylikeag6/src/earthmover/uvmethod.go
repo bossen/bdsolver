@@ -16,9 +16,7 @@ func calculateuv(tableu [][]*coupling.Edge, u []float64, v []float64, udefined [
 			}
 
 			node := tableu[i][j].To
-			log.Println(node.S)
-			log.Println(node.T)
-			log.Println(d[node.S][node.T])
+			log.Printf("Calculate UV node.S = %v, node.T = %v and d[%v][%v] = %v", node.S, node.T, node.S, node.T, d[node.S][node.T])
 
 			if first {
 				u[i] = 0
@@ -26,20 +24,18 @@ func calculateuv(tableu [][]*coupling.Edge, u []float64, v []float64, udefined [
 				first = false
 			}
 
-			log.Println(udefined[i])
-			log.Println(vdefined[j])
+			log.Printf("Calculate UV udefined[%v] = %v, vdefined[%v] = %v", i, udefined[i], j, vdefined[j])
 
 			if udefined[i] {
 				v[j] = d[node.S][node.T] - u[i]
 				vdefined[j] = true
-				log.Println(d[node.S][node.T] - u[i])
+				log.Printf("Calculate UV d[%v][%v] - u[%v]: %v", node.S, node.T, i, d[node.S][node.T] - u[i])
 
 			} else if vdefined[j] {
 				u[i] = d[node.S][node.T] - v[j]
 				udefined[i] = true
-				log.Println(d[node.S][node.T] - v[j])
+				log.Printf("Calculate UV d[%v][%v] - v[%v]: %v", node.S, node.T, j, d[node.S][node.T] - v[j])
 			}
-			log.Println()
 		}
 	}
 }
