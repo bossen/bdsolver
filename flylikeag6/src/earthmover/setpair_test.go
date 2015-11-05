@@ -21,9 +21,9 @@ func TestCorrectRecursiveSetPairCall(t *testing.T) {
 	w := randomMatching(m, 0, 3, &c)
 	setpair(m, 0, 3, w, exact, visited, d, &c)
 	
-	assert.True(t, w.Adj != nil, "the adjacency matrix has not been filled for 0 3")
-	assert.True(t, w.Adj[2][2].To.Adj != nil, "the adjacency matrix has not been filled for 2 3")
-	assert.True(t, w.Adj[1][1].To.Adj == nil, "the adjacency matrix were somehow filled for node(%v,%v)", w.Adj[0][0].To.S, w.Adj[0][0].To.T)
+	assert.True(t, w.Adj != nil, "the adjacency matrix has not been filled for (0,3)")
+	assert.True(t, w.Adj[2][2].To.Adj != nil, "the adjacency matrix has not been filled for (%v,%v)", w.Adj[2][2].To.S, w.Adj[2][2].To.T)
+	assert.True(t, w.Adj[0][0].To.Adj == nil, "the adjacency matrix were somehow filled for (%v,%v)", w.Adj[0][0].To.S, w.Adj[0][0].To.T)
 	// checks if the mutual node pointers in the two matchings are the same
 	assert.Equal(t, w.Adj[0][0].To, w.Adj[2][2].To.Adj[0][0].To, "the nodes pointers for (1,2) were not the same")
 	assert.Equal(t, w.Adj[0][1].To, w.Adj[2][2].To.Adj[0][1].To, "the nodes pointers for (2,2) were not the same")
