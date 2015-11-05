@@ -8,7 +8,7 @@ import (
 
 func TestCorrectRecursiveSetPairCall(t *testing.T) {
 	// the same functions used for random matching testing
-	c := setUpCoupling()
+	c := setUpCouplingMatching()
 	m := setUpMarkov()
 	n := len(m.Transitions)
 	visited := *sets.MakeMatrix(n)
@@ -23,14 +23,14 @@ func TestCorrectRecursiveSetPairCall(t *testing.T) {
 	
 	assert.True(t, w.Adj != nil, "the adjacency matrix has not been filled for 0 3")
 	assert.True(t, w.Adj[2][2].To.Adj != nil, "the adjacency matrix has not been filled for 2 3")
-	assert.True(t, w.Adj[0][0].To.Adj == nil, "the adjacency matrix were somehow filled")
+	assert.True(t, w.Adj[1][1].To.Adj == nil, "the adjacency matrix were somehow filled for node(%v,%v)", w.Adj[0][0].To.S, w.Adj[0][0].To.T)
 	// checks if the mutual node pointers in the two matchings are the same
-	assert.Equal(t, w.Adj[0][0].To, w.Adj[2][2].To.Adj[0][0].To, "the nodes pointers were not the same")
-	assert.Equal(t, w.Adj[0][1].To, w.Adj[2][2].To.Adj[0][1].To, "the nodes pointers were not the same")
-	assert.Equal(t, w.Adj[0][2].To, w.Adj[2][2].To.Adj[0][2].To, "the nodes pointers were not the same")
-	assert.Equal(t, w.Adj[1][0].To, w.Adj[2][2].To.Adj[1][0].To, "the nodes pointers were not the same")
-	assert.Equal(t, w.Adj[1][1].To, w.Adj[2][2].To.Adj[1][1].To, "the nodes pointers were not the same")
-	assert.Equal(t, w.Adj[1][2].To, w.Adj[2][2].To.Adj[1][2].To, "the nodes pointers were not the same")
+	assert.Equal(t, w.Adj[0][0].To, w.Adj[2][2].To.Adj[0][0].To, "the nodes pointers for (1,2) were not the same")
+	assert.Equal(t, w.Adj[0][1].To, w.Adj[2][2].To.Adj[0][1].To, "the nodes pointers for (2,2) were not the same")
+	assert.Equal(t, w.Adj[0][2].To, w.Adj[2][2].To.Adj[0][2].To, "the nodes pointers for (2,3) were not the same")
+	assert.Equal(t, w.Adj[1][0].To, w.Adj[2][2].To.Adj[1][0].To, "the nodes pointers for (1,3) were not the same")
+	assert.Equal(t, w.Adj[1][1].To, w.Adj[2][2].To.Adj[1][1].To, "the nodes pointers for (2,3) were not the same")
+	assert.Equal(t, w.Adj[1][2].To, w.Adj[2][2].To.Adj[1][2].To, "the nodes pointers for (3,3) were not the same")
 }
 
 func TestCorrectNestedMatchingFound(t *testing.T) {
@@ -38,7 +38,7 @@ func TestCorrectNestedMatchingFound(t *testing.T) {
 		[]float64{0.33, 0.17, 0.0},
 		[]float64{0.0, 0.16, 0.34}}
 	// the same functions used for random matching testing
-	c := setUpCoupling()
+	c := setUpCouplingMatching()
 	m := setUpMarkov()
 	n := len(m.Transitions)
 	visited := *sets.MakeMatrix(n)
@@ -64,7 +64,7 @@ func TestCorrectNestedBasicFound(t *testing.T) {
 		[]bool{true, true, false},
 		[]bool{false, true, true}}
 	// the same functions used for random matching testing
-	c := setUpCoupling()
+	c := setUpCouplingMatching()
 	m := setUpMarkov()
 	n := len(m.Transitions)
 	visited := *sets.MakeMatrix(n)

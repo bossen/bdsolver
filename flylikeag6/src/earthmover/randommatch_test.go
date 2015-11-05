@@ -7,7 +7,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func setUpCoupling() coupling.Coupling {
+func setUpCouplingMatching() coupling.Coupling {
 	return coupling.New()
 }
 
@@ -31,7 +31,7 @@ func TestCorrectMatchingFound(t *testing.T) {
 		[]float64{0.0, 0.0, 0.17},
 		[]float64{0.0, 0.0, 0.17}}
 	
-	c := setUpCoupling()
+	c := setUpCouplingMatching()
 	m := setUpMarkov()
 	
 	w := randomMatching(m, 0, 3, &c)
@@ -50,7 +50,7 @@ func TestCorrectBasicFound(t *testing.T) {
 		[]bool{false, false, true},
 		[]bool{false, false, true}}
 	
-	c := setUpCoupling()
+	c := setUpCouplingMatching()
 	m := setUpMarkov()
 	
 	w := randomMatching(m, 0, 3, &c)
