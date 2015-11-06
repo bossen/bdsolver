@@ -6,7 +6,7 @@ import (
 	"markov"
 )
 
-func matchiningDimensions(u, v []float64, n int) (int, int) {
+func matchingDimensions(u, v []float64, n int) (int, int) {
 	lenrow, lencol := 0, 0
 	
 	for i:= 0; i < n; i++ {
@@ -21,7 +21,7 @@ func matchiningDimensions(u, v []float64, n int) (int, int) {
 	return lenrow, lencol
 }
 
-func findMatchingIndexes(u, v []float64, n int, row, col []int) {
+func setMatchingIndexes(u, v []float64, n int, row, col []int) {
 	l, k := 0, 0
 	for i := 0; i < n; i++ {
 		if u[i] > 0 {
@@ -55,7 +55,6 @@ func filloutAdj(row, col []int, lenrow, lencol int, w [][]*coupling.Edge, c *cou
 
 func randomMatching(m markov.MarkovChain, u int, v int, c *coupling.Coupling) *coupling.Node {
 	n := len(m.Transitions[u])
-	l, k := 0, 0
 
 	u, v = swapMin(u, v)
 
@@ -67,11 +66,11 @@ func randomMatching(m markov.MarkovChain, u int, v int, c *coupling.Coupling) *c
 	copy(uTransitions, m.Transitions[u])
 	copy(vTransitions, m.Transitions[v])
 
-	log.Println(uTransitions)
-	log.Println(vTransitions)
+	log.Printf("Transitions for %v: %s", u, uTransitions)
+	log.Printf("Transitions for %v: %s", v, vTransitions)
 	
 	// finds the length of the rows and columns in the matching for u and v
-	lenrow, lencol := matchiningDimensions(uTransitions, vTransitions, n)
+	lenrow, lencol := matchingDimensions(uTransitions, vTransitions, n)
 	
 	log.Printf("row and column length are: %v and %v", lenrow, lencol)
 
@@ -79,7 +78,7 @@ func randomMatching(m markov.MarkovChain, u int, v int, c *coupling.Coupling) *c
 	colindex := make([]int, lencol, lencol)
 	
 	// finds the row and column indexs for the u and v matching
-	findMatchingIndexes(uTransitions, vTransitions, n, rowindex, colindex)
+	setMatchingIndexes(uTransitions, vTransitions, n, rowindex, colindex)
 	
 	log.Printf("row index: %s", rowindex)
 	log.Printf("column index: %s", colindex)
@@ -94,10 +93,12 @@ func randomMatching(m markov.MarkovChain, u int, v int, c *coupling.Coupling) *c
 	filloutAdj(rowindex, colindex, lenrow, lencol, matching, c)
 
 	// completes the matching by inserting probabilities and setting appropriate cells to basic
+	l, k := 0, 0
 	for l < lenrow && k < lencol {
 		if approxFloatEqual(uTransitions[rowindex[l]], vTransitions[colindex[k]]) {
 			matching[l][k].Prob = uTransitions[rowindex[l]]
 
+			// check if we are in the lower right corner, such that we do not get an out of bounds error
 			if !(l+1 == lenrow && k+1 == lencol) {
 				matching[l][k+1].Basic = true
 			}
@@ -122,7 +123,8 @@ func randomMatching(m markov.MarkovChain, u int, v int, c *coupling.Coupling) *c
 			k++
 		}
 	}
-
+	
+	// tries to find the node (u,v) in c, if not make a new one and add to c
 	node := coupling.FindNode(u, v, c)
 
 	if node == nil {
