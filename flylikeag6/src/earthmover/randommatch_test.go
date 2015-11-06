@@ -1,10 +1,10 @@
 package earthmover
 
 import (
-    "markov"
-    "coupling"
-    "testing"
+	"coupling"
 	"github.com/stretchr/testify/assert"
+	"markov"
+	"testing"
 )
 
 func setUpCouplingMatching() coupling.Coupling {
@@ -13,15 +13,15 @@ func setUpCouplingMatching() coupling.Coupling {
 
 func setUpMarkov() markov.MarkovChain {
 	return markov.MarkovChain{
-		Labels: []int {0, 1, 0, 0, 0, 1, 0},
+		Labels: []int{0, 1, 0, 0, 0, 1, 0},
 		Transitions: [][]float64{
-		[]float64{0.0, 0.33, 0.33, 0.17, 0.0, 0.17, 0.0},
-		[]float64{0.0, 0.0, 0.4, 0.4, 0.0, 0.2, 0.0},
-		[]float64{0.0, 0.5, 0.5, 0.0, 0.0, 0.0, 0.0},
-		[]float64{0.33, 0.33, 0.34, 0.0, 0.0, 0.0, 0.0},
-		[]float64{0.4, 0.4, 0.2, 0.0, 0.0, 0.0, 0.0},
-		[]float64{0.0, 0.1, 0.0, 0.2, 0.5, 0.2, 0.0},
-		[]float64{0.0, 0.2, 0.33, 0.0, 0.1, 0.2, 0.17}}}
+			[]float64{0.0, 0.33, 0.33, 0.17, 0.0, 0.17, 0.0},
+			[]float64{0.0, 0.0, 0.4, 0.4, 0.0, 0.2, 0.0},
+			[]float64{0.0, 0.5, 0.5, 0.0, 0.0, 0.0, 0.0},
+			[]float64{0.33, 0.33, 0.34, 0.0, 0.0, 0.0, 0.0},
+			[]float64{0.4, 0.4, 0.2, 0.0, 0.0, 0.0, 0.0},
+			[]float64{0.0, 0.1, 0.0, 0.2, 0.5, 0.2, 0.0},
+			[]float64{0.0, 0.2, 0.33, 0.0, 0.1, 0.2, 0.17}}}
 }
 
 func TestCorrectMatchingFound(t *testing.T) {
@@ -33,9 +33,9 @@ func TestCorrectMatchingFound(t *testing.T) {
 	
 	c := setUpCouplingMatching()
 	m := setUpMarkov()
-	
+
 	w := randomMatching(m, 0, 3, &c)
-	
+
 	for i := 0; i < len(expected); i++ {
 		for j := 0; j < len(expected[0]); j++ {
 			assert.True(t, approxFloatEqual(expected[i][j], w.Adj[i][j].Prob), "the correct probability were not inserted")
@@ -52,12 +52,12 @@ func TestCorrectBasicFound(t *testing.T) {
 	
 	c := setUpCouplingMatching()
 	m := setUpMarkov()
-	
+
 	w := randomMatching(m, 0, 3, &c)
-	
-		for i := 0; i < len(expected); i++ {
-			for j := 0; j < len(expected[0]); j++ {
-				assert.True(t, expected[i][j] == w.Adj[i][j].Basic, "the cell were not correctly set to either basic or non-basic")
+
+	for i := 0; i < len(expected); i++ {
+		for j := 0; j < len(expected[0]); j++ {
+			assert.Equal(t, expected[i][j], w.Adj[i][j].Basic, "the cell were not correctly set to either basic or non-basic")
 		}
 	}
 }

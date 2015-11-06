@@ -1,119 +1,137 @@
 package earthmover
 
 import (
-    "markov"
-    "coupling"
-    "log"
+	"coupling"
+	"log"
+	"markov"
 )
 
-func randomMatching(m markov.MarkovChain, u int, v int, c *coupling.Coupling) *coupling.Node {
-    n := len(m.Transitions[u])
-    lenrow, lencol := 0, 0
-    l, k := 0, 0
-    
-    log.Printf("copy the transitions from the states %v and %v", u, v)
-    uTransitions := make([]float64, n, n)
-	vTransitions := make([]float64, n, n)
-
-	copy(uTransitions, m.Transitions[u])
-	copy(vTransitions, m.Transitions[v])
+func matchingDimensions(u, v []float64, n int) (int, int) {
+	lenrow, lencol := 0, 0
 	
-	log.Println(uTransitions)
-	log.Println(vTransitions)
-    
-    for i := 0; i < n; i++ {
-        if m.Transitions[u][i] > 0 {
-            lenrow += 1
-        }
-        if m.Transitions[v][i] > 0 {
+	for i:= 0; i < n; i++ {
+		if u[i] > 0 {
+			lenrow += 1
+		}
+		if v[i] > 0 {
 			lencol += 1
 		}
-    }
-    log.Printf("row and column length are: %v and %v", lenrow, lencol)
-    
-    rowindex := make([]int, lenrow, lenrow)
-    colindex := make([]int, lencol, lencol)
-    
-    for i := 0; i < n; i++ {
-		if m.Transitions[u][i] > 0 {
-            rowindex[l] = i
-            l++
-        }
-        if m.Transitions[v][i] > 0 {
-			colindex[k] = i
-            k++
+	}
+	
+	return lenrow, lencol
+}
+
+func setMatchingIndexes(u, v []float64, n int, row, col []int) {
+	l, k := 0, 0
+	for i := 0; i < n; i++ {
+		if u[i] > 0 {
+			row[l] = i
+			l++
+		}
+		if v[i] > 0 {
+			col[k] = i
+			k++
 		}
 	}
+}
+
+func filloutAdj(row, col []int, lenrow, lencol int, w [][]*coupling.Edge, c *coupling.Coupling) {
+	for i := 0; i < lenrow; i++ {
+		for j := 0; j < lencol; j++ {
+			var node *coupling.Node
+			s, t := swapMin(row[i], col[j])
+
+			node = coupling.FindNode(s, t, c)
+
+			if node == nil {
+				node = &coupling.Node{S: s, T: t}
+				c.Nodes = append(c.Nodes, node)
+			}
+
+			w[i][j] = &coupling.Edge{To: node}
+		}
+	}
+}
+
+func randomMatching(m markov.MarkovChain, u int, v int, c *coupling.Coupling) *coupling.Node {
+	n := len(m.Transitions[u])
+
+	u, v = swapMin(u, v)
+
+	log.Printf("copy the transitions from the states %v and %v", u, v)
+	uTransitions := make([]float64, n, n)
+	vTransitions := make([]float64, n, n)
+
+	// copies the transitions of u and v such that we do not makes changes in the markov chain
+	copy(uTransitions, m.Transitions[u])
+	copy(vTransitions, m.Transitions[v])
+
+	log.Printf("Transitions for %v: %s", u, uTransitions)
+	log.Printf("Transitions for %v: %s", v, vTransitions)
+	
+	// finds the length of the rows and columns in the matching for u and v
+	lenrow, lencol := matchingDimensions(uTransitions, vTransitions, n)
+	
+	log.Printf("row and column length are: %v and %v", lenrow, lencol)
+
+	rowindex := make([]int, lenrow, lenrow)
+	colindex := make([]int, lencol, lencol)
+	
+	// finds the row and column indexs for the u and v matching
+	setMatchingIndexes(uTransitions, vTransitions, n, rowindex, colindex)
+	
 	log.Printf("row index: %s", rowindex)
 	log.Printf("column index: %s", colindex)
 
-    matching := make([][]*coupling.Edge, lenrow, lenrow)
-    
-    for i := range(matching) {
-        matching[i] = make([]*coupling.Edge, lencol, lencol)
-    }
-    
-    for i := 0; i < lenrow; i++ {
-		for j := 0; j < lencol; j++ {
-			var node *coupling.Node
-			
-			if rowindex[i] <= colindex[j] {
-				node = coupling.FindNode(rowindex[i], colindex[j], c)
-			} else {
-				node = coupling.FindNode(colindex[j], rowindex[i], c)
-			}
-			
-			if node == nil {
-				if rowindex[i] <= colindex[j] {
-					node = &coupling.Node{S: rowindex[i], T: colindex[j]}
-				} else {
-					node = &coupling.Node{S: colindex[j], T: rowindex[i]}
-				}
-				c.Nodes = append(c.Nodes, node)
-			}
-			
-			matching[i][j] = &coupling.Edge{To: node}
-		}
+	matching := make([][]*coupling.Edge, lenrow, lenrow)
+
+	for i := range matching {
+		matching[i] = make([]*coupling.Edge, lencol, lencol)
 	}
 	
-	l, k = 0, 0
-	
-	for l < lenrow && k < lencol {
-		if approxFloatEqual(uTransitions[rowindex[l]], vTransitions[colindex[k]]) {
-			matching[l][k].Prob = uTransitions[rowindex[l]]
-			
-			if !(l + 1 == lenrow && k + 1 == lencol) {
-				matching[l][k+1].Basic = true
+	// fills out the matching with node pointers, using nodes already in the coupling c if they exist
+	filloutAdj(rowindex, colindex, lenrow, lencol, matching, c)
+
+	// completes the matching by inserting probabilities and setting appropriate cells to basic
+	i, j := 0, 0
+	for i < lenrow && j < lencol {
+		if approxFloatEqual(uTransitions[rowindex[i]], vTransitions[colindex[j]]) {
+			matching[i][j].Prob = uTransitions[rowindex[i]]
+
+			// check if we are in the lower right corner, such that we do not get an out of bounds error
+			if !(i+1 == lenrow && j+1 == lencol) {
+				matching[i][j+1].Basic = true
 			}
-			
-			matching[l][k].Basic = true
-			
-			l++
-			k++
-		} else if uTransitions[rowindex[l]] < vTransitions[colindex[k]] {
-			matching[l][k].Prob = uTransitions[rowindex[l]]
-			vTransitions[colindex[k]] = vTransitions[colindex[k]] - uTransitions[rowindex[l]]
-			
-			matching[l][k].Basic = true
-			
-			l++
+
+			matching[i][j].Basic = true
+
+			i++
+			j++
+		} else if uTransitions[rowindex[i]] < vTransitions[colindex[j]] {
+			matching[i][j].Prob = uTransitions[rowindex[i]]
+			vTransitions[colindex[j]] = vTransitions[colindex[j]] - uTransitions[rowindex[i]]
+
+			matching[i][j].Basic = true
+
+			i++
 		} else {
-			matching[l][k].Prob = vTransitions[colindex[k]]
-			uTransitions[rowindex[l]] =  uTransitions[rowindex[l]] - vTransitions[colindex[k]]
-			
-			matching[l][k].Basic = true
-			
-			k++
+			matching[i][j].Prob = vTransitions[colindex[j]]
+			uTransitions[rowindex[i]] = uTransitions[rowindex[i]] - vTransitions[colindex[j]]
+
+			matching[i][j].Basic = true
+
+			j++
 		}
 	}
 	
+	// tries to find the node (u,v) in c, if not make a new one and add to c
 	node := coupling.FindNode(u, v, c)
-	
+
 	if node == nil {
 		node = &coupling.Node{S: u, T: v}
 		c.Nodes = append(c.Nodes, node)
 	}
-	
+
 	for i := 0; i < lenrow; i++ {
 		for j := 0; j < lencol; j++ {
 			log.Println("At: u and v", matching[i][j].To.S, matching[i][j].To.T)
@@ -121,8 +139,15 @@ func randomMatching(m markov.MarkovChain, u int, v int, c *coupling.Coupling) *c
 			log.Println(matching[i][j].Basic)
 		}
 	}
-	
+
 	node.Adj = matching
 
-    return node
+	return node
+}
+
+func swapMin(u, v int) (int, int) {
+	if v < u {
+		return v, u
+	}
+	return u, v
 }
