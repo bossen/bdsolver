@@ -93,34 +93,34 @@ func randomMatching(m markov.MarkovChain, u int, v int, c *coupling.Coupling) *c
 	filloutAdj(rowindex, colindex, lenrow, lencol, matching, c)
 
 	// completes the matching by inserting probabilities and setting appropriate cells to basic
-	l, k := 0, 0
-	for l < lenrow && k < lencol {
-		if approxFloatEqual(uTransitions[rowindex[l]], vTransitions[colindex[k]]) {
-			matching[l][k].Prob = uTransitions[rowindex[l]]
+	i, j := 0, 0
+	for i < lenrow && j < lencol {
+		if approxFloatEqual(uTransitions[rowindex[i]], vTransitions[colindex[j]]) {
+			matching[i][j].Prob = uTransitions[rowindex[i]]
 
 			// check if we are in the lower right corner, such that we do not get an out of bounds error
-			if !(l+1 == lenrow && k+1 == lencol) {
-				matching[l][k+1].Basic = true
+			if !(i+1 == lenrow && j+1 == lencol) {
+				matching[i][j+1].Basic = true
 			}
 
-			matching[l][k].Basic = true
+			matching[i][j].Basic = true
 
-			l++
-			k++
-		} else if uTransitions[rowindex[l]] < vTransitions[colindex[k]] {
-			matching[l][k].Prob = uTransitions[rowindex[l]]
-			vTransitions[colindex[k]] = vTransitions[colindex[k]] - uTransitions[rowindex[l]]
+			i++
+			j++
+		} else if uTransitions[rowindex[i]] < vTransitions[colindex[j]] {
+			matching[i][j].Prob = uTransitions[rowindex[i]]
+			vTransitions[colindex[j]] = vTransitions[colindex[j]] - uTransitions[rowindex[i]]
 
-			matching[l][k].Basic = true
+			matching[i][j].Basic = true
 
-			l++
+			i++
 		} else {
-			matching[l][k].Prob = vTransitions[colindex[k]]
-			uTransitions[rowindex[l]] = uTransitions[rowindex[l]] - vTransitions[colindex[k]]
+			matching[i][j].Prob = vTransitions[colindex[j]]
+			uTransitions[rowindex[i]] = uTransitions[rowindex[i]] - vTransitions[colindex[j]]
 
-			matching[l][k].Basic = true
+			matching[i][j].Basic = true
 
-			k++
+			j++
 		}
 	}
 	
