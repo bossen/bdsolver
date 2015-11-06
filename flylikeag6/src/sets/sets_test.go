@@ -14,6 +14,19 @@ func makeSlice(n int) [][]bool {
 	return set
 }
 
+func TestMakeMatrix(t *testing.T) {
+	set := *MakeMatrix(0)
+	assert.True(t, EmptySet(&set), "MakeMatrix creates a wrong matrix! Slice size 0")
+	assert.Equal(t, 0, len(set), "MakeMatrix creates a wrong sized matrix!")
+
+	set = *MakeMatrix(100)
+	assert.True(t, EmptySet(&set), "MakeMatrix creates a wrong matrix! Slice size 100")
+	assert.Equal(t, 100, len(set), "MakeMatrix creates a wrong sized matrix!")
+	for _, s := range set {
+		assert.Equal(t, 100, len(s), "MakeMatrix creates a wrong sized matrix!")
+	}
+}
+
 func TestEmptySets(t *testing.T) {
 	set := makeSlice(0)
 	assert.True(t, EmptySet(&set), "EmptySet returns wrong value! Slice size 0")
