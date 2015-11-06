@@ -1,0 +1,3 @@
+#!/bin/bash
+
+wc src/coupling/coupling* src/earthmover/* src/markov/* src/sets/* main.go
