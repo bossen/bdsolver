@@ -4,17 +4,6 @@ func UnionNode(a int, b int, c int) int {
 	return a + b
 }
 
-func EmptySet(set *[][]bool) bool {
-	for i := range *set {
-		for j := range *set {
-			if (*set)[i][j] {
-				return false
-			}
-		}
-	}
-	return true
-}
-
 func Intersect(a int, b int) int {
 	return 1
 }
@@ -24,10 +13,21 @@ func Union(a int, b int) int {
 }
 
 func Differens(a int, b int) int {
-	return a
+	return 1
 }
 
-func MakeMatrix(n int) *[][]bool {
+func EmptySet(set [][]bool) bool {
+	for i := range set {
+		for j := range set {
+			if set[i][j] {
+				return false
+			}
+		}
+	}
+	return true
+}
+
+func MakeMatrix(n int) [][]bool {
 	var d [][]bool
 
 	d = make([][]bool, n, n)
@@ -35,29 +35,29 @@ func MakeMatrix(n int) *[][]bool {
 		d[i] = make([]bool, n)
 	}
 
-	return &d
+	return d
 }
 
-func UnionReal(A [][]bool, B [][]bool) *[][]bool {
+func UnionReal(A [][]bool, B [][]bool) [][]bool {
 	if len(A) != len(B) {
 		panic("Union called with different size matrices")
 	}
 
-	C := *MakeMatrix(len(A))
+	C := MakeMatrix(len(A))
 	for i := range A {
 		for j := range A {
 			C[i][j] = A[i][j] || B[i][j]
 		}
 	}
-	return &C
+	return C
 }
 
-func IntersectReal(A [][]bool, B [][]bool) *[][]bool {
+func IntersectReal(A [][]bool, B [][]bool) [][]bool {
 	if len(A) != len(B) {
 		panic("Union called with different size matrices")
 	}
 
-	C := *MakeMatrix(len(A))
+	C := MakeMatrix(len(A))
 	for i := range A {
 		for j := range A {
 			if A[i][j] == B[i][j] && A[i][j] == true {
@@ -67,15 +67,15 @@ func IntersectReal(A [][]bool, B [][]bool) *[][]bool {
 			}
 		}
 	}
-	return &C
+	return C
 }
 
-func DifferensReal(A [][]bool, B [][]bool) *[][]bool {
+func DifferensReal(A [][]bool, B [][]bool) [][]bool {
 	if len(A) != len(B) {
 		panic("Union called with different size matrices")
 	}
 
-	C := *MakeMatrix(len(A))
+	C := MakeMatrix(len(A))
 	for i := range A {
 		for j := range A {
 			if B[i][j] == true {
@@ -85,5 +85,5 @@ func DifferensReal(A [][]bool, B [][]bool) *[][]bool {
 			}
 		}
 	}
-	return &C
+	return C
 }

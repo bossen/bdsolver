@@ -7,10 +7,10 @@ import (
 	"sets"
 )
 
-func extractrandomfromset(tocompute *[][]bool) (int, int) {
-	for i := range *tocompute {
-		for j := range *tocompute {
-			if (*tocompute)[i][j] == true {
+func extractrandomfromset(tocompute [][]bool) (int, int) {
+	for i := range tocompute {
+		for j := range tocompute {
+			if tocompute[i][j] == true {
 				return i, j
 			}
 		}
@@ -46,10 +46,10 @@ func findNode(s int, t int, c *coupling.Coupling) coupling.Node {
 	return newnode
 }
 
-func BipseudoMetric(m markov.MarkovChain, lambda int, tocompute *[][]bool) {
+func BipseudoMetric(m markov.MarkovChain, lambda int, tocompute [][]bool) {
 	n := len(m.Transitions)
-	visited := *sets.MakeMatrix(n)
-	exact := *sets.MakeMatrix(n)
+	visited := sets.MakeMatrix(n)
+	exact := sets.MakeMatrix(n)
 	c := coupling.New()
 	d := make([][]float64, n, n)
 	for i := 0; i < n; i++ {
@@ -95,7 +95,7 @@ func BipseudoMetric(m markov.MarkovChain, lambda int, tocompute *[][]bool) {
 			removeedgesfromnodes(&c, &exact)
 		}
 
-		tocompute = sets.IntersectReal(*tocompute, *tocompute) //TODO THIS IS WRONG, use exact as second parameter, instead of tocompute twice
+		tocompute = sets.IntersectReal(tocompute, tocompute) //TODO THIS IS WRONG, use exact as second parameter, instead of tocompute twice
 
 		break //TODO remove this. This is for ending the code
 	}
