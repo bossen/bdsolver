@@ -16,9 +16,9 @@ func setUpCoupling() coupling.Coupling {
 	e2 := coupling.Edge{&n2, 0.2, true}
 	e3 := coupling.Edge{&n3, 0, false}
 	e4 := coupling.Edge{&n4, 0.3, true}
-	n1.Succ = []*coupling.Node{&n2}
-	n2.Succ = []*coupling.Node{&n2}
-	n4.Succ = []*coupling.Node{&n2}
+	n1.Succ = []*coupling.Node{&n1, &n2, &n4}
+	n2.Succ = []*coupling.Node{&n2, &n4, &n1}
+	n4.Succ = []*coupling.Node{&n2, &n1, &n4}
 	n2.Adj = [][]*coupling.Edge{[]*coupling.Edge{&e1, &e2}, []*coupling.Edge{&e3, &e4}}
 	c.Nodes = []*coupling.Node{&n1, &n2, &n3, &n4}
 
@@ -131,13 +131,4 @@ func TestCorrectSetSuccNodes(t *testing.T) {
 	assert.True(t, succNode(n2, c.Nodes[1].Succ), "node (1,0) did not remain a successor for (0,1)")
 	assert.True(t, succNode(n2, c.Nodes[2].Succ), "node (1,0) did not become a successor for (1,0)")
 	assert.False(t, succNode(n2, c.Nodes[3].Succ), "node (1,0) remained a successor for (1,1)")
-}
-
-func succNode(n *coupling.Node, succ []*coupling.Node) bool {
-	for _, i := range succ {
-		if i == n {
-			return true
-		}
-	}
-	return false
 }
