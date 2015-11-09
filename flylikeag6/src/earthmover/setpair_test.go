@@ -147,3 +147,29 @@ func TestCorrectNestedBasicFound(t *testing.T) {
 		}
 	}
 }
+
+func TestCorrectNestedSuccessorFound(t *testing.T) {
+	// the same functions used for random matching testing
+	c := setUpCouplingMatching()
+	m := setUpMarkov()
+	n := len(m.Transitions)
+	visited := *sets.MakeMatrix(n)
+	exact := *sets.MakeMatrix(n)
+	d := make([][]float64, n, n)
+	for i := 0; i < n; i++ {
+		d[i] = make([]float64, n, n)
+	}
+
+	w := randomMatching(m, 0, 3, &c)
+	setpair(m, 0, 3, w, exact, visited, d, &c)
+
+	node := w.Adj[2][2].To
+	
+	assert.True(t, succNode(node, node.Adj[0][0].To.Succ), "node (2,3) did not become a successor for (0,1)")
+	assert.True(t, succNode(node, node.Adj[0][1].To.Succ), "node (2,3) did not become a successor for (1,1)")
+	assert.True(t, succNode(node, node.Adj[1][1].To.Succ), "node (2,3) did not become a successor for (1,2)")
+	assert.True(t, succNode(node, node.Adj[1][2].To.Succ), "node (2,3) did not become a successor for (2,2)")
+	// common children between node(2,3) and w(0,3)
+	assert.True(t, succNode(w, node.Adj[0][0].To.Succ), "node (0,1) did not have node (0,3) as a successor")
+	assert.True(t, succNode(w, node.Adj[1][1].To.Succ), "node (1,2) did not have node (0,3) as a successor")
+}
