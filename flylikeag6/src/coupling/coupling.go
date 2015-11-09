@@ -8,6 +8,7 @@ type Node struct {
 	S, T    int
 	Visited bool
 	Adj     [][]*Edge
+	Succ    []*Node
 }
 
 type Edge struct {
