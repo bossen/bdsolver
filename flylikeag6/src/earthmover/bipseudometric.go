@@ -19,14 +19,16 @@ func extractrandomfromset(tocompute *[][]bool) (int, int) {
 }
 
 
-
-
 func findNode(s int, t int, c *coupling.Coupling) coupling.Node {
 	newnode := coupling.Node{S: 0, T: 0}
 	return newnode
 }
 
+
+
+
 func BipseudoMetric(m markov.MarkovChain, lambda int, tocompute *[][]bool) {
+    // init
 	n := len(m.Transitions)
 	visited := *sets.MakeMatrix(n)
 	exact := *sets.MakeMatrix(n)
@@ -36,13 +38,11 @@ func BipseudoMetric(m markov.MarkovChain, lambda int, tocompute *[][]bool) {
 		d[i] = make([]float64, n, n)
 	}
 
-	w2 := randomMatching(m, 0, 1, &c)
-	log.Println(w2)
 
 	for !sets.EmptySet(tocompute) {
+        // Shouldn't we use utils.GetMinMax(s,t) here?
 		s, t := extractrandomfromset(tocompute)
-		log.Println(s)
-		log.Println(t)
+        log.Printf("Checking %v, %v", s, t)
 
 		if m.Labels[s] != m.Labels[t] {
 			d[s][t] = 1
@@ -53,35 +53,45 @@ func BipseudoMetric(m markov.MarkovChain, lambda int, tocompute *[][]bool) {
 			exact[s][t] = true
 			visited[s][t] = true
 
-		} else {
-			// if s,t not in visited ...
+		} else { // (s,t) is nontrivial.
+            if !visited[s][t] {
+				w := randomMatching(m, s, t, &c)
+                setpair(m, s, t, w, exact, visited, d, &c)
+            }
 
-			disc(lambda, s, t, exact, d, &c)
+            disc(lambda, s, t, exact, d, &c)
+            for _, node := range coupling.Reachable(s, t, &c) {
 
-			node := findNode(s, t, &c)
-			minimumvalue := 1.0 //TODO remove when
-			_ = node
-			//minimumvalue, iindex, jindex := Uvmethod(&node)
-			for minimumvalue < 0 {
-				//SteppingStone(&node, iindex, jindex)
+                // Optimal, so we dont need to check it.
+                if node.Adj == nil {
+                    continue
+                }
 
-				// w := getoptimalschedule(d, u, v) TODO this instead of next line
+                for minimum, i, j := Uvmethod(node, d); minimum < 0; {
+			        // node := findNode(s, t, &c)
+                     SteppingStone(node, i, j)
+                }
+
+
+                // TODO this should be the optimal scheduling instead of random.
 				w := randomMatching(m, s, t, &c)
 				setpair(m, s, t, w, exact, visited, d, &c)
 				disc(lambda, s, t, exact, d, &c)
-				//minimumvalue, iindex, jindex = Uvmethod(&node)
 			}
-			//exact = sets.UnionReal(exact, reachable(s, t, c)) TODO update when reachable has been made
+
+            // This could be done more prettier, e.g. have a reachable
+            // hat return a boolean matrix and use sets.UnionReal
+            for _, r := range coupling.Reachable(s, t, &c) {
+                exact[r.S][r.T] = true
+            }
             // todo implement this:
             // removeedgesfromnodes(&c, &exact)
 		}
 
-		tocompute = sets.IntersectReal(*tocompute, *tocompute) //TODO THIS IS WRONG, use exact as second parameter, instead of tocompute twice
+		tocompute = sets.IntersectReal(*tocompute, exact)
 
 		break //TODO remove this. This is for ending the code
-	}
-	setpair(m, 0, 1, w2, exact, visited, d, &c)
-	disc(1, 1, 1, exact, d, &c)
-	log.Println("hello world!")
-	// return what?
+	} // end for
+	// setpair(m, 0, 1, w2, exact, visited, d, &c)
+	// disc(1, 1, 1, exact, d, &c)
 }
