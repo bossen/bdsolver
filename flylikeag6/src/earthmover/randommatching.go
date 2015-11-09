@@ -44,7 +44,7 @@ func filloutAdj(row, col []int, lenrow, lencol int, w [][]*coupling.Edge, c *cou
 			node = coupling.FindNode(s, t, c)
 
 			if node == nil {
-				node = &coupling.Node{S: s, T: t}
+				node = &coupling.Node{S: s, T: t, Succ: []*coupling.Node{}}
 				c.Nodes = append(c.Nodes, node)
 			}
 
@@ -57,6 +57,14 @@ func randomMatching(m markov.MarkovChain, u int, v int, c *coupling.Coupling) *c
 	n := len(m.Transitions[u])
 
 	u, v = swapMin(u, v)
+	
+	// tries to find the node (u,v) in c, if not make a new one and add to c
+	node := coupling.FindNode(u, v, c)
+
+	if node == nil {
+		node = &coupling.Node{S: u, T: v, Succ: []*coupling.Node{}}
+		c.Nodes = append(c.Nodes, node)
+	}
 
 	log.Printf("copy the transitions from the states %v and %v", u, v)
 	uTransitions := make([]float64, n, n)
@@ -104,6 +112,7 @@ func randomMatching(m markov.MarkovChain, u int, v int, c *coupling.Coupling) *c
 			}
 
 			matching[i][j].Basic = true
+			matching[i][j].To.Succ = append(matching[i][j].To.Succ, node)
 
 			i++
 			j++
@@ -112,6 +121,7 @@ func randomMatching(m markov.MarkovChain, u int, v int, c *coupling.Coupling) *c
 			vTransitions[colindex[j]] = vTransitions[colindex[j]] - uTransitions[rowindex[i]]
 
 			matching[i][j].Basic = true
+			matching[i][j].To.Succ = append(matching[i][j].To.Succ, node)
 
 			i++
 		} else {
@@ -119,24 +129,9 @@ func randomMatching(m markov.MarkovChain, u int, v int, c *coupling.Coupling) *c
 			uTransitions[rowindex[i]] = uTransitions[rowindex[i]] - vTransitions[colindex[j]]
 
 			matching[i][j].Basic = true
+			matching[i][j].To.Succ = append(matching[i][j].To.Succ, node)
 
 			j++
-		}
-	}
-	
-	// tries to find the node (u,v) in c, if not make a new one and add to c
-	node := coupling.FindNode(u, v, c)
-
-	if node == nil {
-		node = &coupling.Node{S: u, T: v}
-		c.Nodes = append(c.Nodes, node)
-	}
-
-	for i := 0; i < lenrow; i++ {
-		for j := 0; j < lencol; j++ {
-			log.Println("At: u and v", matching[i][j].To.S, matching[i][j].To.T)
-			log.Println(matching[i][j].Prob)
-			log.Println(matching[i][j].Basic)
 		}
 	}
 
