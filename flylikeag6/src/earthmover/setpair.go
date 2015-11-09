@@ -4,6 +4,7 @@ import (
 	"coupling"
 	"log"
 	"markov"
+    "utils"
 )
 
 func findDemandedPairs(w *coupling.Node, visited [][]bool) []*coupling.Edge {
@@ -11,7 +12,7 @@ func findDemandedPairs(w *coupling.Node, visited [][]bool) []*coupling.Edge {
 
 	for _, rows := range w.Adj {
 		for _, edge := range rows {
-			if approxFloatEqual(edge.Prob, 0.0) {
+			if utils.ApproxEqual(edge.Prob, 0.0) {
 				continue
 			}
 			if visited[edge.To.S][edge.To.T] || visited[edge.To.T][edge.To.S] {

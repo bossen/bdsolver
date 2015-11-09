@@ -3,6 +3,7 @@ package earthmover
 import (
 	"coupling"
 	"math"
+    "utils"
 )
 
 func SteppingStone(n *coupling.Node, s int, t int) bool {
@@ -34,7 +35,7 @@ func goHorizontal(n *coupling.Node, s, t, u, v, rBound, cBound, pLen int, min *f
 
 		// the node is basic
 
-		if approxFloatEqual(n.Adj[u][i].Prob, 0) {
+		if utils.ApproxEqual(n.Adj[u][i].Prob, 0) {
 			// if next step is decrease and the prob at (u,i) is 0 we
 			// cannot go there
 			continue

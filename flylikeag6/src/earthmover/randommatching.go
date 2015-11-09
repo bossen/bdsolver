@@ -4,6 +4,7 @@ import (
 	"coupling"
 	"log"
 	"markov"
+    "utils"
 )
 
 func matchingDimensions(u, v []float64, n int) (int, int) {
@@ -95,7 +96,7 @@ func randomMatching(m markov.MarkovChain, u int, v int, c *coupling.Coupling) *c
 	// completes the matching by inserting probabilities and setting appropriate cells to basic
 	i, j := 0, 0
 	for i < lenrow && j < lencol {
-		if approxFloatEqual(uTransitions[rowindex[i]], vTransitions[colindex[j]]) {
+		if utils.ApproxEqual(uTransitions[rowindex[i]], vTransitions[colindex[j]]) {
 			matching[i][j].Prob = uTransitions[rowindex[i]]
 
 			// check if we are in the lower right corner, such that we do not get an out of bounds error
