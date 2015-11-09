@@ -31,9 +31,7 @@ func setpair(m markov.MarkovChain, s int, t int, w *coupling.Node, exact [][]boo
 	visited[s][t] = true
 	visited[t][s] = true
 
-	demanded := findDemandedPairs(w, visited)
-
-	for _, edge := range demanded {
+	for _, edge := range findDemandedPairs(w, visited) {
 		u, v := utils.GetMinMax(edge.To.S, edge.To.T)
 
 		visited[u][v] = true
