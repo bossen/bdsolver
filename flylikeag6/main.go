@@ -13,8 +13,8 @@ func TestUVmethod(node *coupling.Node, d [][]float64) {
 }
 
 //Computes all the possible combinations of the different nodes. This could be optimized, by setting everything below the i == j diagonal to false.
-func initToCompute(n int) *[][]bool {
-	toCompute := *sets.MakeMatrix(n)
+func initToCompute(n int) [][]bool {
+	toCompute := sets.MakeMatrix(n)
 	for i := range toCompute {
 		for j := range toCompute {
 			if i == j {
@@ -24,7 +24,7 @@ func initToCompute(n int) *[][]bool {
 			}
 		}
 	}
-	return &toCompute
+	return toCompute
 }
 func main() {
     log.SetFlags(log.Lshortfile)
