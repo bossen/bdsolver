@@ -18,8 +18,29 @@ func extractrandomfromset(tocompute *[][]bool) (int, int) {
 	panic("Tried to extract random element from empty set!")
 }
 
-func removeedgesfromnodes(c *coupling.Coupling, exact *[][]bool) int {
-	return 1
+func removeExactEdges(n *coupling.Node) {
+	n.Visited = true
+	
+	for _, row := range n.Adj {
+		for _, edge := range row {
+			if edge.To.Adj == nil {
+				deleteSucc(n, edge.To.Succ)
+				continue
+			}
+			
+			if edge.To.Visited {
+				continue
+			}
+			
+			removeExactEdges(edge.To)
+			deleteSucc(n, edge.To.Succ)
+		}
+	}
+	
+	n.Adj = nil
+	n.Visited = false
+	
+	return
 }
 
 func getoptimalschedule(d [256][256]int, u int, v int) int {
@@ -92,7 +113,7 @@ func BipseudoMetric(m markov.MarkovChain, lambda int, tocompute *[][]bool) {
 				//minimumvalue, iindex, jindex = Uvmethod(&node)
 			}
 			//exact = sets.UnionReal(exact, reachable(s, t, c)) TODO update when reachable has been made
-			removeedgesfromnodes(&c, &exact)
+			removeExactEdges(w2)
 		}
 
 		tocompute = sets.IntersectReal(*tocompute, *tocompute) //TODO THIS IS WRONG, use exact as second parameter, instead of tocompute twice
