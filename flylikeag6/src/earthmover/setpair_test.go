@@ -4,6 +4,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"sets"
 	"testing"
+    "utils"
 )
 
 func TestCorrectRecursiveSetPairCall(t *testing.T) {
@@ -117,7 +118,7 @@ func TestCorrectNestedMatchingFound(t *testing.T) {
 
 	for i := 0; i < len(expected); i++ {
 		for j := 0; j < len(expected[0]); j++ {
-			assert.True(t, approxFloatEqual(expected[i][j], node.Adj[i][j].Prob), "the correct probability for cell (%v,%v) were not inserted", i, j)
+			assert.True(t, utils.ApproxEqual(expected[i][j], node.Adj[i][j].Prob), "the correct probability for cell (%v,%v) were not inserted", i, j)
 		}
 	}
 }
