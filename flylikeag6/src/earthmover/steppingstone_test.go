@@ -16,6 +16,9 @@ func setUpCoupling() coupling.Coupling {
 	e2 := coupling.Edge{&n2, 0.2, true}
 	e3 := coupling.Edge{&n3, 0, false}
 	e4 := coupling.Edge{&n4, 0.3, true}
+	n1.Succ = []*coupling.Node{&n1, &n2, &n4}
+	n2.Succ = []*coupling.Node{&n2, &n4, &n1}
+	n4.Succ = []*coupling.Node{&n2, &n1, &n4}
 	n2.Adj = [][]*coupling.Edge{[]*coupling.Edge{&e1, &e2}, []*coupling.Edge{&e3, &e4}}
 	c.Nodes = []*coupling.Node{&n1, &n2, &n3, &n4}
 
@@ -115,4 +118,27 @@ func TestGoVerticalReturnsFalse(t *testing.T) {
 
 	assert.False(t, done1, "goVertical somehow completed the stepping stone path")
 	assert.False(t, done2, "goVertical somehow completed the stepping stone path")
+}
+
+func TestCorrectSetSuccNodes(t *testing.T) {
+	c := setUpCoupling()
+	
+	n2 := c.Nodes[1]
+	
+	SteppingStone(n2, 1, 0)
+	
+	assert.True(t, succNode(n2, c.Nodes[0].Succ), "node (1,0) did not remain a successor for (0,0)")
+	assert.True(t, succNode(n2, c.Nodes[1].Succ), "node (1,0) did not remain a successor for (0,1)")
+	assert.True(t, succNode(n2, c.Nodes[2].Succ), "node (1,0) did not become a successor for (1,0)")
+	assert.False(t, succNode(n2, c.Nodes[3].Succ), "node (1,0) remained a successor for (1,1)")
+}
+
+func TestCorrectDeletedSuccNodes(t *testing.T) {
+	c := setUpCoupling()
+	
+	succ := c.Nodes[0].Succ
+	deleteSucc(succ[0], &succ)
+	assert.Equal(t, len(succ), 2, "length of the successor slice did not change")
+	deleteSucc(succ[0], &succ)
+	assert.Equal(t, len(succ), 1, "length of the successor slice did not change")
 }

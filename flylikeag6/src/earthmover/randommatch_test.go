@@ -5,6 +5,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"markov"
 	"testing"
+	"log"
 )
 
 func setUpCouplingMatching() coupling.Coupling {
@@ -60,4 +61,18 @@ func TestCorrectBasicFound(t *testing.T) {
 			assert.Equal(t, expected[i][j], w.Adj[i][j].Basic, "the cell were not correctly set to either basic or non-basic")
 		}
 	}
+}
+
+func TestCorrectSuccessorFound(t *testing.T) {
+	c := setUpCouplingMatching()
+	m := setUpMarkov()
+
+	w := randomMatching(m, 0, 3, &c)
+	log.Println(w.Adj[2][2].To)
+	assert.True(t, succNode(w, w.Adj[0][0].To.Succ), "node (0,3) did not become a successor for (0,1)")
+	assert.True(t, succNode(w, w.Adj[1][1].To.Succ), "node (0,3) did not become a successor for (1,2)")
+	assert.True(t, succNode(w, w.Adj[2][2].To.Succ), "node (0,3) did not become a successor for (2,3)")
+	assert.True(t, succNode(w, w.Adj[3][2].To.Succ), "node (0,3) did not become a successor for (2,5)")
+	assert.False(t, succNode(w, w.Adj[0][1].To.Succ), "node (0,3) become a successor for (1,1)")
+	assert.False(t, succNode(w, w.Adj[1][0].To.Succ), "node (0,3) become a successor for (0,2)")
 }
