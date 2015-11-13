@@ -2,21 +2,12 @@ package earthmover
 
 import (
 	"github.com/stretchr/testify/assert"
-	"sets"
 	"testing"
 )
 
 func TestCorrectRecursiveSetPairCall(t *testing.T) {
 	// the same functions used for random matching testing
-	c := setUpCouplingMatching()
-	m := setUpMarkov()
-	n := len(m.Transitions)
-	visited := *sets.MakeMatrix(n)
-	exact := *sets.MakeMatrix(n)
-	d := make([][]float64, n, n)
-	for i := 0; i < n; i++ {
-		d[i] = make([]float64, n, n)
-	}
+	c, m, visited, exact, d := setUpTest()
 
 	w := randomMatching(m, 0, 3, &c)
 	setpair(m, 0, 3, w, exact, visited, d, &c)
@@ -45,15 +36,7 @@ func TestCorrectVisited(t *testing.T) {
 		[]bool{false, false, true, false, false, false, false},
 		[]bool{false, false, false, false, false, false, false}}
 
-	c := setUpCoupling()
-	m := setUpMarkov()
-	n := len(m.Transitions)
-	visited := *sets.MakeMatrix(n)
-	exact := *sets.MakeMatrix(n)
-	d := make([][]float64, n, n)
-	for i := 0; i < n; i++ {
-		d[i] = make([]float64, n, n)
-	}
+	c, m, visited, exact, d := setUpTest()
 
 	w := randomMatching(m, 0, 3, &c)
 	setpair(m, 0, 3, w, exact, visited, d, &c)
@@ -75,15 +58,7 @@ func TestCorrectExact(t *testing.T) {
 		[]bool{false, false, true, false, false, false, false},
 		[]bool{false, false, false, false, false, false, false}}
 
-	c := setUpCoupling()
-	m := setUpMarkov()
-	n := len(m.Transitions)
-	visited := *sets.MakeMatrix(n)
-	exact := *sets.MakeMatrix(n)
-	d := make([][]float64, n, n)
-	for i := 0; i < n; i++ {
-		d[i] = make([]float64, n, n)
-	}
+	c, m, visited, exact, d := setUpTest()
 
 	w := randomMatching(m, 0, 3, &c)
 	setpair(m, 0, 3, w, exact, visited, d, &c)
@@ -100,15 +75,7 @@ func TestCorrectNestedMatchingFound(t *testing.T) {
 		[]float64{0.33, 0.17, 0.0},
 		[]float64{0.0, 0.16, 0.34}}
 	// the same functions used for random matching testing
-	c := setUpCouplingMatching()
-	m := setUpMarkov()
-	n := len(m.Transitions)
-	visited := *sets.MakeMatrix(n)
-	exact := *sets.MakeMatrix(n)
-	d := make([][]float64, n, n)
-	for i := 0; i < n; i++ {
-		d[i] = make([]float64, n, n)
-	}
+	c, m, visited, exact, d := setUpTest()
 
 	w := randomMatching(m, 0, 3, &c)
 	setpair(m, 0, 3, w, exact, visited, d, &c)
@@ -126,15 +93,7 @@ func TestCorrectNestedBasicFound(t *testing.T) {
 		[]bool{true, true, false},
 		[]bool{false, true, true}}
 	// the same functions used for random matching testing
-	c := setUpCouplingMatching()
-	m := setUpMarkov()
-	n := len(m.Transitions)
-	visited := *sets.MakeMatrix(n)
-	exact := *sets.MakeMatrix(n)
-	d := make([][]float64, n, n)
-	for i := 0; i < n; i++ {
-		d[i] = make([]float64, n, n)
-	}
+	c, m, visited, exact, d := setUpTest()
 
 	w := randomMatching(m, 0, 3, &c)
 	setpair(m, 0, 3, w, exact, visited, d, &c)
@@ -150,15 +109,7 @@ func TestCorrectNestedBasicFound(t *testing.T) {
 
 func TestCorrectNestedSuccessorFound(t *testing.T) {
 	// the same functions used for random matching testing
-	c := setUpCouplingMatching()
-	m := setUpMarkov()
-	n := len(m.Transitions)
-	visited := *sets.MakeMatrix(n)
-	exact := *sets.MakeMatrix(n)
-	d := make([][]float64, n, n)
-	for i := 0; i < n; i++ {
-		d[i] = make([]float64, n, n)
-	}
+	c, m, visited, exact, d := setUpTest()
 
 	w := randomMatching(m, 0, 3, &c)
 	setpair(m, 0, 3, w, exact, visited, d, &c)
