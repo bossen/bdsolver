@@ -28,12 +28,12 @@ func setUpMarkov() markov.MarkovChain {
 func setUpTest() (coupling.Coupling, markov.MarkovChain, [][]bool, [][]bool, [][]float64) {
 	c := setUpCouplingMatching()
 	m := setUpMarkov()
-	len := len(m.Transitions)
-	visited := *sets.MakeMatrix(len)
-	exact := *sets.MakeMatrix(len)
-	d := make([][]float64, len, len)
-	for i := 0; i < len; i++ {
-		d[i] = make([]float64, len, len)
+	n := len(m.Transitions)
+	visited := *sets.MakeMatrix(n)
+	exact := *sets.MakeMatrix(n)
+	d := make([][]float64, n, n)
+	for i := 0; i < n; i++ {
+		d[i] = make([]float64, n, n)
 	}
 	
 	return c, m, visited, exact, d

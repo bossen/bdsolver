@@ -23,14 +23,16 @@ func removeExactEdges(n *coupling.Node, exact [][]bool) {
 	
 	for _, row := range n.Adj {
 		for _, edge := range row {
-			// if the edge node adj matrix is nill, we just delete n from its successor slice
+			// if the edge node adj matrix is nill, we do not have to recursivevly call it,
+			// and just just delete n from its successor slice
 			if edge.To.Adj == nil {
 				deleteSucc(n, edge.To.Succ)
 				continue
 			}
 			
-			// if the edge has already been visited, we skip it
+			// if the edge has already been visited, we do not have have to recursively call
 			if edge.To.Visited {
+				deleteSucc(n, edge.To.Succ)
 				continue
 			}
 			
@@ -40,7 +42,7 @@ func removeExactEdges(n *coupling.Node, exact [][]bool) {
 		}
 	}
 	
-	// sets the nodes to exact and deletes their adj matrix
+	// here we do the actual removing of edges
 	exact[n.S][n.T] = true
 	n.Adj = nil
 	n.Visited = false
