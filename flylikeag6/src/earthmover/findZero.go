@@ -14,11 +14,9 @@ func findNonZero(s, t int, exact [][]bool, d [][]float64, c *coupling.Coupling) 
 	
 	// finds all reachable from (s,t)
 	r := coupling.Reachable(s, t, c)
-	log.Println(r)
 	
 	// remove nodes not exact or distance less than 0
-	r = filterZeros(r, exact, d)
-	log.Println(r)
+	r = filterNonZeros(r, exact, d)
 	
 	// every node can always reach itself
 	nonZeros := r
@@ -31,11 +29,10 @@ func findNonZero(s, t int, exact [][]bool, d [][]float64, c *coupling.Coupling) 
 	return nonZeros
 }
 
-func filterZeros(r []*coupling.Node, exact [][]bool, d [][]float64) []*coupling.Node {
+func filterNonZeros(r []*coupling.Node, exact [][]bool, d [][]float64) []*coupling.Node {
 	// copy the reachable set such that we can range over it
 	temp := make([]*coupling.Node, len(r), len(r))
 	copy(temp, r)
-	
 	
 	for _, node := range temp {
 		// if exact and distance above 0, skip it
@@ -50,11 +47,21 @@ func filterZeros(r []*coupling.Node, exact [][]bool, d [][]float64) []*coupling.
 }
 
 func findReverseReachable(n *coupling.Node, r []*coupling.Node) []*coupling.Node {
+	n.Visited = true
+	
 	for _, node := range n.Succ {
 		if !succNode(node, r) {
 			r = append(r, node)
 		}
+		
+		if node.Adj == nil || node.Visited {
+			continue
+		}
+		
+		r = findReverseReachable(node, r)
 	}
+	
+	n.Visited = false
 	
 	return r
 }
