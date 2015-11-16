@@ -1,29 +1,10 @@
 package earthmover
 
 import (
-	"coupling"
 	"github.com/stretchr/testify/assert"
-	"markov"
 	"testing"
 	"log"
 )
-
-func setUpCouplingMatching() coupling.Coupling {
-	return coupling.New()
-}
-
-func setUpMarkov() markov.MarkovChain {
-	return markov.MarkovChain{
-		Labels: []int{0, 1, 0, 0, 0, 1, 0},
-		Transitions: [][]float64{
-			[]float64{0.0, 0.33, 0.33, 0.17, 0.0, 0.17, 0.0},
-			[]float64{0.0, 0.0, 0.4, 0.4, 0.0, 0.2, 0.0},
-			[]float64{0.0, 0.5, 0.5, 0.0, 0.0, 0.0, 0.0},
-			[]float64{0.33, 0.33, 0.34, 0.0, 0.0, 0.0, 0.0},
-			[]float64{0.4, 0.4, 0.2, 0.0, 0.0, 0.0, 0.0},
-			[]float64{0.0, 0.1, 0.0, 0.2, 0.5, 0.2, 0.0},
-			[]float64{0.0, 0.2, 0.33, 0.0, 0.1, 0.2, 0.17}}}
-}
 
 func TestCorrectMatchingFound(t *testing.T) {
 	expected := [][]float64{
