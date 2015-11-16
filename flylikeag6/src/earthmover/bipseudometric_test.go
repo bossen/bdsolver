@@ -93,7 +93,7 @@ func TestCorrectFilterNonZero(t *testing.T) {
 	setpair(m, 0, 3, w, exact, visited, d, &c)
 	
 	r := coupling.Reachable(w.S, w.T, &c)
-	r2 := filterNonZeros(r, exact, d)
+	r2 := filterZeros(r, exact, d)
 	
 	assert.Equal(t, len(r2), 3, "the filtered node slice did not have length 3")
 	assert.False(t, succNode(w.Adj[2][2].To, r2), "node (2,3) was not filtered")
