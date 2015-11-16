@@ -6,27 +6,13 @@ import (
 )
 
 
-var file* os.File
-
 type token struct {
     tokentype string
     val string
 }
 
 
-func readchar() byte {
-    buf := make([]byte, 1, 1)
-    file.Read(buf)
-    return buf[0]
-}
-
-
-func readword() string {
-    return "not implm"
-
-}
-
-func maketoken(tokentype, value string) token {
+func (c *Compiler)  maketoken(tokentype, value string) token {
     validtokentypes := []string {
         "States",
         "Edges",
@@ -37,34 +23,33 @@ func maketoken(tokentype, value string) token {
             return token{tokentype, value}
         }
     }
-    
+
     log.Fatal("Did not find expected keyword, found " + tokentype)
     return token{}
 }
 
-func scanner() token {
+
+func (c *Compiler) scanner() token {
     // TODO clear whitespace
-    chr := readchar()
+    chr := c.readchar()
     if chr  == 'S' { // Must be States
-        
-        return maketoken("S" + readword(), nil)
+        return c.maketoken("S" + c.readword(), "")
     }
-    return 
+    return token{}
 }
 
-
-func Parse(filename string) {
+func New(filename string) (Compiler, error) {
     filelocal, err := os.Open(filename)
-    file = filelocal
+    return Compiler{*filelocal}, err
+}
 
-    if err != nil {
-        log.Fatal("Not existing")
-    }
+func (c *Compiler) Parse() {
+
 
     state := 0
     for true {
-        token := scanner()
-    
+        token := c.scanner()
+        _ = token 
 
         if state == 0 { // We are before States:
         } else if state == 1 {

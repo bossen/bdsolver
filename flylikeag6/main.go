@@ -30,7 +30,11 @@ func initToCompute(n int) *[][]bool {
 
 
 func testCompiler() {
-    compiler.Parse("examples/algorithmfrompaper.lmc")
+    compiler, err := compiler.New("examples/algorithmfrompaper.lmc")
+    if err != nil {
+        log.Fatal("Not existing")
+    }
+    compiler.Parse()
 }
 
 func main() {
