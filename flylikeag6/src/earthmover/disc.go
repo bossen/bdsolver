@@ -10,13 +10,13 @@ func setdistance(d [][]float64, u int, v int, value float64) {
  }
 
 func setZerosDistanceToZero(n *coupling.Node, nonzero []*coupling.Node, exact [][]bool, d[][]float64, c *coupling.Coupling) {
-	r := coupling.Reachable(n, c)
+	reachables := coupling.Reachable(n, c)
 	
 	for _, node := range nonzero {
-		coupling.DeleteNodeInSlice(node, &r)
+		coupling.DeleteNodeInSlice(node, &reachables)
 	}
 	
-	for _, node := range r {
+	for _, node := range reachables {
 		d[node.S][node.T] = 0
 		exact[node.S][node.T] = true
 	}
