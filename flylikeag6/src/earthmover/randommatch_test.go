@@ -5,6 +5,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"markov"
 	"testing"
+    "utils"
 )
 
 func setUpCouplingMatching() coupling.Coupling {
@@ -38,7 +39,7 @@ func TestCorrectMatchingFound(t *testing.T) {
 
 	for i := 0; i < len(expected); i++ {
 		for j := 0; j < len(expected[0]); j++ {
-			assert.True(t, approxFloatEqual(expected[i][j], w.Adj[i][j].Prob), "the correct probability were not inserted")
+			assert.True(t, utils.ApproxEqual(expected[i][j], w.Adj[i][j].Prob), "the correct probability were not inserted")
 		}
 	}
 }

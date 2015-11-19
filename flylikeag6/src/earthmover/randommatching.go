@@ -4,6 +4,7 @@ import (
 	"coupling"
 	"log"
 	"markov"
+    "utils"
 )
 
 func matchingDimensions(u, v []float64, n int) (int, int) {
@@ -39,7 +40,7 @@ func filloutAdj(row, col []int, lenrow, lencol int, w [][]*coupling.Edge, c *cou
 	for i := 0; i < lenrow; i++ {
 		for j := 0; j < lencol; j++ {
 			var node *coupling.Node
-			s, t := swapMin(row[i], col[j])
+			s, t := utils.GetMinMax(row[i], col[j])
 
 			node = coupling.FindNode(s, t, c)
 
@@ -56,7 +57,7 @@ func filloutAdj(row, col []int, lenrow, lencol int, w [][]*coupling.Edge, c *cou
 func randomMatching(m markov.MarkovChain, u int, v int, c *coupling.Coupling) *coupling.Node {
 	n := len(m.Transitions[u])
 
-	u, v = swapMin(u, v)
+	u, v = utils.GetMinMax(u, v)
 
 	log.Printf("copy the transitions from the states %v and %v", u, v)
 	uTransitions := make([]float64, n, n)
@@ -95,7 +96,7 @@ func randomMatching(m markov.MarkovChain, u int, v int, c *coupling.Coupling) *c
 	// completes the matching by inserting probabilities and setting appropriate cells to basic
 	i, j := 0, 0
 	for i < lenrow && j < lencol {
-		if approxFloatEqual(uTransitions[rowindex[i]], vTransitions[colindex[j]]) {
+		if utils.ApproxEqual(uTransitions[rowindex[i]], vTransitions[colindex[j]]) {
 			matching[i][j].Prob = uTransitions[rowindex[i]]
 
 			// check if we are in the lower right corner, such that we do not get an out of bounds error
@@ -132,22 +133,9 @@ func randomMatching(m markov.MarkovChain, u int, v int, c *coupling.Coupling) *c
 		c.Nodes = append(c.Nodes, node)
 	}
 
-	for i := 0; i < lenrow; i++ {
-		for j := 0; j < lencol; j++ {
-			log.Println("At: u and v", matching[i][j].To.S, matching[i][j].To.T)
-			log.Println(matching[i][j].Prob)
-			log.Println(matching[i][j].Basic)
-		}
-	}
+    utils.LogMatching(matching, lenrow, lencol)
 
 	node.Adj = matching
 
 	return node
-}
-
-func swapMin(u, v int) (int, int) {
-	if v < u {
-		return v, u
-	}
-	return u, v
 }
