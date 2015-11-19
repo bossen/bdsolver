@@ -4,6 +4,7 @@ import (
     "os"
     "log"
     "strconv"
+    "utils"
 )
 
 type token struct {
@@ -27,23 +28,6 @@ func New(filename string) (Compiler, error) {
         *filelocal,
         0}, err
 }
-
-func (c *Compiler)  maketoken(tokentype, value string) token {
-    validtokentypes := []string {
-        "States",
-        "Edges",
-    }
-
-    for _, vtokens := range validtokentypes {
-        if vtokens == tokentype {
-            return token{tokentype, value}
-        }
-    }
-
-    log.Fatal("Did not find expected keyword, found " + tokentype)
-    return token{}
-}
-
 
 func (c *Compiler) peek() byte {
     if !c.uselastchar {
@@ -100,6 +84,8 @@ func (c *Compiler) eatwhitespaceandcomments() {
     for !c.endoffile() {
         if c.peek() == ' ' || c.peek() == '\t' {
             c.readchar()
+        } else {
+            break
         }
     }
 
@@ -110,13 +96,14 @@ func (c *Compiler) eatwhitespaceandcomments() {
 }
 
 
+
 func (c *Compiler) readnumber() int {
     c.eatwhitespaceandcomments()
 
     number := ""
     for !c.endoffile() {
-        if !(c.peek() > '0' && c.peek() < '9') {
-            if c.peek() == ' ' || c.peek() == '\t' || c.peek() == '\n' {
+        if utils.IsNumeric(c.peek()) {
+            if utils.IsWhitespace(c.peek()){
                 break
             } else {
                 log.Fatal("Expected whitespace after number, but got %s", c.peek())
@@ -139,9 +126,9 @@ func (c *Compiler) readword() string {
     c.eatwhitespaceandcomments()
     word := ""
     for !c.endoffile() {
-        if (c.peek() > 'A' &&  c.peek() < 'Z') || (c.peek() > 'a' && c.peek() < 'z') {
+        if utils.IsAlphabetic(c.peek()) {
             word += string(c.readchar())
-        } else if c.peek() == ' ' || c.peek() == '\t' || c.peek() ==  '\n' {
+        } else if utils.IsWhitespace(c.peek()) {
             break
         } else {
             log.Fatal("Unexpected %s", c.peek())

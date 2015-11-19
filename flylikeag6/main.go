@@ -6,7 +6,7 @@ import (
 	"log"
 	"markov"
 	"sets"
-    "compiler"
+//    "compiler"
 )
 
 func TestUVmethod(node *coupling.Node, d [][]float64) {
@@ -30,12 +30,12 @@ func initToCompute(n int) *[][]bool {
 
 
 func testCompiler() {
-    compiler, err := compiler.New("examples/algorithmfrompaper.lmc")
+    /* compiler, err := compiler.New("examples/algorithmfrompaper.lmc")
     if err != nil {
         log.Fatal("Not existing")
     }
-    compiler.Parse()
-}
+    compiler.Parse() */
+} 
 
 func main() {
     log.SetFlags(log.Lshortfile)
