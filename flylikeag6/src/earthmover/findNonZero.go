@@ -9,59 +9,60 @@ func findNonZero(s, t int, exact [][]bool, d [][]float64, c *coupling.Coupling) 
 	n := coupling.FindNode(s, t, c)
 
 	if n == nil {
-		log.Panic("node chould not be found")
+		log.Panic("node chould not be found in the coupling")
 	}
 
 	// finds all reachable from (s,t)
-	r := coupling.Reachable(s, t, c)
+	reachables := coupling.Reachable(s, t, c)
 
 	// remove nodes not exact or distance less than 0
-	r = filterZeros(r, exact, d)
+	reachablesNonZero := filterZeros(reachables, exact, d)
 
-	// every node can always reach itself
-	nonZeros := r
+	// every node can always reach itself, so we copy the reachablesNonZeros into the final nonZeros slice
+	nonZeros := make([]*coupling.Node, len(reachablesNonZero))
+	copy(nonZeros, reachablesNonZero)
 
 	// finds all reachable using the successor slice Succ
-	for _, node := range r {
+	for _, node := range reachablesNonZero {
 		nonZeros = findReverseReachable(node, nonZeros)
 	}
 
 	return nonZeros
 }
 
-func filterZeros(r []*coupling.Node, exact [][]bool, d [][]float64) []*coupling.Node {
+func filterZeros(reachables []*coupling.Node, exact [][]bool, d [][]float64) []*coupling.Node {
 	// copy the reachable set such that we remove elements, without removing them from the original
-	temp := make([]*coupling.Node, len(r), len(r))
-	copy(temp, r)
+	reachablesCopy := make([]*coupling.Node, len(reachables), len(reachables))
+	copy(reachablesCopy, reachables)
 
-	for _, node := range temp {
+	for _, node := range reachablesCopy {
 		// if exact and distance above 0, skip it
 		if exact[node.S][node.T] && d[node.S][node.T] > 0 {
 			continue
 		}
 		// otherwise delete it
-		deleteSucc(node, &r)
+		deleteSucc(node, &reachables)
 	}
 
-	return r
+	return reachables
 }
 
-func findReverseReachable(n *coupling.Node, r []*coupling.Node) []*coupling.Node {
-	n.Visited = true
+func findReverseReachable(node *coupling.Node, reachables []*coupling.Node) []*coupling.Node {
+	node.Visited = true
 
-	for _, node := range n.Succ {
-		if !succNode(node, r) {
-			r = append(r, node)
+	for _, succ := range node.Succ {
+		if !succNode(succ, reachables) {
+			reachables = append(reachables, succ)
 		}
 
-		if len(node.Succ) == 0 || node.Visited {
+		if len(succ.Succ) == 0 || succ.Visited {
 			continue
 		}
 
-		r = findReverseReachable(node, r)
+		reachables = findReverseReachable(succ, reachables)
 	}
 
-	n.Visited = false
+	node.Visited = false
 
-	return r
+	return reachables
 }
