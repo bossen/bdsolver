@@ -6,6 +6,7 @@ import (
 	"log"
 	"markov"
 	"sets"
+//    "compiler"
 )
 
 func TestUVmethod(node *coupling.Node, d [][]float64) {
@@ -26,9 +27,21 @@ func initToCompute(n int) *[][]bool {
 	}
 	return &toCompute
 }
+
+
+func testCompiler() {
+    /* compiler, err := compiler.New("examples/algorithmfrompaper.lmc")
+    if err != nil {
+        log.Fatal("Not existing")
+    }
+    compiler.Parse() */
+} 
+
 func main() {
     log.SetFlags(log.Lshortfile)
     
+    
+    testCompiler()
 	mymarkov := markov.New()
 	tocompute := initToCompute(len(mymarkov.Transitions))
 	earthmover.BipseudoMetric(mymarkov, 32, tocompute)
