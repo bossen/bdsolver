@@ -3,6 +3,7 @@ package earthmover
 import (
 	"github.com/stretchr/testify/assert"
 	"testing"
+	"utils"
 )
 
 func TestSettingZeroDistanceAndExact(t *testing.T) {
@@ -30,6 +31,6 @@ func TestSettingZeroDistanceAndExact(t *testing.T) {
 		}
 	}
 	
-	assert.True(t, approxFloatEqual(d[0][1], 1), "the distance for node (0,1) was changed")
-	assert.True(t, approxFloatEqual(d[2][2], 0), "the distance for node (1,1) was not set to 0")
+	assert.True(t, utils.ApproxEqual(d[0][1], 1), "the distance for node (0,1) was changed")
+	assert.True(t, utils.ApproxEqual(d[2][2], 0), "the distance for node (1,1) was not set to 0")
 }
