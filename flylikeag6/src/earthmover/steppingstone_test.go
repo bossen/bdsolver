@@ -4,6 +4,7 @@ import (
 	"coupling"
 	"github.com/stretchr/testify/assert"
 	"testing"
+    "utils"
 )
 
 func setUpCoupling() coupling.Coupling {
@@ -103,8 +104,8 @@ func TestGoVerticalReturnsTrue(t *testing.T) {
 	done := goVertical(n, 1, 0, 1, 1, 2, 2, 2, &min)
 
 	assert.True(t, done, "goVertical did not compplete the stepping stone path")
-	assert.True(t, approxFloatEqual(0.0, n.Adj[1][0].Prob), "the cell (1 0) were changed")
-	assert.False(t, approxFloatEqual(0.3, n.Adj[1][1].Prob), "the cell (1 1) were not changed")
+	assert.True(t, utils.ApproxEqual(0.0, n.Adj[1][0].Prob), "the cell (1 0) were changed")
+	assert.False(t, utils.ApproxEqual(0.3, n.Adj[1][1].Prob), "the cell (1 1) were not changed")
 }
 
 func TestGoVerticalReturnsFalse(t *testing.T) {

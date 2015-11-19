@@ -59,15 +59,6 @@ func isOptimal() bool {
 }
 
 
-// credits to https://gist.github.com/cevaris/bc331cbe970b03816c6b
-func approxFloatEqual(a, b float64) bool {
-	var epsilon float64 = 0.00000001
-
-	if (a-b) < epsilon && (b-a) < epsilon {
-		return true
-	}
-	return false
-}
 
 func findNode(s int, t int, c *coupling.Coupling) coupling.Node {
 	newnode := coupling.Node{S: 0, T: 0}
@@ -120,6 +111,8 @@ func BipseudoMetric(m markov.MarkovChain, lambda int, tocompute *[][]bool) {
 				//minimumvalue, iindex, jindex = Uvmethod(&node)
 			}
 			//exact = sets.UnionReal(exact, reachable(s, t, c)) TODO update when reachable has been made
+            // todo implement this:
+            // removeedgesfromnodes(&c, &exact)
 			removeExactEdges(w2, exact)
 		}
 
