@@ -2,7 +2,6 @@ package compiler
 
 import (
     "log"
-    "os"
 )
 
 
@@ -31,17 +30,15 @@ func (c *Compiler)  maketoken(tokentype, value string) token {
 
 func (c *Compiler) scanner() token {
     // TODO clear whitespace
-    chr := c.readchar()
-    if chr  == 'S' { // Must be States
-        return c.maketoken("S" + c.readword(), "")
+    if c.peek() == 'S' { // Must be States
+        return c.maketoken(c.readword(), "")
+    } else {
+        log.Fatal("Unexpected keyword ", c.peek())
     }
     return token{}
 }
 
-func New(filename string) (Compiler, error) {
-    filelocal, err := os.Open(filename)
-    return Compiler{*filelocal}, err
-}
+
 
 func (c *Compiler) Parse() {
 
@@ -52,6 +49,7 @@ func (c *Compiler) Parse() {
         _ = token 
 
         if state == 0 { // We are before States:
+
         } else if state == 1 {
 
         } else if state == 2 {
