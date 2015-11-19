@@ -26,19 +26,19 @@ func removeExactEdges(n *coupling.Node, exact [][]bool) {
 			// if the edge node adj matrix is nill, we do not have to recursivevly call it,
 			// and just just delete n from its successor slice
 			if edge.To.Adj == nil {
-				deleteSucc(n, &edge.To.Succ)
+				coupling.DeleteNodeInSlice(n, &edge.To.Succ)
 				continue
 			}
 			
 			// if the edge has already been visited, we do not have have to recursively call
 			if edge.To.Visited {
-				deleteSucc(n, &edge.To.Succ)
+				coupling.DeleteNodeInSlice(n, &edge.To.Succ)
 				continue
 			}
 			
 			// recursively removes edges and successor node bottom up
 			removeExactEdges(edge.To, exact)
-			deleteSucc(n, &edge.To.Succ)
+			coupling.DeleteNodeInSlice(n, &edge.To.Succ)
 		}
 	}
 	
@@ -75,7 +75,7 @@ func BipseudoMetric(m markov.MarkovChain, lambda int, tocompute *[][]bool) {
 		d[i] = make([]float64, n, n)
 	}
 
-	w2 := randomMatching(m, 0, 1, &c)
+	w2 := findFeasibleMatching(m, 0, 1, &c)
 	log.Println(w2)
 
 	for !sets.EmptySet(tocompute) {
@@ -95,8 +95,6 @@ func BipseudoMetric(m markov.MarkovChain, lambda int, tocompute *[][]bool) {
 		} else {
 			// if s,t not in visited ...
 
-			disc(lambda, s, t, exact, d, &c)
-
 			node := findNode(s, t, &c)
 			minimumvalue := 1.0 //TODO remove when
 			_ = node
@@ -105,9 +103,9 @@ func BipseudoMetric(m markov.MarkovChain, lambda int, tocompute *[][]bool) {
 				//SteppingStone(&node, iindex, jindex)
 
 				// w := getoptimalschedule(d, u, v) TODO this instead of next line
-				w := randomMatching(m, s, t, &c)
-				setpair(m, s, t, w, exact, visited, d, &c)
-				disc(lambda, s, t, exact, d, &c)
+				w := findFeasibleMatching(m, s, t, &c)
+				setpair(m, w, exact, visited, d, &c)
+				disc(lambda, w, exact, d, &c)
 				//minimumvalue, iindex, jindex = Uvmethod(&node)
 			}
 			//exact = sets.UnionReal(exact, reachable(s, t, c)) TODO update when reachable has been made
@@ -120,8 +118,8 @@ func BipseudoMetric(m markov.MarkovChain, lambda int, tocompute *[][]bool) {
 
 		break //TODO remove this. This is for ending the code
 	}
-	setpair(m, 0, 1, w2, exact, visited, d, &c)
-	disc(1, 1, 1, exact, d, &c)
+	setpair(m, w2, exact, visited, d, &c)
+	disc(1, w2, exact, d, &c)
 	log.Println("hello world!")
 	// return what?
 }

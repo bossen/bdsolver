@@ -128,18 +128,18 @@ func TestCorrectSetSuccNodes(t *testing.T) {
 	
 	SteppingStone(n2, 1, 0)
 	
-	assert.True(t, succNode(n2, c.Nodes[0].Succ), "node (1,0) did not remain a successor for (0,0)")
-	assert.True(t, succNode(n2, c.Nodes[1].Succ), "node (1,0) did not remain a successor for (0,1)")
-	assert.True(t, succNode(n2, c.Nodes[2].Succ), "node (1,0) did not become a successor for (1,0)")
-	assert.False(t, succNode(n2, c.Nodes[3].Succ), "node (1,0) remained a successor for (1,1)")
+	assert.True(t, coupling.IsNodeInSlice(n2, c.Nodes[0].Succ), "node (1,0) did not remain a successor for (0,0)")
+	assert.True(t, coupling.IsNodeInSlice(n2, c.Nodes[1].Succ), "node (1,0) did not remain a successor for (0,1)")
+	assert.True(t, coupling.IsNodeInSlice(n2, c.Nodes[2].Succ), "node (1,0) did not become a successor for (1,0)")
+	assert.False(t, coupling.IsNodeInSlice(n2, c.Nodes[3].Succ), "node (1,0) remained a successor for (1,1)")
 }
 
 func TestCorrectDeletedSuccNodes(t *testing.T) {
 	c := setUpCoupling()
 	
 	succ := c.Nodes[0].Succ
-	deleteSucc(succ[0], &succ)
+	coupling.DeleteNodeInSlice(succ[0], &succ)
 	assert.Equal(t, len(succ), 2, "length of the successor slice did not change")
-	deleteSucc(succ[0], &succ)
+	coupling.DeleteNodeInSlice(succ[0], &succ)
 	assert.Equal(t, len(succ), 1, "length of the successor slice did not change")
 }

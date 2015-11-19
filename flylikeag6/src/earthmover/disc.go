@@ -10,13 +10,13 @@ func setdistance(d [][]float64, u int, v int, value float64) {
  }
 
 func setZerosDistanceToZero(n *coupling.Node, nonzero []*coupling.Node, exact [][]bool, d[][]float64, c *coupling.Coupling) {
-	r := coupling.Reachable(n.S, n.T, c)
+	reachables := coupling.Reachable(n, c)
 	
 	for _, node := range nonzero {
-		deleteSucc(node, &r)
+		coupling.DeleteNodeInSlice(node, &reachables)
 	}
 	
-	for _, node := range r {
+	for _, node := range reachables {
 		d[node.S][node.T] = 0
 		exact[node.S][node.T] = true
 	}
@@ -50,10 +50,8 @@ func nextdemandedpairDisc(w []*coupling.Node, i int) (int, int) {
 	return 1, 1
 }
 
-func disc(lambda int, s int, t int, exact [][]bool, d[][]float64, c *coupling.Coupling) {
-	n := coupling.FindNode(s, t, c)
-	
-	nonzero := findNonZero(s, t, exact, d, c)
+func disc(lambda int, n *coupling.Node, exact [][]bool, d[][]float64, c *coupling.Coupling) {
+	nonzero := findNonZero(n, exact, d, c)
 	
 	setZerosDistanceToZero(n, nonzero, exact, d, c)
 	

@@ -37,23 +37,10 @@ func FindNode(u, v int, c *Coupling) *Node {
 	return nil
 }
 
-func Reachable(u, v int, c *Coupling) []*Node {
+func Reachable(root *Node, c *Coupling) []*Node {
 	// Using slices might be slow. If we got performance problems we might
 	// implement using lists instead.
 	var reachables []*Node
-
-	var root *Node
-
-	for _, n := range c.Nodes {
-		if n.S == u && n.T == v {
-			root = n
-			break
-		}
-	}
-	
-	if root == nil {
-		panic("root was not found")
-	}
 	
 	root.Visited = true
 	
@@ -84,6 +71,7 @@ func visit(root *Node, results []*Node) []*Node {
 	if root.Adj == nil {
 		return results
 	}
+	
 	for i := range root.Adj {
 		for j := range root.Adj[0] {
 			edge := root.Adj[i][j]
@@ -98,4 +86,26 @@ func visit(root *Node, results []*Node) []*Node {
 	}
 
 	return results
+}
+
+func IsNodeInSlice(n *Node, nodes []*Node) bool {
+	for _, succNode := range nodes {
+		if succNode == n {
+			return true
+		}
+	}
+	return false
+}
+
+func DeleteNodeInSlice(n *Node, nodes *[]*Node) {
+	for i := 0; i < len(*nodes); i++ {
+		if (*nodes)[i] == n {
+			// https://github.com/golang/go/wiki/SliceTricks
+			(*nodes)[i] = (*nodes)[len(*nodes)-1]
+			(*nodes)[len(*nodes)-1] = nil
+			(*nodes) = (*nodes)[:len(*nodes)-1]
+			break
+		}
+	}
+	return
 }

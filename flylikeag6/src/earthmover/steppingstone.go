@@ -116,7 +116,7 @@ func updateEdge(edge *coupling.Edge, signal bool, min float64, n *coupling.Node)
 		edge.Basic = true
 		
 		// add the main node as a successor to the node if it not already is
-		if !succNode(n, edge.To.Succ) {
+		if !coupling.IsNodeInSlice(n, edge.To.Succ) {
 			edge.To.Succ = append(edge.To.Succ, n)
 		}
 
@@ -127,31 +127,9 @@ func updateEdge(edge *coupling.Edge, signal bool, min float64, n *coupling.Node)
 		
 		// if no longer basic remove the main node as a successor for the node
 		if !edge.Basic {
-			deleteSucc(n, &edge.To.Succ)
+			coupling.DeleteNodeInSlice(n, &edge.To.Succ)
 		}
 	}
 
 	edge.To.Visited = false
-}
-
-func succNode(n *coupling.Node, succ []*coupling.Node) bool {
-	for _, i := range succ {
-		if i == n {
-			return true
-		}
-	}
-	return false
-}
-
-func deleteSucc(n *coupling.Node, succ *[]*coupling.Node) {
-	for i := 0; i < len(*succ); i++ {
-		if (*succ)[i] == n {
-			// https://github.com/golang/go/wiki/SliceTricks
-			(*succ)[i] = (*succ)[len(*succ)-1]
-			(*succ)[len(*succ)-1] = nil
-			(*succ) = (*succ)[:len(*succ)-1]
-			break
-		}
-	}
-	return
 }
