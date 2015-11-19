@@ -4,6 +4,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"testing"
     "utils"
+    "log"
 )
 
 func TestCorrectMatchingFound(t *testing.T) {
