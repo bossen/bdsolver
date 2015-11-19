@@ -2,28 +2,25 @@ package earthmover
 
 import (
 	"coupling"
-	"fmt"
+	"log"
 )
 
-func transposegraph(graph coupling.Coupling) coupling.Coupling {
-	return graph
-}
-
 func setdistance(d [][]float64, u int, v int, value float64) {
-	d[u][v] = value
-}
+ 	d[u][v] = value
+ }
 
-/*
-func setZerosDistanceToZero(s int, t int, nonzero int, exact [][]bool, d [][]float64, c coupling.Coupling) {
-	pairs := sets.Differens(reachable(s, t, c), nonzero)
-	pairsize := 1 //len(pairs) TODO
-	for i := 0; i < pairsize; i++ {
-		u, v := nextdemandedpairDisc(pairs, i)
-		setdistance(d, u, v, 0)
-		exact[u][v] = true
+func setZerosDistanceToZero(n *coupling.Node, nonzero []*coupling.Node, exact [][]bool, d[][]float64, c *coupling.Coupling) {
+	r := coupling.Reachable(n.S, n.T, c)
+	
+	for _, node := range nonzero {
+		deleteSucc(node, &r)
+	}
+	
+	for _, node := range r {
+		d[node.S][node.T] = 0
+		exact[node.S][node.T] = true
 	}
 }
-* */
 
 func finda(c coupling.Coupling, nonzero []*coupling.Node) int {
 	return 1
@@ -54,11 +51,15 @@ func nextdemandedpairDisc(w []*coupling.Node, i int) (int, int) {
 }
 
 func disc(lambda int, s int, t int, exact [][]bool, d[][]float64, c *coupling.Coupling) {
+	n := coupling.FindNode(s, t, c)
+	
 	nonzero := findNonZero(s, t, exact, d, c)
-	//setZerosDistanceToZero(s, t, nonzero, exact, d, *c)
+	
+	setZerosDistanceToZero(n, nonzero, exact, d, c)
+	
 	a := finda(*c, nonzero)
 	b := findb(exact, d, *c, nonzero)
 	x := solvelinearsystem(lambda, a, b)
 	updatedistances(nonzero, d, x)
-	fmt.Println("discrepancy!")
+	log.Println("discrepancy!")
 }
