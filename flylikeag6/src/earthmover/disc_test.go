@@ -18,10 +18,10 @@ func TestSettingZeroDistanceAndExact(t *testing.T) {
 	
 	c, m, visited, exact, d := setUpTest()
 	
-	w := randomMatching(m, 0, 3, &c)
-	setpair(m, 0, 3, w, exact, visited, d, &c)
+	w := findFeasibleMatching(m, 0, 3, &c)
+	setpair(m, w, exact, visited, d, &c)
 	
-	nonz := findNonZero(w.S, w.T, exact, d, &c)
+	nonz := findNonZero(w, exact, d, &c)
 	
 	setZerosDistanceToZero(w, nonz, exact, d, &c)
 	

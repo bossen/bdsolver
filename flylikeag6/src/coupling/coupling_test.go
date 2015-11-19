@@ -23,7 +23,7 @@ func setUpCoupling() Coupling {
 
 func TestReachableNilAdj(t *testing.T) {
 	c := setUpCoupling()
-    r := Reachable(0, 0, &c)
+    r := Reachable(c.Nodes[0], &c)
     
     assert.Equal(t, len(r), 1, "size of the reachable set should be 1 if Adj is nil")
 }
@@ -34,7 +34,7 @@ func TestResetsVisitedToFalse(t *testing.T) {
     // set the start to true just to check if it actually is set to false during reachable
     c.Nodes[1].Visited = true
     
-    Reachable(0, 1, &c)
+    Reachable(c.Nodes[1], &c)
     
     for i := 0; i < 4; i++ {
 		assert.False(t, c.Nodes[i].Visited, "the visited variable date type was not changed back to false")
@@ -44,14 +44,14 @@ func TestResetsVisitedToFalse(t *testing.T) {
 func TestReachableSetCardinality(t *testing.T) {
 	c := setUpCoupling()
     
-    r := Reachable(0, 1, &c)
+    r := Reachable(c.Nodes[1], &c)
     
     assert.Equal(t, len(r), 3, "the cardinality of the reachable set should be 3")
     
     // test if it correctly finds the correct reachable set after we make one of the nodes unreachable
     c.Nodes[1].Adj[1][1].Prob = 0.0
     
-    r = Reachable(0, 1, &c)
+    r = Reachable(c.Nodes[1], &c)
     
     assert.Equal(t, len(r), 2, "the cardinality of the reachable set should be 2")
 }

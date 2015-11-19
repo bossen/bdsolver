@@ -42,8 +42,8 @@ func setUpTest() (coupling.Coupling, markov.MarkovChain, [][]bool, [][]bool, [][
 func TestCorrectEdgesRemoved(t *testing.T) {
 	c, m, visited, exact, d := setUpTest()
 	
-	w := randomMatching(m, 0, 3, &c)
-	setpair(m, 0, 3, w, exact, visited, d, &c)
+	w := findFeasibleMatching(m, 0, 3, &c)
+	setpair(m, w, exact, visited, d, &c)
 	
 	n := w.Adj[2][2].To
 	
@@ -58,25 +58,25 @@ func TestCorrectEdgesRemoved(t *testing.T) {
 func TestCorrectSuccNodesRemoved(t *testing.T) {
 	c, m, visited, exact, d := setUpTest()
 	
-	w := randomMatching(m, 0, 3, &c)
-	setpair(m, 0, 3, w, exact, visited, d, &c)
+	w := findFeasibleMatching(m, 0, 3, &c)
+	setpair(m, w, exact, visited, d, &c)
 	
 	n := w.Adj[2][2].To
 	n2 := n.Adj[1][2].To
 	
 	removeExactEdges(n, exact)
 	
-	assert.True(t, succNode(w, n.Succ), "node (0,3) was removed as a successor for (2,3)")
-	assert.False(t, succNode(n, w.Adj[0][0].To.Succ), "node (2,3) is still a successor for (0,1)")
-	assert.True(t, succNode(w, w.Adj[0][0].To.Succ), "node (0,3) was removed as a successor for (0,1)")
-	assert.False(t, succNode(n, n2.Succ), "node (2,3) was not removed as a successor for (2,2)")
+	assert.True(t, coupling.IsNodeInSlice(w, n.Succ), "node (0,3) was removed as a successor for (2,3)")
+	assert.False(t, coupling.IsNodeInSlice(n, w.Adj[0][0].To.Succ), "node (2,3) is still a successor for (0,1)")
+	assert.True(t, coupling.IsNodeInSlice(w, w.Adj[0][0].To.Succ), "node (0,3) was removed as a successor for (0,1)")
+	assert.False(t, coupling.IsNodeInSlice(n, n2.Succ), "node (2,3) was not removed as a successor for (2,2)")
 }
 
 func TestCorrectExactSet(t *testing.T) {
 	c, m, visited, exact, d := setUpTest()
 	
-	w := randomMatching(m, 0, 3, &c)
-	setpair(m, 0, 3, w, exact, visited, d, &c)
+	w := findFeasibleMatching(m, 0, 3, &c)
+	setpair(m, w, exact, visited, d, &c)
 	
 	n := w.Adj[2][2].To
 	

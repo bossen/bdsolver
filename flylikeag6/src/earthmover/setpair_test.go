@@ -4,14 +4,15 @@ import (
 	"github.com/stretchr/testify/assert"
 	"testing"
     "utils"
+    "coupling"
 )
 
 func TestCorrectRecursiveSetPairCall(t *testing.T) {
 	// the same functions used for random matching testing
 	c, m, visited, exact, d := setUpTest()
 
-	w := randomMatching(m, 0, 3, &c)
-	setpair(m, 0, 3, w, exact, visited, d, &c)
+	w := findFeasibleMatching(m, 0, 3, &c)
+	setpair(m, w, exact, visited, d, &c)
 
 	assert.NotEqual(t, w.Adj, nil, "the adjacency matrix has not been filled for (0,3)")
 	assert.NotEqual(t, w.Adj[2][2].To.Adj, nil, "the adjacency matrix has not been filled for (2,3)")
@@ -39,8 +40,8 @@ func TestCorrectVisited(t *testing.T) {
 
 	c, m, visited, exact, d := setUpTest()
 
-	w := randomMatching(m, 0, 3, &c)
-	setpair(m, 0, 3, w, exact, visited, d, &c)
+	w := findFeasibleMatching(m, 0, 3, &c)
+	setpair(m, w, exact, visited, d, &c)
 
 	for i := 0; i < len(expected); i++ {
 		for j := 0; j < len(expected[0]); j++ {
@@ -61,8 +62,8 @@ func TestCorrectExact(t *testing.T) {
 
 	c, m, visited, exact, d := setUpTest()
 
-	w := randomMatching(m, 0, 3, &c)
-	setpair(m, 0, 3, w, exact, visited, d, &c)
+	w := findFeasibleMatching(m, 0, 3, &c)
+	setpair(m, w, exact, visited, d, &c)
 
 	for i := 0; i < len(expected); i++ {
 		for j := 0; j < len(expected[0]); j++ {
@@ -78,8 +79,8 @@ func TestCorrectNestedMatchingFound(t *testing.T) {
 	// the same functions used for random matching testing
 	c, m, visited, exact, d := setUpTest()
 
-	w := randomMatching(m, 0, 3, &c)
-	setpair(m, 0, 3, w, exact, visited, d, &c)
+	w := findFeasibleMatching(m, 0, 3, &c)
+	setpair(m, w, exact, visited, d, &c)
 
 	node := w.Adj[2][2].To
 
@@ -96,8 +97,8 @@ func TestCorrectNestedBasicFound(t *testing.T) {
 	// the same functions used for random matching testing
 	c, m, visited, exact, d := setUpTest()
 
-	w := randomMatching(m, 0, 3, &c)
-	setpair(m, 0, 3, w, exact, visited, d, &c)
+	w := findFeasibleMatching(m, 0, 3, &c)
+	setpair(m, w, exact, visited, d, &c)
 
 	node := w.Adj[2][2].To
 
@@ -112,16 +113,16 @@ func TestCorrectNestedSuccessorFound(t *testing.T) {
 	// the same functions used for random matching testing
 	c, m, visited, exact, d := setUpTest()
 
-	w := randomMatching(m, 0, 3, &c)
-	setpair(m, 0, 3, w, exact, visited, d, &c)
+	w := findFeasibleMatching(m, 0, 3, &c)
+	setpair(m, w, exact, visited, d, &c)
 
 	node := w.Adj[2][2].To
 	
-	assert.True(t, succNode(node, node.Adj[0][0].To.Succ), "node (2,3) did not become a successor for (0,1)")
-	assert.True(t, succNode(node, node.Adj[0][1].To.Succ), "node (2,3) did not become a successor for (1,1)")
-	assert.True(t, succNode(node, node.Adj[1][1].To.Succ), "node (2,3) did not become a successor for (1,2)")
-	assert.True(t, succNode(node, node.Adj[1][2].To.Succ), "node (2,3) did not become a successor for (2,2)")
+	assert.True(t, coupling.IsNodeInSlice(node, node.Adj[0][0].To.Succ), "node (2,3) did not become a successor for (0,1)")
+	assert.True(t, coupling.IsNodeInSlice(node, node.Adj[0][1].To.Succ), "node (2,3) did not become a successor for (1,1)")
+	assert.True(t, coupling.IsNodeInSlice(node, node.Adj[1][1].To.Succ), "node (2,3) did not become a successor for (1,2)")
+	assert.True(t, coupling.IsNodeInSlice(node, node.Adj[1][2].To.Succ), "node (2,3) did not become a successor for (2,2)")
 	// common children between node(2,3) and w(0,3)
-	assert.True(t, succNode(w, node.Adj[0][0].To.Succ), "node (0,1) did not have node (0,3) as a successor")
-	assert.True(t, succNode(w, node.Adj[1][1].To.Succ), "node (1,2) did not have node (0,3) as a successor")
+	assert.True(t, coupling.IsNodeInSlice(w, node.Adj[0][0].To.Succ), "node (0,1) did not have node (0,3) as a successor")
+	assert.True(t, coupling.IsNodeInSlice(w, node.Adj[1][1].To.Succ), "node (1,2) did not have node (0,3) as a successor")
 }

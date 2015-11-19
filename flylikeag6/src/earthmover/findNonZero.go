@@ -2,18 +2,11 @@ package earthmover
 
 import (
 	"coupling"
-	"log"
 )
 
-func findNonZero(s, t int, exact [][]bool, d [][]float64, c *coupling.Coupling) []*coupling.Node {
-	n := coupling.FindNode(s, t, c)
-
-	if n == nil {
-		log.Panic("node chould not be found in the coupling")
-	}
-
+func findNonZero(n *coupling.Node, exact [][]bool, d [][]float64, c *coupling.Coupling) []*coupling.Node {
 	// finds all reachable from (s,t)
-	reachables := coupling.Reachable(s, t, c)
+	reachables := coupling.Reachable(n, c)
 
 	// remove nodes not exact or distance less than 0
 	reachablesNonZero := filterZeros(reachables, exact, d)
@@ -41,7 +34,7 @@ func filterZeros(reachables []*coupling.Node, exact [][]bool, d [][]float64) []*
 			continue
 		}
 		// otherwise delete it
-		deleteSucc(node, &reachables)
+		coupling.DeleteNodeInSlice(node, &reachables)
 	}
 
 	return reachables
@@ -51,7 +44,7 @@ func findReverseReachable(node *coupling.Node, reachables []*coupling.Node) []*c
 	node.Visited = true
 
 	for _, succ := range node.Succ {
-		if !succNode(succ, reachables) {
+		if !coupling.IsNodeInSlice(succ, reachables) {
 			reachables = append(reachables, succ)
 		}
 
