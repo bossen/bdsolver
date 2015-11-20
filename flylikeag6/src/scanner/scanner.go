@@ -88,7 +88,6 @@ func (c *Scanner) EatWhitespaceAndComments() {
         if char != '/' {
             log.Fatal("Expected / got %s", char)
         }
-        expect(c.ReadChar(), '/')
         c.eatuntil('\n')
     }
 }
