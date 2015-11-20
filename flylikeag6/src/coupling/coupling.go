@@ -42,14 +42,14 @@ func Reachable(root *Node, c *Coupling) []*Node {
 	// implement using lists instead.
 	var reachables []*Node
 	
-	root.Visited = true
-	
 	// Adding itself to reachables
 	reachables = append(reachables, root)
 
 	if root.Adj == nil {
 		return reachables
 	}
+	
+	root.Visited = true
 
 	// Find all reachables from the  u,v node
 	reachables = visit(root, reachables)
@@ -59,7 +59,7 @@ func Reachable(root *Node, c *Coupling) []*Node {
 		log.Println(t)
 	}
 
-	for _, n := range c.Nodes {
+	for _, n := range reachables {
 		n.Visited = false
 	}
 
