@@ -38,7 +38,13 @@ func TestResetsVisitedToFalse(t *testing.T) {
     
     for i := 0; i < 4; i++ {
 		assert.False(t, c.Nodes[i].Visited, "the visited variable date type was not changed back to false")
-	}    
+	}
+	
+	Reachable(c.Nodes[0], &c)
+	
+	for i := 0; i < 4; i++ {
+		assert.False(t, c.Nodes[i].Visited, "the visited variable date type was not changed back to false")
+	}
 }
 
 func TestReachableSetCardinality(t *testing.T) {
