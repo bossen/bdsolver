@@ -6,7 +6,7 @@ import (
 	"log"
 	"markov"
 	"sets"
-//    "compiler"
+    "scanner"
 )
 
 func TestUVmethod(node *coupling.Node, d [][]float64) {
@@ -30,18 +30,19 @@ func initToCompute(n int) *[][]bool {
 
 
 func testCompiler() {
-    /* compiler, err := compiler.New("examples/algorithmfrompaper.lmc")
+
+    scanner, err := scanner.New("examples/algorithmfrompaper.lmc")
     if err != nil {
         log.Fatal("Not existing")
     }
-    compiler.Parse() */
-} 
+    log.Println("Scanner reading word: ", scanner.ReadWord())
+}
 
 func main() {
     log.SetFlags(log.Lshortfile)
     
     
-    testCompiler()
+
 	mymarkov := markov.New()
 	tocompute := initToCompute(len(mymarkov.Transitions))
 	earthmover.BipseudoMetric(mymarkov, 32, tocompute)
@@ -78,4 +79,5 @@ func main() {
 	log.Println(n2.Adj[0][0], n2.Adj[0][1], n2.Adj[1][0], n2.Adj[1][1])
 	earthmover.SteppingStone(&n2, 1, 0)
 	log.Println(n2.Adj[0][0], n2.Adj[0][1], n2.Adj[1][0], n2.Adj[1][1])
+    testCompiler()
 }
