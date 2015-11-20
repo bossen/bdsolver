@@ -61,10 +61,6 @@ func (c *Scanner) endoffile() bool {
     }
 }
 
-func expect(a, b byte) {
-
-}
-
 func (c *Scanner) eatuntil(a byte) {
 
     for !c.endoffile()  {

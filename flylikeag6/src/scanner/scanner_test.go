@@ -76,7 +76,7 @@ func TestReadWordWithSufixWhitespace(t *testing.T) {
     scanner, _ := New("main.go")
 
     // Overwrite the reader, so we can fake it
-    scanner.reader = *bufio.NewReader(strings.NewReader("\t    someword\t    "))
+    scanner.reader = *bufio.NewReader(strings.NewReader("someword\t    "))
 
     assert.Equal(t, scanner.ReadWord(), "someword")
 
