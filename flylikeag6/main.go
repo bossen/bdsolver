@@ -31,7 +31,7 @@ func main() {
     
 	mymarkov := markov.New()
 	tocompute := initToCompute(len(mymarkov.Transitions))
-	earthmover.BipseudoMetric(mymarkov, 32, tocompute)
+	earthmover.BipseudoMetric(mymarkov, 1, tocompute)
 	// fmt.Printf("%+v", mymarkov)
 
 	c := coupling.New()
@@ -65,4 +65,13 @@ func main() {
 	log.Println(n2.Adj[0][0], n2.Adj[0][1], n2.Adj[1][0], n2.Adj[1][1])
 	earthmover.SteppingStone(&n2, 1, 0)
 	log.Println(n2.Adj[0][0], n2.Adj[0][1], n2.Adj[1][0], n2.Adj[1][1])
+	
+	a := [][]float64{[]float64{1.0, -(1.0/6.0)}, []float64{0.0, 1.0}}
+	b := []float64{5.0/6.0, 1.0/2.0}
+	x, err := earthmover.GaussPartial(a, b)
+	
+	log.Println(a)
+	log.Println(b)
+	log.Println(x)
+	log.Println(err)
 }

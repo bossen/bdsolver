@@ -65,7 +65,7 @@ func findNode(s int, t int, c *coupling.Coupling) coupling.Node {
 	return newnode
 }
 
-func BipseudoMetric(m markov.MarkovChain, lambda int, tocompute *[][]bool) {
+func BipseudoMetric(m markov.MarkovChain, lambda float64, tocompute *[][]bool) {
 	n := len(m.Transitions)
 	visited := *sets.MakeMatrix(n)
 	exact := *sets.MakeMatrix(n)
