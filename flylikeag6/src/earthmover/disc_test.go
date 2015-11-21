@@ -50,7 +50,7 @@ func TestDisc(t *testing.T) {
 	w := findFeasibleMatching(m, 0, 3, &c)
 	setpair(m, w, exact, visited, d, &c)
 	
-	disc(1, w, exact, d, &c)
+	disc(1.0, w, exact, d, &c)
 	
 	assert.True(t, utils.ApproxEqual(d[0][3], 0.9133), "the distance was not correctly set")
 	assert.True(t, utils.ApproxEqual(d[2][3], 0.49), "the distance was not correctly set")
