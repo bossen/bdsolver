@@ -4,7 +4,7 @@ import (
 	"coupling"
 )
 
-func setUpLinearEquations(n *coupling.Node, exact [][]bool, d [][]float64, a *[][]float64, b *[]float64, i int, index *[]NodePair) {
+func setUpLinearEquations(n *coupling.Node, exact [][]bool, d [][]float64, a *[][]float64, b *[]float64, i int, index *[]NodePair, lambda float64) {
 	n.Visited = true
 	
 	for _, row := range n.Adj {
@@ -16,7 +16,7 @@ func setUpLinearEquations(n *coupling.Node, exact [][]bool, d [][]float64, a *[]
 			
 			// if the node is exact, we add its probablity times its distance to the i'th row in the b vector
 			if exact[edge.To.S][edge.To.T] {
-				(*b)[i] += d[edge.To.S][edge.To.T] * edge.Prob
+				(*b)[i] += d[edge.To.S][edge.To.T] * edge.Prob * lambda
 				continue
 			}
 			
@@ -24,17 +24,17 @@ func setUpLinearEquations(n *coupling.Node, exact [][]bool, d [][]float64, a *[]
 			// and subtract its probability from its corresponding place in the a matrix
 			if edge.To.Visited {
 				rowindex := findRowIndex(index, edge.To)
-				(*a)[i][rowindex] -= edge.Prob
+				(*a)[i][rowindex] -= edge.Prob * lambda
 				continue
 			}
 			
 			// we have to add a new linear equation, so we update a, b, and index
 			addLinearEquation(a, b, index, edge.To)
 			
-			(*a)[i][len(*a)-1] -= edge.Prob
+			(*a)[i][len(*a)-1] -= edge.Prob * lambda
 			
 			// recursevely sets up the linear equation
-			setUpLinearEquations(n, exact, d, a, b, len(*a)-1, index)
+			setUpLinearEquations(edge.To, exact, d, a, b, len(*a)-1, index, lambda)
 		}
 	}
 	

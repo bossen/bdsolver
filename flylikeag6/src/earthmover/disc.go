@@ -37,7 +37,7 @@ func disc(lambda float64, n *coupling.Node, exact [][]bool, d[][]float64, c *cou
 	index[0] = NodePair{n.S, n.T}
 	
 	// manipulates a, b, and index using pointers
-	setUpLinearEquations(n, exact, d, &a, &b, 0, &index)
+	setUpLinearEquations(n, exact, d, &a, &b, 0, &index, lambda)
 	
 	// calculates the linear equations
 	x, err := GaussPartial(a, b)
