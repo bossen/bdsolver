@@ -123,7 +123,7 @@ func updateEdge(edge *coupling.Edge, signal bool, min float64, n *coupling.Node)
 	} else {
 		edge.Prob -= min
 		// if the line edge.Prob -= min, makes edge.Prob to zero, it is not a basic cell
-		edge.Basic = edge.Prob > 0
+		edge.Basic = !utils.ApproxEqual(edge.Prob, 0)
 		
 		// if no longer basic remove the main node as a successor for the node
 		if !edge.Basic {
