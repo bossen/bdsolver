@@ -34,10 +34,7 @@ func TestAddsNewLinearEquationCorrectly(t *testing.T) {
 	addLinearEquation(&a, &b, &index, &coupling.Node{S: 2, T: 3})
 	
 	// checking lengths of a, b, and index
-	assert.Equal(t, len(a), 2, "the matrix did not a correct number of rows")
-	assert.Equal(t, len(a[0]), 2, "the matrix did not a correct number of columns")
-	assert.Equal(t, len(b), 2, "the vector did not a correct number of rows")
-	assert.Equal(t, len(index), 2, "the slice did not a correct number of nodes")
+	checkEquationDimensions(t, a, b, index, 2)
 	
 	// checking if the diagonal of a are all 1.0
 	assert.Equal(t, a[0][0], 1.0, "the value in matrix diagonal was not 1.0")
@@ -45,11 +42,7 @@ func TestAddsNewLinearEquationCorrectly(t *testing.T) {
 	
 	addLinearEquation(&a, &b, &index, &coupling.Node{S: 1, T: 4})
 	
-	// checking lengths of a, b, and index
-	assert.Equal(t, len(a), 3, "the matrix did not a correct number of rows")
-	assert.Equal(t, len(a[0]), 3, "the matrix did not a correct number of columns")
-	assert.Equal(t, len(b), 3, "the vector did not a correct number of rows")
-	assert.Equal(t, len(index), 3, "the slice did not a correct number of nodes")
+	checkEquationDimensions(t, a, b, index, 3)
 	
 	// checking if the diagonal of a are all 1.0
 	assert.Equal(t, a[0][0], 1.0, "the value in matrix diagonal was not 1.0")
@@ -67,16 +60,10 @@ func TestCorrectLinearFunctionsCreated(t *testing.T) {
 	
 	setUpLinearEquations(w, exact, d, &a, &b, 0, &index, 1.0)
 	
-	// checking lengths of a, b, and index
-	assert.Equal(t, len(a), 2, "the matrix did not a correct number of rows")
-	assert.Equal(t, len(a[0]), 2, "the matrix did not a correct number of columns")
-	assert.Equal(t, len(b), 2, "the vector did not a correct number of rows")
-	assert.Equal(t, len(index), 2, "the slice did not a correct number of nodes")
+	checkEquationDimensions(t, a, b, index, 2)
 	
 	assert.True(t, utils.ApproxEqual(b[0], 0.83))
 	assert.True(t, utils.ApproxEqual(b[1], 0.49))
-	
-	
 	
 	assert.Equal(t, a[0][0], 1.0, "the value in the matrix diagonal was not 1.0")
 	assert.True(t, utils.ApproxEqual(a[0][1], -0.17), "the value in the matrix was not -0.17")
@@ -98,11 +85,7 @@ func TestCorrectLinearFunctionsCreatedLoops(t *testing.T) {
 	
 	setUpLinearEquations(w, exact, d, &a, &b, 0, &index, 1.0)
 	
-	// checking lengths of a, b, and index
-	assert.Equal(t, len(a), 2, "the matrix did not a correct number of rows")
-	assert.Equal(t, len(a[0]), 2, "the matrix did not a correct number of columns")
-	assert.Equal(t, len(b), 2, "the vector did not a correct number of rows")
-	assert.Equal(t, len(index), 2, "the slice did not a correct number of nodes")
+	checkEquationDimensions(t, a, b, index, 2)
 	
 	assert.True(t, utils.ApproxEqual(b[0], 0.5))
 	assert.True(t, utils.ApproxEqual(b[1], 0.49))
@@ -113,3 +96,10 @@ func TestCorrectLinearFunctionsCreatedLoops(t *testing.T) {
 	assert.Equal(t, a[1][1], 1.0, "the value in the matrix diagonal was not 1.0")
 }
 
+func checkEquationDimensions(t *testing.T, a [][]float64, b []float64, index []*coupling.Node, dim int) {
+	// checking lengths of a, b, and index
+	assert.Equal(t, len(a), dim, "the matrix did not have a correct number of rows")
+	assert.Equal(t, len(a[0]), dim, "the matrix did not have a correct number of columns")
+	assert.Equal(t, len(b), dim, "the vector did not have a correct number of rows")
+	assert.Equal(t, len(index), dim, "the slice did not have a correct number of nodes")
+}
