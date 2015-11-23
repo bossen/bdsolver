@@ -51,7 +51,7 @@ func (c *Scanner) ReadChar() byte {
     return char[0]
 }
 
-func (c *Scanner) endoffile() bool {
+func (c *Scanner) EndOfFile() bool {
     _, err := c.reader.Peek(1)
     // There might be other cases, e.g. buffer full.
     if err == nil {
@@ -63,27 +63,27 @@ func (c *Scanner) endoffile() bool {
 
 func (c *Scanner) eatuntil(a byte) {
 
-    for !c.endoffile()  {
+    for !c.EndOfFile()  {
         chr :=  c.ReadChar()
         if chr == a {
             break
         }
     }
-    if c.endoffile() {
+    if c.EndOfFile() {
         log.Fatal("Unexpected end of file")
     }
 }
 
 func (c *Scanner) EatWhitespaceAndComments() {
-    for !c.endoffile() {
-        if c.Peek() == ' ' || c.Peek() == '\t' {
+    for !c.EndOfFile() {
+        if utils.IsWhitespace(c.Peek()) {
             c.ReadChar()
         } else {
             break
         }
     }
 
-    if !c.endoffile() && c.Peek() == '/' {
+    if !c.EndOfFile() && c.Peek() == '/' {
         char := c.ReadChar()
         if char != '/' {
             log.Fatal("Expected / got %s", char)
@@ -98,7 +98,7 @@ func (c *Scanner) ReadNumber() int {
     c.EatWhitespaceAndComments()
 
     number := ""
-    for !c.endoffile() {
+    for !c.EndOfFile() {
         if utils.IsNumeric(c.Peek()) {
             number += string(c.ReadChar())
         } else if utils.IsWhitespace(c.Peek()){
@@ -123,7 +123,7 @@ func (c *Scanner) ReadNumber() int {
 func (c *Scanner) ReadWord() string {
     c.EatWhitespaceAndComments()
     word := ""
-    for !c.endoffile() {
+    for !c.EndOfFile() {
         if utils.IsAlphabetic(c.Peek()) {
             word += string(c.ReadChar())
         } else if utils.IsWhitespace(c.Peek()) {
