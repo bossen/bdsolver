@@ -85,3 +85,16 @@ func TestCorrectExactSet(t *testing.T) {
 	assert.True(t, exact[n.S][n.T], "node (2,3) were not set to true in exact")
 	assert.False(t, exact[w.S][w.T], "node (2,3) were not set to true in exact")
 }
+
+func TestInitializeD(t *testing.T) {
+	d := initializeD(100)
+	for i := range d {
+		for j := range d[i] {
+			if i == j {
+				assert.Zero(t, d[i][j], "d[%v][%v] value is %v", i, j, d[i][j])
+			} else {
+				assert.NotZero(t, d[i][j], "d[%v][%v] value is %v", i, j, d[i][j])
+			}
+		}
+	}
+}

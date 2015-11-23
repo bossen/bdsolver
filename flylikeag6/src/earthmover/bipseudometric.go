@@ -58,6 +58,18 @@ func isOptimal() bool {
 	return true
 }
 
+func initializeD(n int) [][]float64{
+	d := make([][]float64, n, n)
+	for i := 0; i < n; i++ {
+		d[i] = make([]float64, n, n)
+		for j := range d[i] {
+			if i != j {		//when i equal j, it will use the default value of 0
+				d[i][j] = 1
+			}
+		}
+	}
+	return d
+}
 
 
 func findNode(s int, t int, c *coupling.Coupling) coupling.Node {
@@ -70,10 +82,7 @@ func BipseudoMetric(m markov.MarkovChain, lambda int, tocompute *[][]bool) {
 	visited := *sets.MakeMatrix(n)
 	exact := *sets.MakeMatrix(n)
 	c := coupling.New()
-	d := make([][]float64, n, n)
-	for i := 0; i < n; i++ {
-		d[i] = make([]float64, n, n)
-	}
+	d := initializeD(n)
 
 	w2 := findFeasibleMatching(m, 0, 1, &c)
 	log.Println(w2)
