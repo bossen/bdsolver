@@ -4,7 +4,7 @@ import (
 	"coupling"
 )
 
-func setUpLinearEquations(n *coupling.Node, exact [][]bool, d [][]float64, a *[][]float64, b *[]float64, i int, index *[]NodePair, lambda float64) {
+func setUpLinearEquations(n *coupling.Node, exact [][]bool, d [][]float64, a *[][]float64, b *[]float64, i int, index *[]*coupling.Node, lambda float64) {
 	n.Visited = true
 	
 	for _, row := range n.Adj {
@@ -41,7 +41,7 @@ func setUpLinearEquations(n *coupling.Node, exact [][]bool, d [][]float64, a *[]
 	return
 }
 
-func findRowIndex(index *[]NodePair, node *coupling.Node) int {
+func findRowIndex(index *[]*coupling.Node, node *coupling.Node) int {
 	for i, row := range *index {
 		if node.S == row.S && node.T == row.T {
 			return i
@@ -50,7 +50,7 @@ func findRowIndex(index *[]NodePair, node *coupling.Node) int {
 	panic("no row index was found")
 }
 
-func addLinearEquation(a *[][]float64, b *[]float64, index *[]NodePair, node *coupling.Node) {
+func addLinearEquation(a *[][]float64, b *[]float64, index *[]*coupling.Node, node *coupling.Node) {
 	// b is a vector so we only need to append a new float 
 	*b = append(*b, 0.0)
 	
@@ -67,5 +67,5 @@ func addLinearEquation(a *[][]float64, b *[]float64, index *[]NodePair, node *co
 	(*a)[rowlen-1][rowlen-1] = 1.0
 	
 	// append a new NodePair to the index, since we have to manage a new linear equation
-	*index = append(*index, NodePair{node.S, node.T})
+	*index = append(*index, node)
 }

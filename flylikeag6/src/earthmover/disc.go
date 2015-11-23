@@ -5,10 +5,6 @@ import (
 	"log"
 )
 
-type NodePair struct {
-	S, T int
-}
-
 func setZerosDistanceToZero(n *coupling.Node, nonzero []*coupling.Node, exact [][]bool, d[][]float64, c *coupling.Coupling) {
 	reachables := coupling.Reachable(n, c)
 	
@@ -33,8 +29,8 @@ func disc(lambda float64, n *coupling.Node, exact [][]bool, d[][]float64, c *cou
 	a[0] = make([]float64, 1)
 	a[0][0] = 1.0
 	b := make([]float64, 1)
-	index := make([]NodePair, 1)
-	index[0] = NodePair{n.S, n.T}
+	index := make([]*coupling.Node, 1)
+	index[0] = n
 	
 	// manipulates a, b, and index using pointers
 	setUpLinearEquations(n, exact, d, &a, &b, 0, &index, lambda)

@@ -8,20 +8,19 @@ import (
 	"utils"
 )
 
-
-func setUpLinearEquationFrame() ([][]float64, []float64, []NodePair) {
+func setUpLinearEquationFrame() ([][]float64, []float64, []*coupling.Node) {
 	a := make([][]float64, 1)
 	a[0] = make([]float64, 1)
 	a[0][0] = 1.0
 	b := make([]float64, 1)
-	index := make([]NodePair, 1)
-	index[0] = NodePair{0, 3}
+	index := make([]*coupling.Node, 1)
+	index[0] = &coupling.Node{S: 0, T: 3}
 	
 	return a, b, index
 }
 
 func TestFindsCorrectRowIndex(t *testing.T) {
-	index := &[]NodePair{NodePair{0, 1}, NodePair{2, 4}, NodePair{0, 3}, NodePair{1, 7}}
+	index := &[]*coupling.Node{&coupling.Node{S: 0, T: 1}, &coupling.Node{S: 2, T: 4}, &coupling.Node{S: 0, T: 3}, &coupling.Node{S: 1, T: 7}}
 	
 	assert.Equal(t, findRowIndex(index, &coupling.Node{S: 0, T: 1}), 0, "the correct row index was not returned")
 	assert.Equal(t, findRowIndex(index, &coupling.Node{S: 0, T: 3}), 2, "the correct row index was not returned")
