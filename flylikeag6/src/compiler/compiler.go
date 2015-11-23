@@ -37,6 +37,8 @@ func scan(c* scanner.Scanner) token {
     } else if utils.IsNumeric(c.Peek()) {
         integer := strconv.Itoa(c.ReadNumber())
         return token{"Integer", integer}
+    } else if c.Peek() == '/' {
+        return token{"Divide", ""}
     } else {
         log.Fatal("Unexpected keyword ", c.Peek())
     }
@@ -75,7 +77,7 @@ func Parse(filename string) {
                 continue
             } else if token.tokentype == "Integer" {
                 label := getExpectedToken(&c, "Word")
-                log.Printf("Found an edge:%s,%s", token.value, label)
+                log.Printf("Found state %s with level %s", token.value, label)
                 continue
             }
 
@@ -83,15 +85,15 @@ func Parse(filename string) {
 
         } else if state == 2 {  // We are in Edges
 
-            expectToken(token, "Word")
+            expectToken(token, "Integer")
             from := token.value
             getExpectedToken(&c, "To")
-            to := getExpectedToken(&c, "Word")
-            prob := getExpectedToken(&c, "Float")
+            to := getExpectedToken(&c, "Integer")
+            num := getExpectedToken(&c, "Integer")
+            getExpectedToken(&c, "Divide")
+            den := getExpectedToken(&c, "Integer")
 
-            _ = from
-            _ = to
-            _ = prob
+            log.Printf("Edge %i -> %i with prop: %i / %i", from, to, num, den)
 
 
         } else {

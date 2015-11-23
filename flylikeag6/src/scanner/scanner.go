@@ -101,10 +101,10 @@ func (c *Scanner) ReadNumber() int {
     for !c.EndOfFile() {
         if utils.IsNumeric(c.Peek()) {
             number += string(c.ReadChar())
-        } else if utils.IsWhitespace(c.Peek()){
+        } else if utils.IsWhitespace(c.Peek()) {
             break
         } else {
-            log.Fatal("Expected whitespace after the number " + number + ", but got ", c.Peek())
+            log.Fatal("Expected whitespace after the number " + number + ", but got ", string(c.Peek()))
         }
     }
 
@@ -126,7 +126,7 @@ func (c *Scanner) ReadWord() string {
     for !c.EndOfFile() {
         if utils.IsAlphabetic(c.Peek()) {
             word += string(c.ReadChar())
-        } else if utils.IsWhitespace(c.Peek()) {
+        } else if utils.IsWhitespace(c.Peek()) || c.Peek() == '/' {
             break
         } else {
             log.Fatal("Unexpected %s", c.Peek())
