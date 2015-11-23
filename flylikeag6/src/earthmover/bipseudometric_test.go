@@ -88,12 +88,12 @@ func TestCorrectExactSet(t *testing.T) {
 
 func TestInitializeD(t *testing.T) {
 	d := initializeD(100)
-	for i := range *d {
-		for j := range (*d)[i] {
+	for i := range d {
+		for j := range d[i] {
 			if i == j {
-				assert.Zero(t, (*d)[i][j], "d[%v][%v] value is %v", i, j, (*d)[i][j])
+				assert.Zero(t, d[i][j], "d[%v][%v] value is %v", i, j, d[i][j])
 			} else {
-				assert.NotZero(t, (*d)[i][j], "d[%v][%v] value is %v", i, j, (*d)[i][j])
+				assert.NotZero(t, d[i][j], "d[%v][%v] value is %v", i, j, d[i][j])
 			}
 		}
 	}

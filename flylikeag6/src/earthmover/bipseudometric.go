@@ -58,7 +58,7 @@ func isOptimal() bool {
 	return true
 }
 
-func initializeD(n int) *[][]float64{
+func initializeD(n int) [][]float64{
 	d := make([][]float64, n, n)
 	for i := 0; i < n; i++ {
 		d[i] = make([]float64, n, n)
@@ -68,7 +68,7 @@ func initializeD(n int) *[][]float64{
 			}
 		}
 	}
-	return &d
+	return d
 }
 
 
@@ -93,11 +93,11 @@ func BipseudoMetric(m markov.MarkovChain, lambda int, tocompute *[][]bool) {
 		log.Println(t)
 
 		if m.Labels[s] != m.Labels[t] {
-			(*d)[s][t] = 1
+			d[s][t] = 1
 			exact[s][t] = true
 			visited[s][t] = true
 		} else if s == t {
-			(*d)[s][t] = 0
+			d[s][t] = 0
 			exact[s][t] = true
 			visited[s][t] = true
 
@@ -113,8 +113,8 @@ func BipseudoMetric(m markov.MarkovChain, lambda int, tocompute *[][]bool) {
 
 				// w := getoptimalschedule(d, u, v) TODO this instead of next line
 				w := findFeasibleMatching(m, s, t, &c)
-				setpair(m, w, exact, visited, *d, &c)
-				disc(lambda, w, exact, *d, &c)
+				setpair(m, w, exact, visited, d, &c)
+				disc(lambda, w, exact, d, &c)
 				//minimumvalue, iindex, jindex = Uvmethod(&node)
 			}
 			//exact = sets.UnionReal(exact, reachable(s, t, c)) TODO update when reachable has been made
@@ -127,8 +127,8 @@ func BipseudoMetric(m markov.MarkovChain, lambda int, tocompute *[][]bool) {
 
 		break //TODO remove this. This is for ending the code
 	}
-	setpair(m, w2, exact, visited, *d, &c)
-	disc(1, w2, exact, *d, &c)
+	setpair(m, w2, exact, visited, d, &c)
+	disc(1, w2, exact, d, &c)
 	log.Println("hello world!")
 	// return what?
 }
