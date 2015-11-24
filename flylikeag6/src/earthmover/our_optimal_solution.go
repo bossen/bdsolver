@@ -3,6 +3,7 @@ package earthmover
 import (
 	"coupling"
 	"log"
+	"utils"
 )
 
 func findOptimal(n *coupling.Node, d [][]float64) {
@@ -12,13 +13,13 @@ func findOptimal(n *coupling.Node, d [][]float64) {
 		res := SteppingStone(n, i, j)
 		
 		if !res {
-			// stepping stone failed, try to recover basic nodes such that it can be completed
+			log.Println("stepping stone failed, try to recover")
 			recoverBasicNodes(n)
 			
 			res = SteppingStone(n, i, j)
 			
 			if !res {
-				// still failed, something horrible is wrong
+				log.Println("stepping stone failed despite trying to recover")
 				log.Panic("stepping stone did not complete correctly")
 			}
 		}
@@ -56,7 +57,7 @@ func checkIsolated(s, t int, n *coupling.Node, isolatedEdges *[]IntPair) {
 			continue
 		}
 		
-		if n.Adj[s][j].Basic {
+		if n.Adj[s][j].Basic && !utils.ApproxEqual(n.Adj[s][j].Prob, 0) {
 			// the basic node is not alone in its row
 			return
 		}
@@ -67,7 +68,7 @@ func checkIsolated(s, t int, n *coupling.Node, isolatedEdges *[]IntPair) {
 			continue
 		}
 		
-		if n.Adj[i][t].Basic {
+		if n.Adj[i][t].Basic && !utils.ApproxEqual(n.Adj[i][t].Prob, 0) {
 			// the basic node is not alone in its column
 			return
 		}

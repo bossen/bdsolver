@@ -49,18 +49,19 @@ func TestIsolatedEdgesFound(t *testing.T) {
 	
 	checkIsolated(0, 0, w, &isolated)
 	
-	assert.Equal(t, len(isolated), 0, "somehow, node (0,1) were checked as isolated")
+	assert.Equal(t, len(isolated), 1, "somehow, node (0,1) were not checked as isolated")
 	
 	checkIsolated(1, 1, w, &isolated)
 	
-	assert.Equal(t, len(isolated), 0, "somehow, node (1,2) were checked as isolated")
+	assert.Equal(t, len(isolated), 2, "somehow, node (1,2) were not checked as isolated")
 	
 	checkIsolated(3, 2, w, &isolated)
 	
-	assert.Equal(t, len(isolated), 0, "somehow, node (2,5) were checked as isolated")
+	assert.Equal(t, len(isolated), 2, "somehow, node (2,5) were checked as isolated")
 	
 	w.Adj[0][1].Basic = false
 	w.Adj[1][2].Basic = false
+	isolated = []IntPair{}
 	
 	checkIsolated(0, 0, w, &isolated)
 	
@@ -105,5 +106,54 @@ func TestBasicNodesRecovered(t *testing.T) {
 	
 	res = SteppingStone(w, 2, 1)
 	
+	assert.True(t, res, "stepping stone not completed despite enough basic nodes")
+}
+
+func TestBasicNodesRecovered2(t *testing.T) {
+	c, m, visited, exact, d := setUpTest()
+	
+	w := findFeasibleMatching(m, 0, 3, &c)
+	setpair(m, w, exact, visited, d, &c)
+	
+	w.Adj[1][1].Basic = false
+	w.Adj[1][1].Prob = 0
+	w.Adj[2][1].Basic = true
+	w.Adj[2][1].Prob = 0.3
+	w.Adj[1][2].Basic = true
+	w.Adj[1][2].Prob = 0.3
+	w.Adj[2][2].Basic = false
+	w.Adj[2][2].Prob = 0
+	
+	res := SteppingStone(w, 3, 1)
+	assert.False(t, res, "stepping stone completed despite not enough basic nodes")
+	
+	res = SteppingStone(w, 0, 2)
+	assert.False(t, res, "stepping stone completed despite not enough basic nodes")
+	
+	res = SteppingStone(w, 3, 0)
+	assert.False(t, res, "stepping stone completed despite not enough basic nodes")
+	
+	res = SteppingStone(w, 1, 1)
+	assert.False(t, res, "stepping stone completed despite not enough basic nodes")
+	
+	recoverBasicNodes(w)
+	
+	assert.True(t, w.Adj[2][2].Basic)
+	
+	res = SteppingStone(w, 3, 1)
+	assert.True(t, res, "stepping stone not completed despite enough basic nodes")
+	
+	res = SteppingStone(w, 0, 2)
+	assert.True(t, res, "stepping stone not completed despite enough basic nodes")
+	
+	res = SteppingStone(w, 3, 0)
+	assert.True(t, res, "stepping stone not completed despite enough basic nodes")
+	
+	res = SteppingStone(w, 1, 1)
+	assert.False(t, res, "stepping stone completed despite not enough basic nodes")
+	
+	recoverBasicNodes(w)
+	
+	res = SteppingStone(w, 1, 1)
 	assert.True(t, res, "stepping stone not completed despite enough basic nodes")
 }
