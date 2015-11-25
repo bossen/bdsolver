@@ -26,6 +26,7 @@ func New(filename string) (Scanner, error) {
     c.file = *filelocal
 
     c.reader = *bufio.NewReader(filelocal)
+    c.line = 1
     return c, nil
 }
 
@@ -46,6 +47,10 @@ func (c *Scanner) ReadChar() byte {
 
     if n == 0 || err != nil {
         log.Fatal("Unexpected end of file")
+    }
+
+    if char[0] == '\n' {
+        c.line += 1
     }
 
     return char[0]
@@ -83,11 +88,14 @@ func (c *Scanner) EatWhitespaceAndComments() {
         }
     }
 
-    if !c.EndOfFile() && c.Peek() == '/' {
-        char := c.ReadChar()
-        if char != '/' {
-            log.Fatal("Expected / got %s", char)
-        }
+    chars, err := c.reader.Peek(2)
+
+    _ = err
+    // TODO check error.
+
+    if !c.EndOfFile() && chars[0] == '/' && chars[1] == '/' {
+        c.ReadChar()
+        c.ReadChar()
         c.eatuntil('\n')
     }
 }
@@ -101,10 +109,10 @@ func (c *Scanner) ReadNumber() int {
     for !c.EndOfFile() {
         if utils.IsNumeric(c.Peek()) {
             number += string(c.ReadChar())
-        } else if utils.IsWhitespace(c.Peek()) {
+        } else if utils.IsWhitespace(c.Peek()) || c.Peek() == '/' {
             break
         } else {
-            log.Fatal("Expected whitespace after the number " + number + ", but got ", string(c.Peek()))
+            log.Fatal("Line ", c.line, ":Expected whitespace after the number " + number + ", but got ", string(c.Peek()))
         }
     }
 

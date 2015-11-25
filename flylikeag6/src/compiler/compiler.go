@@ -14,8 +14,10 @@ type token struct {
 
 func scan(c* scanner.Scanner) token {
     c.EatWhitespaceAndComments()
-
-    if c.EndOfFile() {
+    if c.Peek() == '/' {
+        c.ReadChar()
+        return token{"Divide", ""}
+    } else if c.EndOfFile() {
         log.Println("Found EOF")
         return token{"EOF", ""}
     } else if c.Peek() == '-' {
@@ -37,8 +39,6 @@ func scan(c* scanner.Scanner) token {
     } else if utils.IsNumeric(c.Peek()) {
         integer := strconv.Itoa(c.ReadNumber())
         return token{"Integer", integer}
-    } else if c.Peek() == '/' {
-        return token{"Divide", ""}
     } else {
         log.Fatal("Unexpected keyword ", c.Peek())
     }
@@ -53,7 +53,7 @@ func getExpectedToken(c* scanner.Scanner, expected string) string {
 
 func expectToken(found token, expected string) {
     if found.tokentype != expected {
-        log.Fatal("Expected %s found %s", expected, found.tokentype)
+        log.Fatal("Expected ", expected, " found ", found.tokentype, " with value '", found.value, "'")
     }
 
 }
@@ -93,8 +93,8 @@ func Parse(filename string) {
             getExpectedToken(&c, "Divide")
             den := getExpectedToken(&c, "Integer")
 
-            log.Printf("Edge %i -> %i with prop: %i / %i", from, to, num, den)
-
+            log.Printf("Edge %s -> %s with prop: %s / %s", from, to, num, den)
+            continue
 
         } else {
             log.Fatal("Something went wrong while parsing")
