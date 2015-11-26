@@ -30,11 +30,15 @@ func New(filename string) (Scanner, error) {
     return c, nil
 }
 
+func (c *Scanner) Fail(m ...interface{}) {
+    log.Fatal("In line ", c.line, ": ", m)
+}
+
 func (c *Scanner) Peek() byte {
     char, err := c.reader.Peek(1)
 
     if err != nil {
-        log.Fatal("Unexpected end of file")
+        c.Fail("Unexpected end of file")
     }
 
     return char[0]
@@ -46,7 +50,7 @@ func (c *Scanner) ReadChar() byte {
     n, err := c.reader.Read(char)
 
     if n == 0 || err != nil {
-        log.Fatal("Unexpected end of file")
+        c.Fail("Unexpected end of file")
     }
 
     if char[0] == '\n' {
@@ -75,7 +79,7 @@ func (c *Scanner) eatuntil(a byte) {
         }
     }
     if c.EndOfFile() {
-        log.Fatal("Unexpected end of file")
+        c.Fail("Unexpected end of file")
     }
 }
 
@@ -101,6 +105,11 @@ func (c *Scanner) EatWhitespaceAndComments() {
 }
 
 
+func (c *Scanner) LineNumber() int {
+    return c.line
+}
+
+
 
 func (c *Scanner) ReadNumber() int {
     c.EatWhitespaceAndComments()
@@ -112,17 +121,17 @@ func (c *Scanner) ReadNumber() int {
         } else if utils.IsWhitespace(c.Peek()) || c.Peek() == '/' {
             break
         } else {
-            log.Fatal("Line ", c.line, ":Expected whitespace after the number " + number + ", but got ", string(c.Peek()))
+            c.Fail("Expected whitespace after the number " + number + ", but got ", string(c.Peek()))
         }
     }
 
     if len(number) == 0 {
-        log.Fatal("Did not read any number")
+        c.Fail("Did not read any number")
     }
 
     numbasint, err := strconv.Atoi(number)
     if err != nil {
-        log.Fatal("Could not convert to number. Something really bad happened")
+        c.Fail("Could not convert to number. Something really bad happened")
     }
 
     return numbasint
@@ -137,7 +146,7 @@ func (c *Scanner) ReadWord() string {
         } else if utils.IsWhitespace(c.Peek()) || c.Peek() == '/' {
             break
         } else {
-            log.Fatal("Unexpected %s", c.Peek())
+            c.Fail("Unexpected %s", c.Peek())
         }
     }
     return word
