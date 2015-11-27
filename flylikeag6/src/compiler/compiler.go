@@ -137,7 +137,7 @@ func Parse(filename string) markov.MarkovChain {
             den, _ := strconv.Atoi(getExpectedToken(&c, "Integer"))
 
             // TODO make check that state exists
-            transitions[from - 1][to - 1] = float64(num - 1) / float64(den - 1)
+            transitions[from - 1][to - 1] = float64(num) / float64(den)
 
             log.Printf("Edge %d -> %d with prop: %d / %d", from, to, num, den)
             continue
@@ -150,5 +150,6 @@ func Parse(filename string) markov.MarkovChain {
 
     log.Printf("%+v", labelmapper)
     log.Printf("%+v", labels)
+    log.Printf("%+v", transitions)
     return markov.MarkovChain{labels, transitions}
 }

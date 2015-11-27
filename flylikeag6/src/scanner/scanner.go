@@ -131,7 +131,7 @@ func (c *Scanner) ReadNumber() int {
 
     numbasint, err := strconv.Atoi(number)
     if err != nil {
-        c.Fail("Could not convert to number. Something really bad happened")
+        c.Fail("Could not convert to number. Something really bad happened, and should never happen. Please contact the developers at https://github.com/jbossen/P7-code")
     }
 
     return numbasint
@@ -146,7 +146,7 @@ func (c *Scanner) ReadWord() string {
         } else if utils.IsWhitespace(c.Peek()) || c.Peek() == '/' {
             break
         } else {
-            c.Fail("Unexpected %s", c.Peek())
+            c.Fail("Reading a word failed, found '", word, "' but then unexpected ", string(c.Peek()))
         }
     }
     return word
