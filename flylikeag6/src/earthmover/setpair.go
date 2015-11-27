@@ -34,20 +34,16 @@ func setpair(m markov.MarkovChain, w *coupling.Node, exact [][]bool, visited [][
 	for _, edge := range findDemandedPairs(w, visited) {
 		u, v := utils.GetMinMax(edge.To.S, edge.To.T)
 
-		visited[u][v] = true
-		visited[v][u] = true
+		visited[u][v], visited[v][u] = true, true
 
 		if u == v {
 			log.Printf("%v and %v is the same state ", u, v)
-			dist[u][v] = 0
-			exact[v][u] = true
-
+			dist[u][v], dist[v][u] = 0, 0
+			exact[u][v], exact[v][u] = true, true
 		} else if m.Labels[u] != m.Labels[v] {
 			log.Printf("%v and %v have different labels ", u, v)
-			dist[u][v] = 1
-			exact[u][v] = true
-			exact[v][u] = true
-
+			dist[u][v], dist[v][u] = 1, 1
+			exact[u][v], exact[v][u] = true, true
 		} else if !(exact[u][v] || exact[v][u]) {
 			log.Printf("%v and %v have the same label ", u, v)
 			w2 := findFeasibleMatching(m, u, v, c)

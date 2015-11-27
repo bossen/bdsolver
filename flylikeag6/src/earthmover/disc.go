@@ -6,7 +6,7 @@ import (
 )
 
 func setZerosDistanceToZero(n *coupling.Node, nonzero []*coupling.Node, exact [][]bool, d[][]float64, c *coupling.Coupling) {
-	reachables := coupling.Reachable(n, c)
+	reachables := coupling.Reachable(n)
 	
 	for _, node := range nonzero {
 		coupling.DeleteNodeInSlice(node, &reachables)
@@ -44,7 +44,9 @@ func disc(lambda float64, n *coupling.Node, exact [][]bool, d[][]float64, c *cou
 	
 	// uses index such that new distances are inserted in the correct places in the distance matrix
 	for i, node := range index {
+		log.Printf("node (%v,%v)'s distance were set to: %v", node.S, node.T, x[i])
 		d[node.S][node.T] = x[i]
+		d[node.T][node.S] = x[i]
 	}
 	
 	for _, node := range c.Nodes {

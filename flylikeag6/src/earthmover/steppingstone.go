@@ -15,7 +15,7 @@ func SteppingStone(n *coupling.Node, s int, t int) bool {
 }
 
 func goHorizontal(n *coupling.Node, s, t, u, v, rBound, cBound, pLen int, min *float64) bool {
-	log.Printf("entering node: (%v,%v)", u , v)
+	//log.Printf("entering node: (%v,%v)", u , v)
 	var localmin float64
 	edge := n.Adj[u][v]
 	edge.To.Visited = true
@@ -47,7 +47,7 @@ func goHorizontal(n *coupling.Node, s, t, u, v, rBound, cBound, pLen int, min *f
 		if goVertical(n, s, t, u, i, rBound, cBound, pLen+1, min) {
 			// the path was finished
 			updateEdge(edge, true, *min, n)
-			log.Printf("exiting node: (%v,%v)", u , v)
+			//log.Printf("exiting node: (%v,%v)", u , v)
 			return true
 		}
 
@@ -56,12 +56,12 @@ func goHorizontal(n *coupling.Node, s, t, u, v, rBound, cBound, pLen int, min *f
 	}
 
 	edge.To.Visited = false
-	log.Printf("exiting node: (%v,%v)", u , v)
+	//log.Printf("exiting node: (%v,%v)", u , v)
 	return false
 }
 
 func goVertical(n *coupling.Node, s, t, u, v, rBound, cBound, pLen int, min *float64) bool {
-	log.Printf("entering node: (%v,%v)", u , v)
+	//log.Printf("entering node: (%v,%v)", u , v)
 	var localmin float64
 	edge := n.Adj[u][v]
 	edge.To.Visited = true
@@ -76,9 +76,9 @@ func goVertical(n *coupling.Node, s, t, u, v, rBound, cBound, pLen int, min *flo
 			if pLen%2 == 1 {
 				log.Panic("stepping stone path cannot be uneven, since the intial node cannot be reached if the path is uneven")
 			}
-			// we have finished the path
+			//log.Printf("we have found node (%v,%v) again!", s, t)
 			updateEdge(edge, false, *min, n)
-			log.Printf("exiting node: (%v,%v)", u , v)
+			//log.Printf("exiting node: (%v,%v)", u , v)
 			return true
 		}
 
@@ -99,7 +99,7 @@ func goVertical(n *coupling.Node, s, t, u, v, rBound, cBound, pLen int, min *flo
 
 		if goHorizontal(n, s, t, i, v, rBound, cBound, pLen+1, min) {
 			updateEdge(edge, false, *min, n)
-			log.Printf("exiting node: (%v,%v)", u , v)
+			//log.Printf("exiting node: (%v,%v)", u , v)
 			return true
 		}
 
@@ -108,7 +108,7 @@ func goVertical(n *coupling.Node, s, t, u, v, rBound, cBound, pLen int, min *flo
 	}
 
 	edge.To.Visited = false
-	log.Printf("exiting node: (%v,%v)", u , v)
+	//log.Printf("exiting node: (%v,%v)", u , v)
 	return false
 }
 

@@ -4,30 +4,13 @@ import (
 	"coupling"
 	"earthmover"
 	"log"
-	"markov"
-	"sets"
     "scanner"
+    "markov"
 )
 
 func TestUVmethod(node *coupling.Node, d [][]float64) {
 	log.Println(earthmover.Uvmethod(node, d))
 }
-
-//Computes all the possible combinations of the different nodes. This could be optimized, by setting everything below the i == j diagonal to false.
-func initToCompute(n int) *[][]bool {
-	toCompute := *sets.MakeMatrix(n)
-	for i := range toCompute {
-		for j := range toCompute {
-			if i == j {
-				toCompute[i][j] = false
-			} else {
-				toCompute[i][j] = true
-			}
-		}
-	}
-	return &toCompute
-}
-
 
 func testCompiler() {
 
@@ -40,14 +23,24 @@ func testCompiler() {
 
 func main() {
     log.SetFlags(log.Lshortfile)
-    
-    
 
-	mymarkov := markov.New()
-	tocompute := initToCompute(len(mymarkov.Transitions))
-	earthmover.BipseudoMetric(mymarkov, 1, tocompute)
+	mymarkov := markov.MarkovChain{
+		Labels: []int{0, 1, 0, 0, 0, 1, 0},
+		Transitions: [][]float64{
+			[]float64{0.0, 0.33333, 0.33333, 0.16667, 0.0, 0.16667, 0.0},
+			[]float64{0.0, 0.0, 0.4, 0.4, 0.0, 0.2, 0.0},
+			[]float64{0.0, 0.5, 0.5, 0.0, 0.0, 0.0, 0.0},
+			[]float64{0.33333, 0.33333, 0.33334, 0.0, 0.0, 0.0, 0.0},
+			[]float64{0.4, 0.4, 0.2, 0.0, 0.0, 0.0, 0.0},
+			[]float64{0.0, 0.1, 0.0, 0.2, 0.5, 0.2, 0.0},
+			[]float64{0.0, 0.2, 0.33333, 0.0, 0.1, 0.2, 0.16667}}}
+	earthmover.BipseudoMetric(mymarkov, 0.95, earthmover.FindOptimal)
+	
+	
+	
+	
 	// fmt.Printf("%+v", mymarkov)
-
+	/*
 	c := coupling.New()
 
 	n1 := coupling.Node{S: 0, T: 0}
@@ -74,7 +67,7 @@ func main() {
 
 	TestUVmethod(&n2, d)
 
-	log.Println(coupling.Reachable(&n2, &c))
+	log.Println(coupling.Reachable(&n2))
 
 	log.Println(n2.Adj[0][0], n2.Adj[0][1], n2.Adj[1][0], n2.Adj[1][1])
 	earthmover.SteppingStone(&n2, 1, 0)
@@ -89,4 +82,5 @@ func main() {
 	log.Println(b)
 	log.Println(x)
 	log.Println(err)
+	*/
 }

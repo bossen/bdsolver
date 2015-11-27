@@ -4,19 +4,23 @@ import (
 	"coupling"
 	"log"
 	"utils"
+	"markov"
 )
 
-func findOptimal(n *coupling.Node, d [][]float64) {
-	m, i, j := Uvmethod(n, d)
-	
-	for m < 0 {
+func FindOptimal(m markov.MarkovChain, n *coupling.Node, d [][]float64, min float64, i, j int) {
+	for min < 0 {
 		res := SteppingStone(n, i, j)
 		
 		if !res {
+			log.Panic("halp!")
 			log.Println("stepping stone failed, try to recover")
 			recoverBasicNodes(n)
 			
 			res = SteppingStone(n, i, j)
+			
+			if !res {
+				log.Panic("halp!")
+			}			
 			
 			if !res {
 				log.Println("stepping stone failed despite trying to recover")
@@ -24,8 +28,13 @@ func findOptimal(n *coupling.Node, d [][]float64) {
 			}
 		}
 		
-		m, i, j = Uvmethod(n, d)
+		recoverBasicNodes(n)
+		
+		min, i, j = Uvmethod(n, d)
 	}
+	
+	log.Printf("node (%v,%v) is now optimal", n.S, n.T)
+	return
 }
 
 type IntPair struct {
