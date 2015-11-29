@@ -5,10 +5,11 @@ import (
 )
 
 type Node struct {
-	S, T    int
-	Visited bool
-	Adj     [][]*Edge
-	Succ    []*Node
+	S, T       int
+	Visited    bool
+	Adj        [][]*Edge
+	Succ       []*Node
+	BasicCount int
 }
 
 type Edge struct {

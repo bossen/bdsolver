@@ -44,6 +44,8 @@ func TestCorrectBasicFound(t *testing.T) {
 			assert.Equal(t, expected[i][j], w.Adj[i][j].Basic, "the cell were not correctly set to either basic or non-basic")
 		}
 	}
+	
+	assert.Equal(t, len(w.Adj) + (len(w.Adj[0]) - 1), w.BasicCount, "the number of basic cell is not correct")
 }
 
 func TestCorrectSuccessorFound(t *testing.T) {

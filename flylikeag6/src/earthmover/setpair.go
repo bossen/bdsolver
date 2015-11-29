@@ -38,8 +38,8 @@ func setpair(m markov.MarkovChain, w *coupling.Node, exact [][]bool, visited [][
 
 		if u == v {
 			log.Printf("%v and %v is the same state ", u, v)
-			dist[u][v], dist[v][u] = 0, 0
-			exact[u][v], exact[v][u] = true, true
+			dist[u][v] = 0
+			exact[u][v] = true
 		} else if m.Labels[u] != m.Labels[v] {
 			log.Printf("%v and %v have different labels ", u, v)
 			dist[u][v], dist[v][u] = 1, 1

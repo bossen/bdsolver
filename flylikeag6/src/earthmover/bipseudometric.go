@@ -83,17 +83,17 @@ func BipseudoMetric(m markov.MarkovChain, lambda float64, TPSolver func(markov.M
 		
 		if m.Labels[s] != m.Labels[t] {
 			// s and t have the same label, so we complete it and continue to the next one
-			log.Printf("State %v and %v had different labels", s, t)
+			//log.Printf("State %v and %v had different labels", s, t)
 			d[s][t], d[t][s] = 1, 1
 			exact[s][t], exact[t][s] = true, true
 			visited[s][t], visited[t][s] = true, true
 			continue
 		} else if s == t {
 			// s and t are the same state, so we complete it and continue to the next one
-			log.Printf("State %v %v) was the same state", s, t)
-			d[s][t], d[t][s] = 0, 0
-			exact[s][t], exact[t][s] = true, true
-			visited[s][t], visited[t][s] = true, true
+			//log.Printf("State %v %v) was the same state", s, t)
+			d[s][t] = 0
+			exact[s][t] = true
+			visited[s][t] = true
 			continue
 		}
 		

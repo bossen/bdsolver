@@ -5,41 +5,6 @@ import (
 	"log"
 )
 
-func calculateuv(tableu [][]*coupling.Edge, u []float64, v []float64, udefined []bool, vdefined []bool, d [][]float64) {
-	collength := tableu[0]
-
-	first := true
-	for i := range tableu {
-		for j := range collength {
-			
-			if !tableu[i][j].Basic {
-				continue
-			}
-
-			node := tableu[i][j].To
-			
-			log.Printf("node.S = %v, node.T = %v and d[%v][%v] = %v", node.S, node.T, node.S, node.T, d[node.S][node.T])
-			
-			if first {
-				u[i] = 0
-				udefined[i] = true
-				first = false
-			}
-			
-			log.Printf("udefined[%v] = %v, vdefined[%v] = %v", i, udefined[i], j, vdefined[j])
-			if udefined[i] && !vdefined[j] {
-				v[j] = d[node.S][node.T] - u[i]
-				vdefined[j] = true
-				log.Printf("d[%v][%v] - u[%v]: %v", node.S, node.T, i, d[node.S][node.T] - u[i])
-			} else if vdefined[j] && !udefined[i] {
-				u[i] = d[node.S][node.T] - v[j]
-				udefined[i] = true
-				log.Printf("UV d[%v][%v] - v[%v]: %v", node.S, node.T, j, d[node.S][node.T] - v[j])
-			}
-		}
-	}
-}
-
 func findMinimum(tableu [][]*coupling.Edge, u []float64, v []float64, d [][]float64) (float64, int, int) {
 	cols := tableu[0]
 	
@@ -51,12 +16,9 @@ func findMinimum(tableu [][]*coupling.Edge, u []float64, v []float64, d [][]floa
 
 	for i := range tableu {
 		for j := range cols {
-			log.Printf("index %v %v with value %v", i, j, d[node.S][node.T] - u[i] - v[j])
-			
-			if tableu[i][j].Basic {
-				continue
-			}
 			node = tableu[i][j].To
+			log.Printf("d[%v][%v] - u[%v] - v[%v] = %v - %v - %v = %v", i, j, i, j, d[node.S][node.T], u[i], v[j], d[node.S][node.T] - u[i] - v[j])
+			
 			current = d[node.S][node.T] - u[i] - v[j]
 			if current < min {
 				min = current
@@ -102,6 +64,7 @@ func Uvmethod(node *coupling.Node, d [][]float64) (float64, int, int) {
 
 func calculateuv2(tableu [][]*coupling.Edge, u []float64, v []float64, udefined []bool, vdefined []bool, d [][]float64) {
 	var unfinished []IntPair
+	var finished bool
 	
 	for i, row := range tableu {
 		for j, edge := range row {
@@ -128,11 +91,7 @@ func calculateuv2(tableu [][]*coupling.Edge, u []float64, v []float64, udefined 
 		}
 	}
 	
-	unfinishcounter := len(unfinished)
-	var finished bool
-	
 	for !finished {
-		startunfinished := unfinishcounter
 		finished = true
 		
 		for _, cell := range unfinished {
@@ -148,34 +107,10 @@ func calculateuv2(tableu [][]*coupling.Edge, u []float64, v []float64, udefined 
 				v[j] = d[node.S][node.T] - u[i]
 				vdefined[j] = true
 				log.Printf("v[%v] = %v - u[%v] = %v", j, d[node.S][node.T], i, d[node.S][node.T] - u[i])
-				unfinishcounter = unfinishcounter - 1
 			} else if vdefined[j] && !udefined[i] {
 				u[i] = d[node.S][node.T] - v[j]
 				udefined[i] = true
 				log.Printf("u[%v] = %v - v[%v] = %v", i, d[node.S][node.T], j, d[node.S][node.T] - v[j])
-				unfinishcounter = unfinishcounter - 1
-			}
-		}
-		
-		if unfinishcounter > 0 && startunfinished == unfinishcounter {
-			log.Println("have to recover")
-			var i, j int
-			
-			for n, cell := range unfinished {
-				if udefined[cell.I] || vdefined[cell.J] {
-					continue
-				}
-				i, j = unfinished[n].I, unfinished[n].J
-			}
-			
-			rowlen := len(tableu[0])
-			for n := range tableu[0] {
-				if !tableu[i][(j+n) % rowlen].Basic {
-					log.Printf("setting (%v,%v) to Basic", i, (j+n) % rowlen)
-					tableu[i][(j+n) % rowlen].Basic = true
-					unfinished = append(unfinished, IntPair{i, (j+n) % rowlen})
-					break
-				}
 			}
 		}
 	}

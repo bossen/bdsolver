@@ -116,7 +116,11 @@ func updateEdge(edge *coupling.Edge, signal bool, min float64, n *coupling.Node)
 	if signal {
 		// increase and set the node to basic
 		edge.Prob += min
-		edge.Basic = true
+		
+		if !edge.Basic {
+			edge.Basic = true
+			n.BasicCount++
+		}
 		
 		// add the main node as a successor to the node if it not already is
 		if !coupling.IsNodeInSlice(n, edge.To.Succ) {
@@ -131,6 +135,7 @@ func updateEdge(edge *coupling.Edge, signal bool, min float64, n *coupling.Node)
 		// if no longer basic remove the main node as a successor for the node
 		if !edge.Basic {
 			coupling.DeleteNodeInSlice(n, &edge.To.Succ)
+			n.BasicCount--
 		}
 	}
 
