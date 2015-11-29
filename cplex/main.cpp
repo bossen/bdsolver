@@ -3,10 +3,11 @@
 ILOSTLBEGIN
 int main (int argc, char **argv) {
   IloEnv env;
+  int err = 0;
+  int n = atoi(argv[1]), m = atoi(argv[2]),
+      arrayLength = n*m;
   try {
-    int n = atoi(argv[1]), m = atoi(argv[2]),
-        arrayLength = n*m,
-        i = 3, k = 0;
+        int i = 3, k = 0;
 
     IloModel model(env);
 
@@ -84,10 +85,16 @@ int main (int argc, char **argv) {
   }
   catch (IloException& e) {
     cerr << "Concert exception caught: " << e << endl;
+    err = -1;
   }
   catch (...) {
     cerr << "Unknown exception caught" << endl;
+    err = -1;
   }
   env.end();
+  
+  if (!err) {
+    return err;
+  }
   return 0;
 }
