@@ -93,8 +93,5 @@ int main (int argc, char **argv) {
   }
   env.end();
   
-  if (!err) {
-    return err;
-  }
-  return 0;
+  return err;
 }
