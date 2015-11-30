@@ -11,6 +11,7 @@ func FindOptimal(m markov.MarkovChain, n *coupling.Node, d [][]float64, min floa
 		SteppingStone(n, i, j)
 		
 		if n.BasicCount < len(n.Adj) + (len(n.Adj[0]) - 1) {
+			log.Printf("Recover basic nodes for node (%v,%v)", n.S, n.T)
 			recoverBasicNodes(n, []IntPair{})
 		}
 		
@@ -26,35 +27,37 @@ type IntPair struct {
 }
 
 func recoverBasicNodes(node *coupling.Node, traversed []IntPair) {
-	for len(traversed) < len(node.Adj) + (len(node.Adj[0]) - 1) {
-		firstbasic := findFirstNonTraversedBasic(node, traversed)
+	firstbasic := findFirstNonTraversedBasic(node, traversed)
+	
+	t := findAllTraversableBasic(node, firstbasic, []IntPair{})
+	traversed = t
+	
+	for _, pair := range t {
+		i, j := pair.I, (pair.J + 1) % len(node.Adj[0])
 		
-		t := findAllTraversableBasic(node, firstbasic, []IntPair{})
-		traversed = t
+		if node.Adj[i][j].Basic {
+			continue
+		}
 		
-		for _, pair := range t {
-			i, j := pair.I, (pair.J + 1) % len(node.Adj[0])
-			
-			if node.Adj[i][j].Basic {
-				continue
-			}
-			
-			tprime := findAllTraversableBasic(node, IntPair{i, j}, t)
-			
-			if len(t) == len(tprime) {
-				continue
-			}
-			
-			node.Adj[i][j].Basic = true
-			tprime = append(tprime, IntPair{i, j})
-			traversed = tprime
-				
-			if len(tprime) == len(node.Adj) + (len(node.Adj[0]) - 1) {
-				return
-			}
+		tprime := findAllTraversableBasic(node, IntPair{i, j}, traversed)
+		
+		if len(tprime) == len(traversed) {
+			continue
+		}
+		
+		node.Adj[i][j].Basic = true
+		node.BasicCount++
+		tprime = append(tprime, IntPair{i, j})
+		traversed = tprime
+		
+		log.Println(len(node.Adj) + (len(node.Adj[0]) - 1))
+		log.Println(len(traversed))
+		
+		if len(traversed) == len(node.Adj) + (len(node.Adj[0]) - 1) {
+			return
 		}
 	}
-	return
+	recoverBasicNodes(node, traversed)
 }
 
 func findFirstNonTraversedBasic(node *coupling.Node, traversed []IntPair) IntPair {
@@ -69,7 +72,6 @@ func findFirstNonTraversedBasic(node *coupling.Node, traversed []IntPair) IntPai
 			return pair
 		}
 	}
-	
 	return IntPair{-1, -1}
 }
 
