@@ -7,6 +7,7 @@ import (
 	"markov"
 	"sets"
     "scanner"
+    "compiler"
 )
 
 func TestUVmethod(node *coupling.Node, d [][]float64) {
@@ -29,13 +30,19 @@ func initToCompute(n int) *[][]bool {
 }
 
 
-func testCompiler() {
+func testParser() {
 
     scanner, err := scanner.New("examples/algorithmfrompaper.lmc")
     if err != nil {
         log.Fatal("Not existing")
     }
     log.Println("Scanner reading word: ", scanner.ReadWord())
+}
+
+
+func testCompiler() {
+    log.Println("Testing compiler")
+    compiler.Parse("examples/algorithmfrompaper.lmc")
 }
 
 func main() {
@@ -79,5 +86,6 @@ func main() {
 	log.Println(n2.Adj[0][0], n2.Adj[0][1], n2.Adj[1][0], n2.Adj[1][1])
 	earthmover.SteppingStone(&n2, 1, 0)
 	log.Println(n2.Adj[0][0], n2.Adj[0][1], n2.Adj[1][0], n2.Adj[1][1])
+    testParser()
     testCompiler()
 }
