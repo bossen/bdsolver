@@ -33,7 +33,7 @@ func setUpLinearEquations(n *coupling.Node, exact [][]bool, d [][]float64, a *[]
 			
 			(*a)[i][len(*a)-1] -= edge.Prob * lambda
 			
-			// recursevely sets up the linear equation
+			// recursively sets up the linear equation
 			setUpLinearEquations(edge.To, exact, d, a, b, len(*a)-1, index, lambda)
 		}
 	}

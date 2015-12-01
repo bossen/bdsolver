@@ -38,8 +38,9 @@ func TestSettingZeroDistanceAndExact(t *testing.T) {
 func TestGuassian(t *testing.T) {
 	a := [][]float64{[]float64{1.0, -(1.0/6.0)}, []float64{0.0, 1.0}}
 	b := []float64{5.0/6.0, 1.0/2.0}
-	x, _ := GaussPartial(a, b)
+	x, err := GaussPartial(a, b)
 	
+	assert.Equal(t, nil, err, "the linear equations was not calculate correctly")
 	assert.True(t, utils.ApproxEqual(x[0], 11.0/12.0), "the found x value was not 11/12")
 	assert.True(t, utils.ApproxEqual(x[1], 0.5), "the found x value was not 1/2")
 }
