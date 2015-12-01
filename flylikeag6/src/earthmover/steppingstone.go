@@ -8,7 +8,7 @@ import (
 )
 
 func SteppingStone(n *coupling.Node, s int, t int) bool {
-	log.Printf("try to find path for: (%v,%v)", s, t)
+	log.Printf("try to find path for cell: (%v,%v) with index (%v,%v) in matching for node", s, t, n.S, n.T)
 	min, rowBound, colBound := 2.0, len(n.Adj), len(n.Adj[0])
 
 	return goHorizontal(n, s, t, s, t, rowBound, colBound, 1, &min)
@@ -114,6 +114,7 @@ func goVertical(n *coupling.Node, s, t, u, v, rBound, cBound, pLen int, min *flo
 
 func updateEdge(edge *coupling.Edge, signal bool, min float64, n *coupling.Node) {
 	if signal {
+		log.Printf("increasing at cell (%v,%v)", edge.To.S, edge.To.T)
 		// increase and set the node to basic
 		edge.Prob += min
 		
@@ -128,6 +129,7 @@ func updateEdge(edge *coupling.Edge, signal bool, min float64, n *coupling.Node)
 		}
 
 	} else {
+		log.Printf("decreasing at cell (%v,%v)", edge.To.S, edge.To.T)
 		edge.Prob -= min
 		// if the line edge.Prob -= min, makes edge.Prob to zero, it is not a basic cell
 		edge.Basic = !utils.ApproxEqual(edge.Prob, 0)

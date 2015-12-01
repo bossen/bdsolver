@@ -12,7 +12,7 @@ func FindOptimal(m markov.MarkovChain, n *coupling.Node, d [][]float64, min floa
 		
 		if n.BasicCount < len(n.Adj) + (len(n.Adj[0]) - 1) {
 			log.Printf("Recover basic nodes for node (%v,%v)", n.S, n.T)
-			recoverBasicNodes(n, []IntPair{})
+			recoverBasicNodes(n)
 		}
 		
 		min, i, j = Uvmethod(n, d)
@@ -26,46 +26,58 @@ type IntPair struct {
 	I, J int
 }
 
-func recoverBasicNodes(node *coupling.Node, traversed []IntPair) {
-	firstbasic := findFirstNonTraversedBasic(node, traversed)
+func recoverBasicNodes(node *coupling.Node) {
+	// the first basic node we have not traversed yet, such that we try and connect it with the other basic nodes
+	firstbasic := findFirstBasic(node)
 	
+	// find all traversable to start the basic node recovery from
 	t := findAllTraversableBasic(node, firstbasic, []IntPair{})
-	traversed = t
+	
+	recoverBasicNodesRecursive(node, t)
+}
+
+func recoverBasicNodesRecursive(node *coupling.Node, traversed []IntPair) {
+	// create a copy such that we avoid out of bounds errors as we iterate
+	t := traversed
 	
 	for _, pair := range t {
+		// find index immediately left to the current index as i and j
 		i, j := pair.I, (pair.J + 1) % len(node.Adj[0])
 		
 		if node.Adj[i][j].Basic {
 			continue
 		}
 		
+		// assuming index (i,j) is basic, we see what we can reach if it was
 		tprime := findAllTraversableBasic(node, IntPair{i, j}, traversed)
 		
 		if len(tprime) == len(traversed) {
+			// if we could not more more basic cells, we do not improve anything by setting (i,j) to basic
 			continue
 		}
 		
+		// otherwise, we set it to basic and make appropiate updates, especially updating traversed
+		log.Printf("setting cell with index (%v,%v) in the matching for node (%v,%v)", i, j, node.S, node.T)
 		node.Adj[i][j].Basic = true
 		node.BasicCount++
 		tprime = append(tprime, IntPair{i, j})
 		traversed = tprime
 		
-		log.Println(len(node.Adj) + (len(node.Adj[0]) - 1))
-		log.Println(len(traversed))
-		
 		if len(traversed) == len(node.Adj) + (len(node.Adj[0]) - 1) {
+			// if we have the correct number of nodes, we can now traverse all basic nodes, and we terminate
 			return
 		}
 	}
-	recoverBasicNodes(node, traversed)
+	recoverBasicNodesRecursive(node, traversed)
+	return
 }
 
-func findFirstNonTraversedBasic(node *coupling.Node, traversed []IntPair) IntPair {
+func findFirstBasic(node *coupling.Node) IntPair {
 	for i, row := range node.Adj {
 		for j, edge := range row {
 			pair := IntPair{i, j}
 			
-			if !edge.Basic || IsIntPairInSlice(pair, traversed){
+			if !edge.Basic {
 				continue
 			}
 			
@@ -77,6 +89,8 @@ func findFirstNonTraversedBasic(node *coupling.Node, traversed []IntPair) IntPai
 
 func findAllTraversableBasic(node *coupling.Node, curr IntPair, basicsfound []IntPair) []IntPair {
 	if node.Adj[curr.I][curr.J].Basic {
+		// if the current node is basic, add it to the result set
+		// depending on where we call this function, we may or may not want to add the current node, this handles that
 		basicsfound = append(basicsfound, curr)
 	}
 	

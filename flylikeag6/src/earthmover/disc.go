@@ -19,7 +19,6 @@ func setZerosDistanceToZero(n *coupling.Node, nonzero []*coupling.Node, exact []
 }
 
 func disc(lambda float64, n *coupling.Node, exact [][]bool, d[][]float64, c *coupling.Coupling) {
-	log.Println("hello from disc.go!")
 	nonzero := findNonZero(n, exact, d, c)
 	
 	setZerosDistanceToZero(n, nonzero, exact, d, c)
