@@ -2,15 +2,30 @@ package earthmover
 
 import (
 	"coupling"
-	"log"
 	"markov"
 	"sets"
+	"utils"
+	"log"
 )
 
-func extractrandomfromset(tocompute *[][]bool) (int, int) {
-	for i := range *tocompute {
-		for j := range *tocompute {
-			if (*tocompute)[i][j] == true {
+func initD(n int) [][]float64{
+	d := make([][]float64, n, n)
+	for i := 0; i < n; i++ {
+		d[i] = make([]float64, n, n)
+		for j := range d[i] {
+			if i != j {
+				// when i and j is the same, we use the default value 0
+				d[i][j] = 1
+			}
+		}
+	}
+	return d
+}
+
+func extractrandomfromset(tocompute [][]bool) (int, int) {
+	for i := range tocompute {
+		for j := range tocompute {
+			if tocompute[i][j] == true {
 				return i, j
 			}
 		}
@@ -44,91 +59,90 @@ func removeExactEdges(n *coupling.Node, exact [][]bool) {
 	
 	// here we do the actual removing of edges
 	exact[n.S][n.T] = true
+	exact[n.T][n.S] = true
 	n.Adj = nil
 	n.Visited = false
 	
 	return
 }
 
-func getoptimalschedule(d [256][256]int, u int, v int) int {
-	return 1
-}
-
-func isOptimal() bool {
-	return true
-}
-
-func initializeD(n int) [][]float64{
-	d := make([][]float64, n, n)
-	for i := 0; i < n; i++ {
-		d[i] = make([]float64, n, n)
-		for j := range d[i] {
-			if i != j {		//when i equal j, it will use the default value of 0
-				d[i][j] = 1
-			}
+func BipseudoMetric(m markov.MarkovChain, lambda float64, TPSolver func(markov.MarkovChain, *coupling.Node, [][]float64, float64, int, int)) [][]float64 {
+	// initialize all the sets and the coupling
+	n := len(m.Transitions)
+	tocompute := sets.InitToCompute(len(m.Transitions))
+	visited := sets.MakeMatrix(n)
+	exact := sets.MakeMatrix(n)
+	c := coupling.New()
+	d := initD(n)
+	
+	for !sets.EmptySet(tocompute) {
+		s, t := extractrandomfromset(tocompute)
+		s, t = utils.GetMinMax(s, t)
+		tocompute[s][t], tocompute[t][s] = false, false
+		log.Printf("Run with node: (%v,%v)", s, t)
+		
+		if m.Labels[s] != m.Labels[t] {
+			// s and t have the same label, so we complete it and continue to the next one
+			//log.Printf("State %v and %v had different labels", s, t)
+			d[s][t], d[t][s] = 1, 1
+			exact[s][t], exact[t][s] = true, true
+			visited[s][t], visited[t][s] = true, true
+			continue
+		} else if s == t {
+			// s and t are the same state, so we complete it and continue to the next one
+			//log.Printf("State %v %v) was the same state", s, t)
+			d[s][t] = 0
+			exact[s][t] = true
+			visited[s][t] = true
+			continue
 		}
+		
+		node := findFeasibleMatching(m, s, t, &c)
+		setpair(m, node, exact, visited, d, &c)
+		disc(lambda, node, exact, d, &c)
+		
+		findOptimalSolutions(lambda, m, node, exact, visited, d, c, TPSolver, []*coupling.Node{})
+		
+		removeExactEdges(node, exact)
+		
+		// remove everything that been computed to exact, such that we can not try to solve it again
+		tocompute = *sets.DifferensReal(&tocompute, &exact)
+	}
+	for i := range d {
+		log.Println(d[i])
 	}
 	return d
 }
 
-
-func findNode(s int, t int, c *coupling.Coupling) coupling.Node {
-	newnode := coupling.Node{S: 0, T: 0}
-	return newnode
-}
-
-func BipseudoMetric(m markov.MarkovChain, lambda float64, tocompute *[][]bool) {
-	n := len(m.Transitions)
-	visited := *sets.MakeMatrix(n)
-	exact := *sets.MakeMatrix(n)
-	c := coupling.New()
-	d := initializeD(n)
-
-	w2 := findFeasibleMatching(m, 0, 1, &c)
-	log.Println(w2)
-
-	for !sets.EmptySet(tocompute) {
-		s, t := extractrandomfromset(tocompute)
-		log.Println(s)
-		log.Println(t)
-
-		if m.Labels[s] != m.Labels[t] {
-			d[s][t] = 1
-			exact[s][t] = true
-			visited[s][t] = true
-		} else if s == t {
-			d[s][t] = 0
-			exact[s][t] = true
-			visited[s][t] = true
-
-		} else {
-			// if s,t not in visited ...
-
-			node := findNode(s, t, &c)
-			minimumvalue := 1.0 //TODO remove when
-			_ = node
-			//minimumvalue, iindex, jindex := Uvmethod(&node)
-			for minimumvalue < 0 {
-				//SteppingStone(&node, iindex, jindex)
-
-				// w := getoptimalschedule(d, u, v) TODO this instead of next line
-				w := findFeasibleMatching(m, s, t, &c)
-				setpair(m, w, exact, visited, d, &c)
-				disc(lambda, w, exact, d, &c)
-				//minimumvalue, iindex, jindex = Uvmethod(&node)
-			}
-			//exact = sets.UnionReal(exact, reachable(s, t, c)) TODO update when reachable has been made
-            // todo implement this:
-            // removeedgesfromnodes(&c, &exact)
-			removeExactEdges(w2, exact)
-		}
-
-		tocompute = sets.IntersectReal(*tocompute, *tocompute) //TODO THIS IS WRONG, use exact as second parameter, instead of tocompute twice
-
-		break //TODO remove this. This is for ending the code
+func findOptimalSolutions(lambda float64, m markov.MarkovChain, node *coupling.Node, exact [][]bool, visited [][]bool, d [][]float64, c coupling.Coupling, TPSolver func(markov.MarkovChain, *coupling.Node, [][]float64, float64, int, int), solvedNodes []*coupling.Node) {
+	log.Printf("find optimal for: (%v,%v)", node.S, node.T)
+	min, i, j := Uvmethod(node, d)
+	
+	// if min is negative, we cannot improve it further, so we skip using the TPSolver
+	for min < 0 {
+		TPSolver(m, node, d, min, i, j)
+		setpair(m, node, exact, visited, d, &c)
+		disc(lambda, node, exact, d, &c)
+		
+		min, i, j = Uvmethod(node, d)
 	}
-	setpair(m, w2, exact, visited, d, &c)
-	disc(1, w2, exact, d, &c)
-	log.Println("hello world!")
-	// return what?
+	
+	// append solved nodes such that we to not end up recurively calling nodes that have already been found to be optimal
+	solvedNodes = append(solvedNodes, node)
+	
+	for _, child := range coupling.Reachable(node) {
+		if child.Adj == nil || exact[child.S][child.T] {
+			// if the child do not have an adjacency matrix, he must already be exact
+			continue
+		}
+		
+		if coupling.IsNodeInSlice(child, solvedNodes) {
+			// the child has already been solves, so we skip it
+			continue
+		}
+		
+		findOptimalSolutions(lambda, m, child, exact, visited, d, c, TPSolver, solvedNodes)
+	}
+	
+	return
 }

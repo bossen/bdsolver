@@ -110,10 +110,12 @@ func findFeasibleMatching(m markov.MarkovChain, u int, v int, c *coupling.Coupli
 			// check if we are in the lower right corner, such that we do not get an out of bounds error
 			if !(i+1 == lenrow && j+1 == lencol) {
 				matching[i][j+1].Basic = true
+				node.BasicCount++
 			}
 
 			matching[i][j].Basic = true
 			matching[i][j].To.Succ = append(matching[i][j].To.Succ, node)
+			node.BasicCount++
 
 			i++
 			j++
@@ -123,6 +125,7 @@ func findFeasibleMatching(m markov.MarkovChain, u int, v int, c *coupling.Coupli
 
 			matching[i][j].Basic = true
 			matching[i][j].To.Succ = append(matching[i][j].To.Succ, node)
+			node.BasicCount++
 
 			i++
 		} else {
@@ -131,6 +134,7 @@ func findFeasibleMatching(m markov.MarkovChain, u int, v int, c *coupling.Coupli
 
 			matching[i][j].Basic = true
 			matching[i][j].To.Succ = append(matching[i][j].To.Succ, node)
+			node.BasicCount++
 
 			j++
 		}

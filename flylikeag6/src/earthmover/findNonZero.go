@@ -6,7 +6,7 @@ import (
 
 func findNonZero(n *coupling.Node, exact [][]bool, d [][]float64, c *coupling.Coupling) []*coupling.Node {
 	// finds all reachable from (s,t)
-	reachables := coupling.Reachable(n, c)
+	reachables := coupling.Reachable(n)
 
 	// remove nodes not exact or distance less than 0
 	reachablesNonZero := filterZeros(reachables, exact, d)

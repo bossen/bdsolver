@@ -5,10 +5,11 @@ import (
 )
 
 type Node struct {
-	S, T    int
-	Visited bool
-	Adj     [][]*Edge
-	Succ    []*Node
+	S, T       int
+	Visited    bool
+	Adj        [][]*Edge
+	Succ       []*Node
+	BasicCount int
 }
 
 type Edge struct {
@@ -37,7 +38,7 @@ func FindNode(u, v int, c *Coupling) *Node {
 	return nil
 }
 
-func Reachable(root *Node, c *Coupling) []*Node {
+func Reachable(root *Node) []*Node {
 	// Using slices might be slow. If we got performance problems we might
 	// implement using lists instead.
 	var reachables []*Node
@@ -76,12 +77,14 @@ func visit(root *Node, results []*Node) []*Node {
 		for j := range root.Adj[0] {
 			edge := root.Adj[i][j]
 			toVisit := edge.To
-
-			if edge.Prob > 0 && !(toVisit.Visited) {
+			
+			if !edge.Basic || toVisit.Visited {
+				continue
+			} else if edge.Prob > 0 {
 				toVisit.Visited = true
 				results = append(results, toVisit)
 				results = visit(toVisit, results)
-			}
+			}	
 		}
 	}
 

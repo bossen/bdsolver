@@ -4,10 +4,10 @@ func UnionNode(a int, b int, c int) int {
 	return a + b
 }
 
-func EmptySet(set *[][]bool) bool {
-	for i := range *set {
-		for j := range *set {
-			if (*set)[i][j] {
+func EmptySet(set [][]bool) bool {
+	for i := range set {
+		for j := range set {
+			if set[i][j] {
 				return false
 			}
 		}
@@ -27,7 +27,7 @@ func Differens(a int, b int) int {
 	return a
 }
 
-func MakeMatrix(n int) *[][]bool {
+func MakeMatrix(n int) [][]bool {
 	var d [][]bool
 
 	d = make([][]bool, n, n)
@@ -35,32 +35,32 @@ func MakeMatrix(n int) *[][]bool {
 		d[i] = make([]bool, n)
 	}
 
-	return &d
+	return d
 }
 
-func UnionReal(A [][]bool, B [][]bool) *[][]bool {
-	if len(A) != len(B) {
+func UnionReal(A *[][]bool, B *[][]bool) *[][]bool {
+	if len(*A) != len(*B) {
 		panic("Union called with different size matrices")
 	}
 
-	C := *MakeMatrix(len(A))
-	for i := range A {
-		for j := range A {
-			C[i][j] = A[i][j] || B[i][j]
+	C := MakeMatrix(len(*A))
+	for i := range *A {
+		for j := range *A {
+			C[i][j] = (*A)[i][j] || (*B)[i][j]
 		}
 	}
 	return &C
 }
 
-func IntersectReal(A [][]bool, B [][]bool) *[][]bool {
-	if len(A) != len(B) {
+func IntersectReal(A *[][]bool, B *[][]bool) *[][]bool {
+	if len(*A) != len(*B) {
 		panic("Union called with different size matrices")
 	}
 
-	C := *MakeMatrix(len(A))
-	for i := range A {
-		for j := range A {
-			if A[i][j] == B[i][j] && A[i][j] == true {
+	C := MakeMatrix(len(*A))
+	for i := range *A {
+		for j := range *A {
+			if (*A)[i][j] == (*B)[i][j] && (*A)[i][j] == true {
 				C[i][j] = true
 			} else {
 				C[i][j] = false
@@ -70,20 +70,33 @@ func IntersectReal(A [][]bool, B [][]bool) *[][]bool {
 	return &C
 }
 
-func DifferensReal(A [][]bool, B [][]bool) *[][]bool {
-	if len(A) != len(B) {
+func DifferensReal(A *[][]bool, B *[][]bool) *[][]bool {
+	if len(*A) != len(*B) {
 		panic("Union called with different size matrices")
 	}
 
-	C := *MakeMatrix(len(A))
-	for i := range A {
-		for j := range A {
-			if B[i][j] == true {
+	C := MakeMatrix(len(*A))
+	for i := range *A {
+		for j := range *A {
+			if (*B)[i][j] == true {
 				C[i][j] = false
 			} else {
-				C[i][j] = A[i][j]
+				C[i][j] = (*A)[i][j]
 			}
 		}
 	}
 	return &C
+}
+
+func InitToCompute(n int) [][]bool {
+	toCompute := MakeMatrix(n)
+	for i := range toCompute {
+		for j := range toCompute {
+			if i < j {
+				// when j greater or equal to i, we use the default false value
+				toCompute[i][j] = true
+			}
+		}
+	}
+	return toCompute
 }
