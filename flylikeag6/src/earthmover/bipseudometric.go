@@ -76,6 +76,7 @@ func BipseudoMetric(m markov.MarkovChain, lambda float64, TPSolver func(markov.M
 	d := initD(n)
 	
 	for !sets.EmptySet(tocompute) {
+		var node *coupling.Node
 		s, t := extractrandomfromset(tocompute)
 		s, t = utils.GetMinMax(s, t)
 		tocompute[s][t], tocompute[t][s] = false, false
@@ -83,25 +84,30 @@ func BipseudoMetric(m markov.MarkovChain, lambda float64, TPSolver func(markov.M
 		
 		if m.Labels[s] != m.Labels[t] {
 			// s and t have the same label, so we complete it and continue to the next one
-			//log.Printf("State %v and %v had different labels", s, t)
+			log.Printf("State %v and %v had different labels", s, t)
 			d[s][t], d[t][s] = 1, 1
 			exact[s][t], exact[t][s] = true, true
 			visited[s][t], visited[t][s] = true, true
 			continue
 		} else if s == t {
 			// s and t are the same state, so we complete it and continue to the next one
-			//log.Printf("State %v %v) was the same state", s, t)
+			log.Printf("State %v %v was the same state", s, t)
 			d[s][t] = 0
 			exact[s][t] = true
 			visited[s][t] = true
 			continue
+		} else if !visited[s][t] {
+			log.Printf("State %v %v had the same label and we haven't visited it yet", s, t)
+			node = findFeasibleMatching(m, s, t, &c)
+			setpair(m, node, exact, visited, d, &c)
+		} else {
+			log.Printf("State %v %v had the same label and we have already visited it", s, t)
+			node = coupling.FindNode(s, t, &c)
 		}
-		
-		node := findFeasibleMatching(m, s, t, &c)
-		setpair(m, node, exact, visited, d, &c)
+	
 		disc(lambda, node, exact, d, &c)
 		
-		findOptimalSolutions(lambda, m, node, exact, visited, d, c, TPSolver, []*coupling.Node{})
+		updateUntilOptimalSolutionsFound(lambda, m, node, exact, visited, d, c, TPSolver, []*coupling.Node{})
 		
 		removeExactEdges(node, exact)
 		
@@ -114,7 +120,7 @@ func BipseudoMetric(m markov.MarkovChain, lambda float64, TPSolver func(markov.M
 	return d
 }
 
-func findOptimalSolutions(lambda float64, m markov.MarkovChain, node *coupling.Node, exact [][]bool, visited [][]bool, d [][]float64, c coupling.Coupling, TPSolver func(markov.MarkovChain, *coupling.Node, [][]float64, float64, int, int), solvedNodes []*coupling.Node) {
+func updateUntilOptimalSolutionsFound(lambda float64, m markov.MarkovChain, node *coupling.Node, exact [][]bool, visited [][]bool, d [][]float64, c coupling.Coupling, TPSolver func(markov.MarkovChain, *coupling.Node, [][]float64, float64, int, int), solvedNodes []*coupling.Node) {
 	log.Printf("find optimal for: (%v,%v)", node.S, node.T)
 	min, i, j := Uvmethod(node, d)
 	
@@ -141,7 +147,7 @@ func findOptimalSolutions(lambda float64, m markov.MarkovChain, node *coupling.N
 			continue
 		}
 		
-		findOptimalSolutions(lambda, m, child, exact, visited, d, c, TPSolver, solvedNodes)
+		updateUntilOptimalSolutionsFound(lambda, m, child, exact, visited, d, c, TPSolver, solvedNodes)
 	}
 	
 	return

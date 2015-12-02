@@ -34,7 +34,7 @@ func disc(lambda float64, n *coupling.Node, exact [][]bool, d[][]float64, c *cou
 	// manipulates a, b, and index using pointers
 	setUpLinearEquations(n, exact, d, &a, &b, 0, &index, lambda)
 	
-	// calculates the linear equations
+	// solve the linear equations
 	x, err := GaussPartial(a, b)
 	
 	if err != nil {

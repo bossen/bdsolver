@@ -34,7 +34,6 @@ func FindNode(u, v int, c *Coupling) *Node {
 			return n
 		}
 	}
-	
 	return nil
 }
 
