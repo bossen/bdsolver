@@ -1,3 +1,3 @@
 #!/bin/bash
 
-wc src/coupling/coupling* src/earthmover/* src/markov/* src/sets/* main.go src/compiler/*.go
+wc -l src/coupling/coupling* src/earthmover/* src/markov/* src/sets/* main.go src/compiler/*.go src/utils/*.go src/scanner/*.go

@@ -26,14 +26,19 @@ func New(filename string) (Scanner, error) {
     c.file = *filelocal
 
     c.reader = *bufio.NewReader(filelocal)
+    c.line = 1
     return c, nil
+}
+
+func (c *Scanner) Fail(m ...interface{}) {
+    log.Fatal("In line ", c.line, ": ", m)
 }
 
 func (c *Scanner) Peek() byte {
     char, err := c.reader.Peek(1)
 
     if err != nil {
-        log.Fatal("Unexpected end of file")
+        c.Fail("Unexpected end of file")
     }
 
     return char[0]
@@ -45,13 +50,17 @@ func (c *Scanner) ReadChar() byte {
     n, err := c.reader.Read(char)
 
     if n == 0 || err != nil {
-        log.Fatal("Unexpected end of file")
+        c.Fail("Unexpected end of file")
+    }
+
+    if char[0] == '\n' {
+        c.line += 1
     }
 
     return char[0]
 }
 
-func (c *Scanner) endoffile() bool {
+func (c *Scanner) EndOfFile() bool {
     _, err := c.reader.Peek(1)
     // There might be other cases, e.g. buffer full.
     if err == nil {
@@ -63,33 +72,42 @@ func (c *Scanner) endoffile() bool {
 
 func (c *Scanner) eatuntil(a byte) {
 
-    for !c.endoffile()  {
+    for !c.EndOfFile()  {
         chr :=  c.ReadChar()
         if chr == a {
             break
         }
     }
-    if c.endoffile() {
-        log.Fatal("Unexpected end of file")
+    if c.EndOfFile() {
+        c.Fail("Unexpected end of file")
     }
 }
 
 func (c *Scanner) EatWhitespaceAndComments() {
-    for !c.endoffile() {
-        if c.Peek() == ' ' || c.Peek() == '\t' {
+    for !c.EndOfFile() {
+        if utils.IsWhitespace(c.Peek()) {
             c.ReadChar()
         } else {
             break
         }
     }
 
-    if !c.endoffile() && c.Peek() == '/' {
-        char := c.ReadChar()
-        if char != '/' {
-            log.Fatal("Expected / got %s", char)
-        }
+    chars, err := c.reader.Peek(2)
+
+    if err != nil {
+        return 
+    }
+
+    if !c.EndOfFile() && chars[0] == '/' && chars[1] == '/' {
+        c.ReadChar()
+        c.ReadChar()
         c.eatuntil('\n')
     }
+}
+
+
+func (c *Scanner) LineNumber() int {
+    return c.line
 }
 
 
@@ -98,23 +116,23 @@ func (c *Scanner) ReadNumber() int {
     c.EatWhitespaceAndComments()
 
     number := ""
-    for !c.endoffile() {
+    for !c.EndOfFile() {
         if utils.IsNumeric(c.Peek()) {
             number += string(c.ReadChar())
-        } else if utils.IsWhitespace(c.Peek()){
+        } else if utils.IsWhitespace(c.Peek()) || c.Peek() == '/' {
             break
         } else {
-            log.Fatal("Expected whitespace after the number " + number + ", but got ", c.Peek())
+            c.Fail("Expected whitespace after the number " + number + ", but got ", string(c.Peek()))
         }
     }
 
     if len(number) == 0 {
-        log.Fatal("Did not read any number")
+        c.Fail("Did not read any number")
     }
 
     numbasint, err := strconv.Atoi(number)
     if err != nil {
-        log.Fatal("Could not convert to number. Something really bad happened")
+        c.Fail("Could not convert to number. Something really bad happened, and should never happen. Please contact the developers at https://github.com/jbossen/P7-code")
     }
 
     return numbasint
@@ -123,13 +141,13 @@ func (c *Scanner) ReadNumber() int {
 func (c *Scanner) ReadWord() string {
     c.EatWhitespaceAndComments()
     word := ""
-    for !c.endoffile() {
+    for !c.EndOfFile() {
         if utils.IsAlphabetic(c.Peek()) {
             word += string(c.ReadChar())
-        } else if utils.IsWhitespace(c.Peek()) {
+        } else if utils.IsWhitespace(c.Peek()) || c.Peek() == '/' {
             break
         } else {
-            log.Fatal("Unexpected %s", c.Peek())
+            c.Fail("Reading a word failed, found '", word, "' but then unexpected ", string(c.Peek()))
         }
     }
     return word
