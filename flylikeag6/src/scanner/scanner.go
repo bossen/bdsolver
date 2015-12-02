@@ -94,8 +94,9 @@ func (c *Scanner) EatWhitespaceAndComments() {
 
     chars, err := c.reader.Peek(2)
 
-    _ = err
-    // TODO check error.
+    if err != nil {
+        return 
+    }
 
     if !c.EndOfFile() && chars[0] == '/' && chars[1] == '/' {
         c.ReadChar()
