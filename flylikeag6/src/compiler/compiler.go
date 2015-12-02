@@ -5,6 +5,7 @@ import (
     "scanner"
     "utils"
     "strconv"
+    "markov"
 )
 
 type token struct {
@@ -24,7 +25,7 @@ func scan(c* scanner.Scanner) token {
         c.ReadChar()
         chr := c.ReadChar()
         if chr != '>' {
-            log.Fatal("Found -, and expected a \"to\" statement(->) but found ", chr)
+            c.Fail("Found -, and expected a \"to\" statement(->) but found ", chr)
         }
         return token{"To", ""}
     } else if utils.IsAlphabetic(c.Peek()) {
@@ -40,7 +41,7 @@ func scan(c* scanner.Scanner) token {
         integer := strconv.Itoa(c.ReadNumber())
         return token{"Integer", integer}
     } else {
-        log.Fatal("Unexpected keyword ", c.Peek())
+        c.Fail("Unexpected keyword ", c.Peek())
     }
     return token{}
 }
@@ -58,11 +59,31 @@ func expectToken(found token, expected string) {
 
 }
 
-func Parse(filename string) {
+func IndexInSlice(slice []string, value string) int {
+    for i, v := range slice {
+        if v == value {
+            return i
+        }
+    }
+    return -1
+}
+
+func Parse(filename string) markov.MarkovChain {
     log.Println("Parsing file ", filename)
     c, _ := scanner.New(filename)
     state := 0
-    for !c.EndOfFile() {
+    numberofmcstates := 0
+    labelmapper := make([]string, 0,0)
+    labels := make([]int, 0,0)
+    var transitions [][]float64 // We only know this when we are done in state 1, so therefore we initialize it later.
+    for true {
+        c.EatWhitespaceAndComments()
+        if c.EndOfFile() {
+            if state != 2 {
+                c.Fail("Expected to have seen some edges.")
+            }
+            break
+        }
         token := scan(&c)
 
         if state == 0 { // We are before States:
@@ -74,32 +95,61 @@ func Parse(filename string) {
             if token.tokentype == "Edges" {
                 state = 2
                 log.Printf("Going to Edges")
+                transitions = make([][]float64, numberofmcstates, numberofmcstates)
+                for i  := range transitions {
+                    transitions[i] = make([]float64, numberofmcstates, numberofmcstates)
+                }
                 continue
             } else if token.tokentype == "Integer" {
                 label := getExpectedToken(&c, "Word")
+
+                numberofmcstates += 1
+                if strconv.Itoa(numberofmcstates) != token.value {
+                    c.Fail("Expected state ", numberofmcstates, " but found ", token.value)
+                }
+
+                // In case we found a new label.
+                if IndexInSlice(labelmapper, label) == -1 {
+                    labelmapper = append(labelmapper, label)
+                    labelmapper[len(labelmapper)-1] = label
+                }
+
+                // Setting our label transformer
+                labels = append(labels, IndexInSlice(labelmapper, label))
+
                 log.Printf("Found state %s with level %s", token.value, label)
                 continue
             }
 
-            log.Fatal("Expected Edges found a %s %s", token.tokentype, token.value)
+            c.Fail("Expected Edges found a %s %s", token.tokentype, token.value)
 
         } else if state == 2 {  // We are in Edges
 
             expectToken(token, "Integer")
-            from := token.value
+            // The reason why it is not nessecary to check for errors, is
+            // that the scanner checks if it is a integer.
+            expectToken(token, "Integer")
+            from, _ := strconv.Atoi(token.value)
             getExpectedToken(&c, "To")
-            to := getExpectedToken(&c, "Integer")
-            num := getExpectedToken(&c, "Integer")
+            to, _ := strconv.Atoi(getExpectedToken(&c, "Integer"))
+            num, _ := strconv.Atoi(getExpectedToken(&c, "Integer"))
             getExpectedToken(&c, "Divide")
-            den := getExpectedToken(&c, "Integer")
+            den, _ := strconv.Atoi(getExpectedToken(&c, "Integer"))
 
-            log.Printf("Edge %s -> %s with prop: %s / %s", from, to, num, den)
+            // TODO make check that state exists
+            transitions[from - 1][to - 1] = float64(num) / float64(den)
+
+            log.Printf("Edge %d -> %d with prop: %d / %d", from, to, num, den)
             continue
 
         } else {
-            log.Fatal("Something went wrong while parsing")
+            c.Fail("Something went wrong while parsing")
         }
-        log.Fatal("A programmer error. Someone forgot a continue")
-
+        c.Fail("A programmer error. Someone forgot a continue")
     }
+
+    log.Printf("%+v", labelmapper)
+    log.Printf("%+v", labels)
+    log.Printf("%+v", transitions)
+    return markov.MarkovChain{labels, transitions}
 }
