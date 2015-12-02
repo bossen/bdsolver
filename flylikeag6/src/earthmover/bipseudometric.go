@@ -79,14 +79,14 @@ func BipseudoMetric(m markov.MarkovChain, lambda float64, TPSolver func(markov.M
 		s, t := extractrandomfromset(tocompute)
 		s, t = utils.GetMinMax(s, t)
 		tocompute[s][t], tocompute[t][s] = false, false
-		log.Printf("Run with node: (%v,%v)", s, t)
+		//log.Printf("Run with node: (%v,%v)", s, t)
 		
 		if m.Labels[s] != m.Labels[t] {
 			// s and t have the same label, so we complete it and continue to the next one
 			//log.Printf("State %v and %v had different labels", s, t)
-			d[s][t], d[t][s] = 1, 1
-			exact[s][t], exact[t][s] = true, true
-			visited[s][t], visited[t][s] = true, true
+			d[s][t]= 1
+			exact[s][t]= true
+			visited[s][t] = true
 			continue
 		} else if s == t {
 			// s and t are the same state, so we complete it and continue to the next one
@@ -108,9 +108,7 @@ func BipseudoMetric(m markov.MarkovChain, lambda float64, TPSolver func(markov.M
 		// remove everything that been computed to exact, such that we can not try to solve it again
 		tocompute = *sets.DifferensReal(&tocompute, &exact)
 	}
-	for i := range d {
-		log.Println(d[i])
-	}
+	
 	return d
 }
 

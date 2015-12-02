@@ -6,6 +6,8 @@ import (
     "utils"
     "strconv"
     "markov"
+    "errors"
+    "fmt"
 )
 
 type token struct {
@@ -68,9 +70,14 @@ func IndexInSlice(slice []string, value string) int {
     return -1
 }
 
-func Parse(filename string) markov.MarkovChain {
+func Parse(filename string) (markov.MarkovChain, error) {
     log.Println("Parsing file ", filename)
-    c, _ := scanner.New(filename)
+    c, err := scanner.New(filename)
+    
+    if err != nil {
+		return markov.MarkovChain{}, errors.New(fmt.Sprintf("could not open the file %s", filename))
+	}
+    
     state := 0
     numberofmcstates := 0
     labelmapper := make([]string, 0,0)
@@ -151,5 +158,5 @@ func Parse(filename string) markov.MarkovChain {
     log.Printf("%+v", labelmapper)
     log.Printf("%+v", labels)
     log.Printf("%+v", transitions)
-    return markov.MarkovChain{labels, transitions}
+    return markov.MarkovChain{labels, transitions}, nil
 }

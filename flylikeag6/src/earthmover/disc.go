@@ -56,6 +56,5 @@ func disc(lambda float64, n *coupling.Node, exact [][]bool, d[][]float64, c *cou
 	for i, node := range index {
 		log.Printf("node (%v,%v)'s distance were set to: %v", node.S, node.T, x[i])
 		d[node.S][node.T] = x[i]
-		d[node.T][node.S] = x[i]
 	}
 }

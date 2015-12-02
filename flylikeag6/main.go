@@ -1,32 +1,81 @@
 package main
 
 import (
-	"coupling"
 	"earthmover"
 	"log"
-    "scanner"
+	"fmt"
     "compiler"
     "markov"
+    "os"
+    "strconv"
+    "io/ioutil"
 )
 
-func TestUVmethod(node *coupling.Node, d [][]float64) {
-	log.Println(earthmover.Uvmethod(node, d))
-}
-func testCompiler() {
-    scanner, err := scanner.New("examples/algorithmfrompaper.lmc")
-    if err != nil {
-        log.Fatal("Not existing")
-    }
-    log.Println("Scanner reading word: ", scanner.ReadWord())
-}
-
-
-func testParser() {
-    log.Println("Testing compiler")
-    compiler.Parse("examples/algorithmfrompaper.lmc")
-}
-
 func main() {
+	lambda := 1.0
+	TPSolver := earthmover.FindOptimal
+	log.SetOutput(ioutil.Discard)
+	
+	for i := 1; i < len(os.Args); i++ {
+		if os.Args[i] == "-l" {
+			arg := getOrFail(i+1, "expected a float after -l but there was nothing")
+			
+			temp, err := strconv.ParseFloat(arg, 64)
+			lambda = temp
+			
+			if err != nil {
+				fail(fmt.Sprintf("expected a float for lambda(-l) but got %s", arg))
+			}
+			if lambda < 0 || lambda > 1 {
+				fail(fmt.Sprintf("invalid lambda value, has to be larger than 0 and less or equal to 1"))
+			}
+			
+			i++
+		}
+		
+		if os.Args[i] == "-tpsolver" {
+			arg := getOrFail(i+1, "expected cplex or default after -tpsolver but there was nothing")
+			
+			if arg == "cplex" {
+				TPSolver = earthmover.FindOptimal
+			} else  if arg != "default" {
+				fail(fmt.Sprintf("expected cplex or default after -tpsolver but got %s", arg))
+			}
+			
+			i++
+		}
+		
+		if os.Args[i] == "-v" {
+			log.SetOutput(os.Stderr)
+		}
+	}
+	
+	mc, err := compiler.Parse(os.Args[len(os.Args)-1])
+	
+	if err != nil {
+		fail(err.Error())
+	}
+	
+	d := earthmover.BipseudoMetric(mc, lambda, TPSolver)
+	
+	for i := range d {
+		fmt.Println(d[i])
+	}
+}
+
+func getOrFail(i int, message string) string {
+	if i == len(os.Args) {
+		fail(message)
+	}
+	return os.Args[i]
+}
+
+func fail(message string) {
+	fmt.Println(message)
+	os.Exit(1)
+}
+
+func debug() {
     log.SetFlags(log.Lshortfile)
 
 	mymarkov := markov.MarkovChain{

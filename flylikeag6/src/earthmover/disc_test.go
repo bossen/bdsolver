@@ -9,11 +9,11 @@ import (
 func TestSettingZeroDistanceAndExact(t *testing.T) {
 	expected := [][]bool{
 		[]bool{false, true, false, false, false, false, false},
-		[]bool{true, true, true, false, false, false, false},
-		[]bool{false, true, true, false, false, true, false},
+		[]bool{false, true, true, false, false, false, false},
+		[]bool{false, false, true, false, false, true, false},
 		[]bool{false, false, false, false, false, false, false},
 		[]bool{false, false, false, false, false, false, false},
-		[]bool{false, false, true, false, false, false, false},
+		[]bool{false, false, false, false, false, false, false},
 		[]bool{false, false, false, false, false, false, false}}
 	
 	c, m, visited, exact, d := setUpTest()
