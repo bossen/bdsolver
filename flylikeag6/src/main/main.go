@@ -32,6 +32,7 @@ Arguments:
 }
 
 func main() {
+    log.SetFlags(log.Lshortfile)
 	lambda := 1.0
 	TPSolver := earthmover.FindOptimal
 	log.SetOutput(ioutil.Discard)
