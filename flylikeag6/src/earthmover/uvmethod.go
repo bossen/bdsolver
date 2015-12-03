@@ -109,7 +109,7 @@ func calculateuv2(tableu [][]*coupling.Edge, u []float64, v []float64, udefined 
 				continue
 			}
 			
-			// if the v modifier has not been definid, we can calculate it using the u modifier, and vice versa
+			// if the v modifier has not been defined, we can calculate it using the u modifier, and vice versa
 			if !vdefined[j] {
 				v[j] = d[node.S][node.T] - u[i]
 				vdefined[j] = true
