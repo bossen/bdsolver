@@ -15,6 +15,8 @@ func main() {
 	lambda := 1.0
 	TPSolver := earthmover.FindOptimal
 	log.SetOutput(ioutil.Discard)
+	var mc markov.MarkovChain
+	var err error
 	
 	for i := 1; i < len(os.Args); i++ {
 		if os.Args[i] == "-l" {
@@ -31,9 +33,7 @@ func main() {
 			}
 			
 			i++
-		}
-		
-		if os.Args[i] == "-tpsolver" {
+		} else if os.Args[i] == "-tpsolver" {
 			arg := getOrFail(i+1, "expected cplex or default after -tpsolver but there was nothing")
 			
 			if arg == "cplex" {
@@ -43,23 +43,23 @@ func main() {
 			}
 			
 			i++
-		}
-		
-		if os.Args[i] == "-v" {
+		} else if os.Args[i] == "-v" {
 			log.SetOutput(os.Stderr)
+		} else {
+			mc, err = compiler.Parse(os.Args[i])
+			
+			if err != nil {
+				fail(err.Error())
+			}
 		}
-	}
-	
-	mc, err := compiler.Parse(os.Args[len(os.Args)-1])
-	
-	if err != nil {
-		fail(err.Error())
 	}
 	
 	d := earthmover.BipseudoMetric(mc, lambda, TPSolver)
-	
+	fmt.Printf("The distance matrix for markov chain %s:", os.Args[len(os.Args)-1])
+	fmt.Println()
 	for i := range d {
-		fmt.Println(d[i])
+		fmt.Printf("State %v: %v", i+1, d[i])
+		fmt.Println()
 	}
 }
 
