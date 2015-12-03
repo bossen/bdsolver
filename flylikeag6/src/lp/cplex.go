@@ -16,7 +16,7 @@ import (
 	"utils"
 )
 
-//https://stackoverflow.com/questions/20437336/how-to-execute-system-command-in-golang-with-unknown-arguments
+//credits: https://stackoverflow.com/questions/20437336/how-to-execute-system-command-in-golang-with-unknown-arguments
 func exeCmd(cmd string, wg *sync.WaitGroup) string {
   // splitting head => g++ parts => rest of the command
   parts := strings.Fields(cmd)
@@ -39,7 +39,7 @@ func findConstraints(buffer *bytes.Buffer, transitions []float64) (int, []int) {
 	used := make([]int, n, n)
 
 	for i, constraint := range transitions {
-		if (!utils.ApproxEqual(constraint, 0.0)) {
+		if (constraint > 0.0) {
 			(*buffer).WriteString(strconv.FormatFloat(constraint, 'f', -1, 64))
 			(*buffer).WriteString(" ")
 			used[size] = i
@@ -51,9 +51,9 @@ func findConstraints(buffer *bytes.Buffer, transitions []float64) (int, []int) {
 
 //Retrieves d values into the buffer given, based on indexes from rowused and columnused
 func retrieveDValues(buffer *bytes.Buffer, d [][]float64, rowused, columnused []int) {
-	for _, i := range rowused {
-		for _, j := range columnused {
-			u, v := utils.GetMinMax(i, j)
+	for _, row := range rowused {
+		for _, column := range columnused {
+			u, v := utils.GetMinMax(row, column) //The same d value may be used two times
 			log.Printf("Retrieving d[%v][%v] = %v", u, v, d[u][v])
 			(*buffer).WriteString(strconv.FormatFloat(d[u][v], 'f', -1, 64))
 			(*buffer).WriteString(" ")
@@ -61,7 +61,6 @@ func retrieveDValues(buffer *bytes.Buffer, d [][]float64, rowused, columnused []
 	}
 }
 
-//https://stackoverflow.com/questions/27875479/how-to-convert-string-to-float64-in-golang
 func stringArrayToFloat(input []string) []float64 {
 	n := len(input)
 	numbers := make([]float64, n, n)
@@ -135,8 +134,8 @@ func CplexOptimize(markov markov.MarkovChain, node *coupling.Node, d [][]float64
 	rowcount, rowused := findConstraints(&constraints, markov.Transitions[node.S])
 	columncount, columnused := findConstraints(&constraints, markov.Transitions[node.T])
 
-	log.Printf("Rowused: %v %v", rowused, rowcount)
-	log.Printf("Columnused: %v %v", columnused, columncount)
+	log.Printf("Row indexes from transition matrix : %v size: %v", rowused, rowcount)
+	log.Printf("Column indexes from transition matrix: %v size: %v", columnused, columncount)
 	retrieveDValues(&dbuffer, d, rowused, columnused)
 
 	newValues := optimize(dbuffer.String(), constraints.String(), rowcount, columncount)
