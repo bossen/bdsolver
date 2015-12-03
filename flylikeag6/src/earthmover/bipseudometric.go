@@ -96,7 +96,9 @@ func BipseudoMetric(m markov.MarkovChain, lambda float64, TPSolver func(markov.M
 			exact[s][t] = true
 			visited[s][t] = true
 			continue
-		} else if !visited[s][t] {
+		} 
+		
+		if !visited[s][t] {
 			log.Printf("State %v %v had the same label and we haven't visited it yet", s, t)
 			node = findFeasibleMatching(m, s, t, &c)
 			setpair(m, node, exact, visited, d, &c)
