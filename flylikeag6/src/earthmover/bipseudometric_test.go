@@ -42,7 +42,7 @@ func setUpTest() (coupling.Coupling, markov.MarkovChain, [][]bool, [][]bool, [][
 func TestCorrectEdgesRemoved(t *testing.T) {
 	c, m, visited, exact, d := setUpTest()
 	
-	w := findFeasibleMatching(m, 0, 3, &c)
+	w := FindFeasibleMatching(m, 0, 3, &c)
 	setpair(m, w, exact, visited, d, &c)
 	
 	n := w.Adj[2][2].To
@@ -58,7 +58,7 @@ func TestCorrectEdgesRemoved(t *testing.T) {
 func TestCorrectSuccNodesRemoved(t *testing.T) {
 	c, m, visited, exact, d := setUpTest()
 	
-	w := findFeasibleMatching(m, 0, 3, &c)
+	w := FindFeasibleMatching(m, 0, 3, &c)
 	setpair(m, w, exact, visited, d, &c)
 	
 	n := w.Adj[2][2].To
@@ -75,7 +75,7 @@ func TestCorrectSuccNodesRemoved(t *testing.T) {
 func TestCorrectExactSet(t *testing.T) {
 	c, m, visited, exact, d := setUpTest()
 	
-	w := findFeasibleMatching(m, 0, 3, &c)
+	w := FindFeasibleMatching(m, 0, 3, &c)
 	setpair(m, w, exact, visited, d, &c)
 	
 	n := w.Adj[2][2].To

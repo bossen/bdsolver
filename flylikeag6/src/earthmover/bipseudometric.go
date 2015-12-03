@@ -84,7 +84,7 @@ func BipseudoMetric(m markov.MarkovChain, lambda int, tocompute *[][]bool) {
 	c := coupling.New()
 	d := initializeD(n)
 
-	w2 := findFeasibleMatching(m, 0, 1, &c)
+	w2 := FindFeasibleMatching(m, 0, 1, &c)
 	log.Println(w2)
 
 	for !sets.EmptySet(tocompute) {
@@ -112,7 +112,7 @@ func BipseudoMetric(m markov.MarkovChain, lambda int, tocompute *[][]bool) {
 				//SteppingStone(&node, iindex, jindex)
 
 				// w := getoptimalschedule(d, u, v) TODO this instead of next line
-				w := findFeasibleMatching(m, s, t, &c)
+				w := FindFeasibleMatching(m, s, t, &c)
 				setpair(m, w, exact, visited, d, &c)
 				disc(lambda, w, exact, d, &c)
 				//minimumvalue, iindex, jindex = Uvmethod(&node)

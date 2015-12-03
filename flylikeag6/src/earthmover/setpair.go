@@ -50,7 +50,7 @@ func setpair(m markov.MarkovChain, w *coupling.Node, exact [][]bool, visited [][
 
 		} else if !(exact[u][v] || exact[v][u]) {
 			log.Printf("%v and %v have the same label ", u, v)
-			w2 := findFeasibleMatching(m, u, v, c)
+			w2 := FindFeasibleMatching(m, u, v, c)
 			setpair(m, w2, exact, visited, dist, c)
 		}
 	}

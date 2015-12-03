@@ -9,7 +9,7 @@ import (
 func TestCorrectFilterNonZero(t *testing.T) {
 	c, m, visited, exact, d := setUpTest()
 	
-	w := findFeasibleMatching(m, 0, 3, &c)
+	w := FindFeasibleMatching(m, 0, 3, &c)
 	setpair(m, w, exact, visited, d, &c)
 	
 	reachables := coupling.Reachable(w, &c)
@@ -25,7 +25,7 @@ func TestCorrectFilterNonZero(t *testing.T) {
 func TestCorrectReverseCouplingNodesFound(t *testing.T) {
 	c, m, visited, exact, d := setUpTest()
 	
-	w := findFeasibleMatching(m, 0, 3, &c)
+	w := FindFeasibleMatching(m, 0, 3, &c)
 	setpair(m, w, exact, visited, d, &c)
 	
 	nonZeroReachables := []*coupling.Node{}
@@ -48,7 +48,7 @@ func TestCorrectReverseCouplingNodesFound(t *testing.T) {
 func TestCorrectFindNonZeros(t *testing.T) {
 	c, m, visited, exact, d := setUpTest()
 	
-	w := findFeasibleMatching(m, 0, 3, &c)
+	w := FindFeasibleMatching(m, 0, 3, &c)
 	setpair(m, w, exact, visited, d, &c)
 	
 	nonZero := findNonZero(w, exact, d, &c)
