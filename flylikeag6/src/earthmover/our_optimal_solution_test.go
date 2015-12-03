@@ -10,7 +10,7 @@ func TestOptimalSolutionFound(t *testing.T) {
 	c, m, visited, exact, d := setUpTest()
 	d = initD(len(m.Transitions))
 	
-	w := findFeasibleMatching(m, 0, 3, &c)
+	w := FindFeasibleMatching(m, 0, 3, &c)
 	setpair(m, w, exact, visited, d, &c)
 	
 	// the expected solution is not precice since the markov chain used do not use precise fractions
@@ -47,7 +47,7 @@ func TestIsIntPairInSlice(t *testing.T) {
 func TestTraverseVetical(t *testing.T) {
 	c, m, visited, exact, d := setUpTest()
 	
-	w := findFeasibleMatching(m, 0, 3, &c)
+	w := FindFeasibleMatching(m, 0, 3, &c)
 	setpair(m, w, exact, visited, d, &c)
 	
 	w.Adj[1][2].Basic = false
@@ -70,7 +70,7 @@ func TestTraverseVetical(t *testing.T) {
 func TestTraverseHorizontal(t *testing.T) {
 	c, m, _, _, _ := setUpTest()
 	
-	w := findFeasibleMatching(m, 0, 3, &c)
+	w := FindFeasibleMatching(m, 0, 3, &c)
 	
 	w.Adj[1][2].Basic = false
 	
@@ -92,7 +92,7 @@ func TestTraverseHorizontal(t *testing.T) {
 func TestFindAllTraversableBasic(t *testing.T) {
 	c, m, _, _, _ := setUpTest()
 	
-	w := findFeasibleMatching(m, 0, 3, &c)
+	w := FindFeasibleMatching(m, 0, 3, &c)
 	
 	w.Adj[1][2].Basic = false
 	
@@ -110,7 +110,7 @@ func TestFindAllTraversableBasic(t *testing.T) {
 func TestFindFirstBasic(t *testing.T) {
 	c, m, _, _, _ := setUpTest()
 	
-	w := findFeasibleMatching(m, 0, 3, &c)
+	w := FindFeasibleMatching(m, 0, 3, &c)
 	
 	index := findFirstBasic(w)
 	
@@ -127,7 +127,7 @@ func TestFindFirstBasic(t *testing.T) {
 func TestBasicNodesRecovered(t *testing.T) {
 	c, m, visited, exact, d := setUpTest()
 	
-	w := findFeasibleMatching(m, 0, 3, &c)
+	w := FindFeasibleMatching(m, 0, 3, &c)
 	setpair(m, w, exact, visited, d, &c)
 	
 	w.Adj[0][1].Basic = false
@@ -166,7 +166,7 @@ func TestBasicNodesRecovered(t *testing.T) {
 func TestBasicNodesRecovered2(t *testing.T) {
 	c, m, visited, exact, d := setUpTest()
 	
-	w := findFeasibleMatching(m, 0, 3, &c)
+	w := FindFeasibleMatching(m, 0, 3, &c)
 	setpair(m, w, exact, visited, d, &c)
 	
 	w.Adj[1][1].Basic = false

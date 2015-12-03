@@ -48,7 +48,7 @@ func TestGuassian(t *testing.T) {
 func TestDisc(t *testing.T) {
 	c, m, visited, exact, d := setUpTest()
 	
-	w := findFeasibleMatching(m, 0, 3, &c)
+	w := FindFeasibleMatching(m, 0, 3, &c)
 	setpair(m, w, exact, visited, d, &c)
 	
 	disc(1.0, w, exact, d, &c)
@@ -60,7 +60,7 @@ func TestDisc(t *testing.T) {
 func TestDiscResetsVisited(t *testing.T) {
 	c, m, visited, exact, d := setUpTest()
 	
-	w := findFeasibleMatching(m, 0, 3, &c)
+	w := FindFeasibleMatching(m, 0, 3, &c)
 	setpair(m, w, exact, visited, d, &c)
 	
 	disc(1, w, exact, d, &c)

@@ -148,7 +148,7 @@ func TestCorrectBasicCount(t *testing.T) {
 	c := setUpCouplingMatching()
 	m := setUpMarkov()
 
-	w := findFeasibleMatching(m, 0, 3, &c)
+	w := FindFeasibleMatching(m, 0, 3, &c)
 	
 	SteppingStone(w, 2, 0)
 	

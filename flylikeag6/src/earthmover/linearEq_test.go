@@ -53,7 +53,7 @@ func TestAddsNewLinearEquationCorrectly(t *testing.T) {
 func TestCorrectLinearFunctionsCreated(t *testing.T) {
 	c, m, visited, exact, d := setUpTest()
 	
-	w := findFeasibleMatching(m, 0, 3, &c)
+	w := FindFeasibleMatching(m, 0, 3, &c)
 	setpair(m, w, exact, visited, d, &c)
 	
 	a, b, index := setUpLinearEquationFrame()
@@ -74,7 +74,7 @@ func TestCorrectLinearFunctionsCreated(t *testing.T) {
 func TestCorrectLinearFunctionsCreatedLoops(t *testing.T) {
 	c, m, visited, exact, d := setUpTest()
 	
-	w := findFeasibleMatching(m, 0, 3, &c)
+	w := FindFeasibleMatching(m, 0, 3, &c)
 	setpair(m, w, exact, visited, d, &c)
 	
 	a, b, index := setUpLinearEquationFrame()
