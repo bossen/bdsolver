@@ -143,3 +143,18 @@ func TestCorrectDeletedSuccNodes(t *testing.T) {
 	coupling.DeleteNodeInSlice(succ[0], &succ)
 	assert.Equal(t, len(succ), 1, "length of the successor slice did not change")
 }
+
+func TestCorrectBasicCount(t *testing.T) {
+	c := setUpCouplingMatching()
+	m := setUpMarkov()
+
+	w := findFeasibleMatching(m, 0, 3, &c)
+	
+	SteppingStone(w, 2, 0)
+	
+	assert.Equal(t, len(w.Adj) + (len(w.Adj[0]) - 1), w.BasicCount, "the number of basic cell is not correct")
+	
+	SteppingStone(w, 3, 0)
+	
+	assert.Equal(t, len(w.Adj) + (len(w.Adj[0]) - 2), w.BasicCount, "the number of basic cell is not correct")
+}

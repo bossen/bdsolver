@@ -29,8 +29,8 @@ func setUpTest() (coupling.Coupling, markov.MarkovChain, [][]bool, [][]bool, [][
 	c := setUpCouplingMatching()
 	m := setUpMarkov()
 	n := len(m.Transitions)
-	visited := *sets.MakeMatrix(n)
-	exact := *sets.MakeMatrix(n)
+	visited := sets.MakeMatrix(n)
+	exact := sets.MakeMatrix(n)
 	d := make([][]float64, n, n)
 	for i := 0; i < n; i++ {
 		d[i] = make([]float64, n, n)
@@ -87,7 +87,7 @@ func TestCorrectExactSet(t *testing.T) {
 }
 
 func TestInitializeD(t *testing.T) {
-	d := initializeD(100)
+	d := initD(100)
 	for i := range d {
 		for j := range d[i] {
 			if i == j {

@@ -12,7 +12,7 @@ func TestCorrectFilterNonZero(t *testing.T) {
 	w := findFeasibleMatching(m, 0, 3, &c)
 	setpair(m, w, exact, visited, d, &c)
 	
-	reachables := coupling.Reachable(w, &c)
+	reachables := coupling.Reachable(w)
 	nonZeroReachables := filterZeros(reachables, exact, d)
 	
 	assert.Equal(t, len(nonZeroReachables), 3, "the filtered node slice did not have length 3")
