@@ -68,9 +68,9 @@ func TestFindMinimum(t *testing.T) {
 	u := []float64{0.0, 0.7}
 	v := []float64{0.5, 0.2}
 	min, iindex, jindex := findMinimum(tableu, u, v, d)
-	assert.Equal(t, min, -1.2, "Wrong findMinimum result")
-	assert.Equal(t, iindex, 1, "Wrong findMinimum i index")
-	assert.Equal(t, jindex, 0, "Wrong findMinimum j index")
+	assert.Equal(t, -1.2, min, "Wrong findMinimum result")
+	assert.Equal(t, 1, iindex, "Wrong findMinimum i index")
+	assert.Equal(t, 0, jindex, "Wrong findMinimum j index")
 }
 
 func TestCalculateUV(t *testing.T) {
