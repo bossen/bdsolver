@@ -1,6 +1,8 @@
 #include <vector>
 #include <ilcplex/ilocplex.h>
 ILOSTLBEGIN
+//Expects an input of n, m, d values, constraint values
+//Example: ./program.out 2 3 1 0 1 1 1 0 0.5 0.5 0.33333333337 0.33333333337 0.33333333337
 int main (int argc, char **argv) {
   IloEnv env;
   int err = 0;
@@ -85,13 +87,16 @@ int main (int argc, char **argv) {
   }
   catch (IloException& e) {
     cerr << "Concert exception caught: " << e << endl;
-    err = -1;
+    err = 1;
   }
   catch (...) {
     cerr << "Unknown exception caught" << endl;
-    err = -1;
+    err = 1;
   }
   env.end();
   
-  return err;
+  if (err) {
+    return EXIT_FAILURE;
+  }
+  return EXIT_SUCCESS;
 }
