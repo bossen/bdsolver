@@ -55,14 +55,14 @@ func Uvmethod(node *coupling.Node, d [][]float64) (float64, int, int) {
 	u[0] = 0
 	udefined[0] = true
 
-	calculateuv2(tableu, u, v, udefined, vdefined, d)
+	calculateuv(tableu, u, v, udefined, vdefined, d)
 
 	min, iindex, jindex := findMinimum(tableu, u, v, d)
 	log.Printf("with index %v %v node (%v,%v) was chosen by UVMethod with value %v", iindex, jindex, node.Adj[iindex][jindex].To.S, node.Adj[iindex][jindex].To.T, min)
 	return min, iindex, jindex
 }
 
-func calculateuv2(tableu [][]*coupling.Edge, u []float64, v []float64, udefined []bool, vdefined []bool, d [][]float64) {
+func calculateuv(tableu [][]*coupling.Edge, u []float64, v []float64, udefined []bool, vdefined []bool, d [][]float64) {
 	var unfinished []IntPair
 	var finished bool
 	
