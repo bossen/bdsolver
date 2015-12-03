@@ -89,7 +89,7 @@ func cplexOutputToArray(input string) []string {
 	return output
 }
 
-func cplexOptimize(dbuffer, constraints string, rowcount, columncount int) []float64 {
+func optimize(dbuffer, constraints string, rowcount, columncount int) []float64 {
 	log.Printf("Running program.out %v %v %v%v", rowcount, columncount, dbuffer, constraints)
 	wg := new(sync.WaitGroup)
 	wg.Add(1)
@@ -130,7 +130,7 @@ func updateNode(node *coupling.Node, newValues []float64) {
 	}
 }
 
-func optimize(markov markov.MarkovChain, node *coupling.Node, d [][]float64, min float64, i, j int) {
+func CplexOptimize(markov markov.MarkovChain, node *coupling.Node, d [][]float64, min float64, i, j int) {
 	var dbuffer, constraints bytes.Buffer
 	rowcount, rowused := findConstraints(&constraints, markov.Transitions[node.S])
 	columncount, columnused := findConstraints(&constraints, markov.Transitions[node.T])
@@ -139,7 +139,7 @@ func optimize(markov markov.MarkovChain, node *coupling.Node, d [][]float64, min
 	log.Printf("Columnused: %v %v", columnused, columncount)
 	retrieveDValues(&dbuffer, d, rowused, columnused)
 
-	newValues := cplexOptimize(dbuffer.String(), constraints.String(), rowcount, columncount)
+	newValues := optimize(dbuffer.String(), constraints.String(), rowcount, columncount)
 	log.Printf("Updating node with new values: %v", newValues)
 	updateNode(node, newValues)
 	//TODO recoverBasicNodes(node)

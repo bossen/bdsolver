@@ -57,10 +57,10 @@ func setUpTest() (coupling.Coupling, markov.MarkovChain, [][]float64) {
 	var expectedProbValues = []float64{0.0, 0.333333, 0.0, 0.0, 0.0, 0.333333, 0.166667, 0.0, 0.0, 0.166667, 0.0, 0.0}
 	var expectedBasicValues = []bool{false, true, false, false, false, true, true, false, false, true, false, false}
 
-func TestOptimize(t *testing.T) {
+func TestCplexOptimize(t *testing.T) {
 	c, m, d := setUpTest()
 	node := earthmover.FindFeasibleMatching(m, 0, 3, &c)
-	optimize(m, node, d, 0.0, 0, 0)
+	CplexOptimize(m, node, d, 0.0, 0, 0)
 	k := 0
 	for i := range node.Adj {
 		for _, j := range node.Adj[i] {
@@ -101,10 +101,10 @@ func TestFindConstraintsEmpty(t *testing.T) {
 	assert.Equal(t, 0, len(used), "used is not empty!")
 }
 
-func TestCplexOptimize(t *testing.T) {
+func TestOptimize(t *testing.T) {
 	var expectedProbValues = []float64{0.0, 0.333333, 0.0, 0.0, 0.0, 0.333333, 0.166667, 0.0, 0.0, 0.166667, 0.0, 0.0}
 
-	newValues := cplexOptimize("1 0 1 1 1 0 1 1 1 1 1 1", " 0.3333333333333333 0.3333333333333333 0.1666666666666667 0.1666666666666667 0.3333333333333333 0.3333333333333333 0.3333333333333333", 4, 3)
+	newValues := optimize("1 0 1 1 1 0 1 1 1 1 1 1", " 0.3333333333333333 0.3333333333333333 0.1666666666666667 0.1666666666666667 0.3333333333333333 0.3333333333333333 0.3333333333333333", 4, 3)
 	for i, value := range newValues {
 		assert.Equal(t, expectedProbValues[i], value, "Item number %v had a wrong value", i)
 	}
