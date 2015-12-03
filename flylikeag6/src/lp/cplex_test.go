@@ -55,7 +55,7 @@ func setUpTest() (coupling.Coupling, markov.MarkovChain, [][]float64) {
 }
 
 	var expectedProbValues = []float64{0.0, 0.333333, 0.0, 0.0, 0.0, 0.333333, 0.166667, 0.0, 0.0, 0.166667, 0.0, 0.0}
-	var expectedBasicValues = []bool{false, true, false, false, false, true, true, false, false, true, false, false}
+	var expectedBasicValues = []bool{false, true, true, true, false, true, true, false, false, true, false, false}
 
 func TestCplexOptimize(t *testing.T) {
 	c, m, d := setUpTest()
@@ -63,9 +63,9 @@ func TestCplexOptimize(t *testing.T) {
 	CplexOptimize(m, node, d, 0.0, 0, 0)
 	k := 0
 	for i := range node.Adj {
-		for _, j := range node.Adj[i] {
-			assert.True(t, utils.ApproxEqual(j.Prob, expectedProbValues[k]), "optimize does not work for %v, probability", j)
-			assert.Equal(t, expectedBasicValues[k], j.Basic, "optimize does not work for %v, basic value", j)
+		for _, edge := range node.Adj[i] {
+			assert.True(t, utils.ApproxEqual(edge.Prob, expectedProbValues[k]), "optimize does not work for %v, probability, iteration %v", edge, k)
+			assert.Equal(t, expectedBasicValues[k], edge.Basic, "optimize does not work for %v, basic value, iteration %v", edge, k)
 			k++
 		}
 	}
