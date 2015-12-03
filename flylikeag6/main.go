@@ -15,8 +15,7 @@ func main() {
 	lambda := 1.0
 	TPSolver := earthmover.FindOptimal
 	log.SetOutput(ioutil.Discard)
-	var mc markov.MarkovChain
-	var err error
+	var filename string
 	
 	for i := 1; i < len(os.Args); i++ {
 		if os.Args[i] == "-l" {
@@ -46,12 +45,16 @@ func main() {
 		} else if os.Args[i] == "-v" {
 			log.SetOutput(os.Stderr)
 		} else {
-			mc, err = compiler.Parse(os.Args[i])
+			arg := getOrFail(i, "expected a file but there was nothing")
 			
-			if err != nil {
-				fail(err.Error())
-			}
+			filename = arg
 		}
+	}
+	
+	mc, err = compiler.Parse(os.Args[i])
+			
+	if err != nil {
+		fail(err.Error())
 	}
 	
 	d := earthmover.BipseudoMetric(mc, lambda, TPSolver)
@@ -64,7 +67,7 @@ func main() {
 }
 
 func getOrFail(i int, message string) string {
-	if i == len(os.Args) {
+	if i > len(os.Args)-1 {
 		fail(message)
 	}
 	return os.Args[i]

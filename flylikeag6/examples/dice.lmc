@@ -1,3 +1,4 @@
+// this markov chain defines two dice both using a fair coin
 States
 1 start
 2 left

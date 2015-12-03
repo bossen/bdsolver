@@ -1,3 +1,6 @@
+// this markov chain defines a die using a fair coin, 
+// and another die with an unfair coin, where heads 
+// have a probability of 2/3 and tail 1/3
 States
 1 start
 2 left
