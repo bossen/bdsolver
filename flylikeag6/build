@@ -1,7 +1,5 @@
 #!/bin/bash
 
 export GOPATH=$PWD
-./buildversionfile
 
-
-go build main
+go build -ldflags "-X main.version 1`date -u +.%y%m%d`" main

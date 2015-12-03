@@ -12,8 +12,10 @@ import (
     "strings"
 )
 
+var version = "No version provided"
+
 func printdocumentation() {
-    documentation := `bdsolver - Bipseudometric distance solver version %VERSION% (%BUILD_DATE%)
+    documentation := `bdsolver - Bipseudometric distance solver version %version%
 
 usage: bdsolver [arguments] file        solve the specified file
 
@@ -23,8 +25,7 @@ Arguments:
    -v                    Running verbose logging.
    -h   shows this description
 `
-    documentation =  strings.Replace(documentation, "%VERSION%", VERSION, -1)
-    documentation =  strings.Replace(documentation, "%BUILD_DATE%", BUILD_DATE, -1)
+    documentation =  strings.Replace(documentation, "%version%", version, -1)
 
     fmt.Println(documentation)
 
