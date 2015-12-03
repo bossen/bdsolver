@@ -1,16 +1,18 @@
 package lp
 
 import (
-		"testing"
-		"github.com/stretchr/testify/assert"
-		"coupling"
-		"markov"
-		"earthmover"
-		"utils"
 		"sync"
 		"strings"
 		"bytes"
 		"log"
+		"testing"
+
+		"coupling"
+		"markov"
+		"earthmover"
+		"utils"
+
+		"github.com/stretchr/testify/assert"
 )
 
 func setUpCouplingMatching() coupling.Coupling {
@@ -42,6 +44,7 @@ func initializeD(n int) [][]float64{
 	}
 	return d
 }
+
 func setUpTest() (coupling.Coupling, markov.MarkovChain, [][]float64) {
 	c := setUpCouplingMatching()
 	m := setUpMarkov()
@@ -75,7 +78,27 @@ func TestExeCmd(t *testing.T) {
 }
 
 func TestFindConstraints(t *testing.T) {
+	var expectedUsedValues = []int{1, 3}
+	var buffer bytes.Buffer
+	var transitions = []float64{0.0, 0.33333333337, 0.0, 0.1666666666666667}
 
+	size, used := findConstraints(&buffer, transitions)
+
+	assert.Equal(t, "0.33333333337 0.1666666666666667 ", buffer.String(), "buffer has the wrong value!")
+	assert.Equal(t, 2, size, "size has the wrong value!")
+	for i, u := range used {
+		assert.Equal(t, expectedUsedValues[i], u, "used[%v] has the wrong value!", i)
+	}
+}
+
+func TestFindConstraintsEmpty(t *testing.T) {
+	var buffer bytes.Buffer
+
+	size, used := findConstraints(&buffer, []float64{})
+
+	assert.Equal(t, "", buffer.String(), "buffer has the wrong value!")
+	assert.Equal(t, 0, size, "size has the wrong value!")
+	assert.Equal(t, 0, len(used), "used is not empty!")
 }
 
 func TestCplexOptimize(t *testing.T) {
@@ -87,28 +110,7 @@ func TestCplexOptimize(t *testing.T) {
 	}
 }
 
-func TestCplexOutputToArray(t *testing.T) {
-	var expectedProbValues = []string{"0", "0.333333", "0", "0", "0", "0.333333", "0.166667", "0", "0", "0.166667", "0", "0"}
-
-	valueString := "Values = [0, 0.333333, 0, 0, 0, 0.333333, 0.166667, 0, 0, 0.166667,\n0, 0]"
-	newValues := cplexOutputToArray(valueString)
-
-	for i, value := range newValues {
-		assert.Equal(t, expectedProbValues[i], strings.TrimSpace(value), "Item number %v had a wrong value", i)
-	}
-}
-
-func TestStringArrayToFloat(t *testing.T) {
-	var expectedValues = []float64{4.0, 3.0, 4.0, 1.231, 0.0, -0.2, 0.2, 1}
-	var stringArray = []string{"4", "3", "4", "1.231", "0", "-0.2", "   0.2", "\n1"}
-	floatArray := stringArrayToFloat(stringArray)
-	for i, value := range floatArray {
-		assert.Equal(t, expectedValues[i], value, "Item number %v had a wrong value", i)
-	}
-	assert.Equal(t, 0, len(stringArrayToFloat([]string{})), "Empty array failed!")
-}
-
-func TestAppendDValues(t *testing.T) {
+func TestRetrieveDValues(t *testing.T) {
 	var expectedValues = []float64{1, 1, 0.3, 1, 0, 1}
 	var buffer bytes.Buffer
 	rowused := []int{1, 2}
@@ -123,6 +125,77 @@ func TestAppendDValues(t *testing.T) {
 		for _, j := range columnused {
 			u, v := utils.GetMinMax(i, j)
 			assert.Equal(t, expectedValues[k], d[u][v], "d[%v][%v] = %v", u, v, d[u][v])
+			k++
+		}
+	}
+}
+
+func TestStringArrayToFloat(t *testing.T) {
+	var expectedValues = []float64{4.0, 3.0, 4.0, 1.231, 0.0, -0.2, 0.2, 1}
+	var stringArray = []string{"4", "3", "4", "1.231", "0", "-0.2", "   0.2", "\n1"}
+	floatArray := stringArrayToFloat(stringArray)
+	for i, value := range floatArray {
+		assert.Equal(t, expectedValues[i], value, "Item number %v had a wrong value", i)
+	}
+	assert.Equal(t, 0, len(stringArrayToFloat([]string{})), "Empty array failed!")
+}
+
+func TestCplexOutputToArray(t *testing.T) {
+	var expectedProbValues = []string{"0", "0.333333", "0", "0", "0", "0.333333", "0.166667", "0", "0", "0.166667", "0", "0"}
+
+	valueString := "Values = [0, 0.333333, 0, 0, 0, 0.333333, 0.166667, 0, 0, 0.166667,\n0, 0]"
+	newValues := cplexOutputToArray(valueString)
+
+	for i, value := range newValues {
+		assert.Equal(t, expectedProbValues[i], strings.TrimSpace(value), "Item number %v had a wrong value", i)
+	}
+}
+
+func TestUpdateNodeWrongAmount(t *testing.T) {
+	c, m, d := setUpTest()
+	node := earthmover.FindFeasibleMatching(m, 0, 3, &c)
+	_ = d
+
+	var values = []float64{1, 2, 3, 4, 5}
+
+	assert.Panics(t, func() {
+		updateNode(node, values)
+	}, "Calling updateNode with an amount that does not match the adjacency matrix, it should fail")
+}
+
+func buildSlice(n int) []float64 {
+	var values []float64
+	k := 0.0
+
+	for len(values) < n {
+		values = append(values, k)
+		k++
+	}
+
+	return values
+}
+
+func TestUpdateNode(t *testing.T) {
+	c, m, d := setUpTest()
+	node := earthmover.FindFeasibleMatching(m, 0, 3, &c)
+	_ = d
+
+	adjlen := len(node.Adj) * len(node.Adj[0])
+
+	values := buildSlice(adjlen)
+
+	updateNode(node, values)
+
+	k := 0.0
+	for i := range node.Adj {
+		for j, edge := range node.Adj[i] {
+			if (i == 0 && j == 0) {
+				assert.Equal(t, k, edge.Prob, "Edge.Prob at Adj[%v][%v] had a wrong value", i, j)
+				assert.False(t, edge.Basic, "Edge.Basic at Adj[%v][%v] had a wrong value", i, j)
+			} else {
+				assert.Equal(t, k, edge.Prob, "Edge.Prob at Adj[%v][%v] had a wrong value", i, j)
+				assert.True(t, edge.Basic, "Edge.Basic at Adj[%v][%v] had a wrong value", i, j)
+			}
 			k++
 		}
 	}

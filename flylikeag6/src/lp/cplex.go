@@ -1,10 +1,7 @@
 package lp
 
 import (
-	"markov"
-	"coupling"
 	"strconv"
-	"utils"
 	"log"
 	"bytes"
 	"fmt"
@@ -13,6 +10,10 @@ import (
 	"strings"
 	"sync"
 	"regexp"
+
+	"markov"
+	"coupling"
+	"utils"
 )
 
 //https://stackoverflow.com/questions/20437336/how-to-execute-system-command-in-golang-with-unknown-arguments
@@ -24,16 +25,19 @@ func exeCmd(cmd string, wg *sync.WaitGroup) string {
 
   out, err := exec.Command(head,parts...).Output()
   if err != nil {
-    log.Printf("%s", err)
+		log.Printf("Error in exeCmd: %s", err)
   }
   wg.Done() // Need to signal to waitgroup that this goroutine is done
 	return fmt.Sprintf("%s", out)
 }
 
+//Retrieve constraints from the transitions, and adds them to the buffer given.
+//Returns the number of constraints, and an array with indexes of the used elements
 func findConstraints(buffer *bytes.Buffer, transitions []float64) (int, []int) {
 	size := 0
 	n := len(transitions)
 	used := make([]int, n, n)
+
 	for i, constraint := range transitions {
 		if (!utils.ApproxEqual(constraint, 0.0)) {
 			(*buffer).WriteString(strconv.FormatFloat(constraint, 'f', -1, 64))
@@ -50,7 +54,7 @@ func retrieveDValues(buffer *bytes.Buffer, d [][]float64, rowused, columnused []
 	for _, i := range rowused {
 		for _, j := range columnused {
 			u, v := utils.GetMinMax(i, j)
-			log.Printf("d[%v][%v] = %v", u, v, d[u][v])
+			log.Printf("Retrieving d[%v][%v] = %v", u, v, d[u][v])
 			(*buffer).WriteString(strconv.FormatFloat(d[u][v], 'f', -1, 64))
 			(*buffer).WriteString(" ")
 		}
@@ -93,28 +97,34 @@ func cplexOptimize(dbuffer, constraints string, rowcount, columncount int) []flo
 	command := fmt.Sprintf("./../../../cplex/program.out %v %v %v%v", rowcount, columncount, dbuffer, constraints)
 	output := exeCmd(command, wg)
 	wg.Wait()
+
 	err, _ := regexp.MatchString("Failed", output)
 	if err {
 		fmt.Println("Cplex failed")
 		os.Exit(1)
 	}
+
 	outputArray := cplexOutputToArray(output)
 	floatArray := stringArrayToFloat(outputArray)
 	return floatArray
 }
 
-func updateNode(node *coupling.Node, newValues []float64, rowcount, columncount int) {
+func updateNode(node *coupling.Node, newValues []float64) {
+	if (len(node.Adj) * len(node.Adj[0])) != len(newValues) {
+		panic("The amount of new values does not match the adjacency matrix!")
+	}
+
 	k := 0
 	for i := range (*node).Adj {
-		for _, j := range (*node).Adj[i] {
+		for _, edge := range (*node).Adj[i] {
 			//TODO increment or decrement basiccount
 			prob := newValues[k]
 			if utils.ApproxEqual(prob, 0.0) {
-				j.Basic = false
+				edge.Basic = false
 			} else {
-				j.Basic = true
+				edge.Basic = true
 			}
-			j.Prob = prob
+			edge.Prob = prob
 			k++
 		}
 	}
@@ -125,12 +135,12 @@ func optimize(markov markov.MarkovChain, node *coupling.Node, d [][]float64, min
 	rowcount, rowused := findConstraints(&constraints, markov.Transitions[node.S])
 	columncount, columnused := findConstraints(&constraints, markov.Transitions[node.T])
 
-	log.Printf("%v %v", rowused, rowcount)
-	log.Printf("%v %v", columnused, columncount)
+	log.Printf("Rowused: %v %v", rowused, rowcount)
+	log.Printf("Columnused: %v %v", columnused, columncount)
 	retrieveDValues(&dbuffer, d, rowused, columnused)
 
 	newValues := cplexOptimize(dbuffer.String(), constraints.String(), rowcount, columncount)
-	log.Printf("%v", newValues)
-	updateNode(node, newValues, rowcount, columncount)
+	log.Printf("Updating node with new values: %v", newValues)
+	updateNode(node, newValues)
 	//TODO recoverBasicNodes(node)
 }
