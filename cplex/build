@@ -1,3 +1,4 @@
 #!/bin/sh
 g++ -I /opt/ibm/ILOG/CPLEX_Studio1261/cplex/include -I /opt/ibm/ILOG/CPLEX_Studio1261/concert/include -c -o main.o main.cpp -DIL_STD
 g++ -o program.out main.o -L /opt/ibm/ILOG/CPLEX_Studio1261/cplex/lib/x86-64_linux/static_pic/ -L /opt/ibm/ILOG/CPLEX_Studio1261/concert/lib/x86-64_linux/static_pic -lilocplex -lconcert -lcplex -lm -lpthread
+cp program.out ../flylikeag6/program.out
