@@ -9,13 +9,32 @@ import (
     "os"
     "strconv"
     "io/ioutil"
+    "strings"
 )
+
+func printdocumentation() {
+    documentation := `bdsolver - Bipseudometric distance solver version %VERSION% (%BUILD_DATE%)
+
+usage: bdsolver [arguments] file        solve the specified file
+
+Arguments:
+   -l <lambda>           Defines the lambda. The lambda has to be larger than 0 up to 1.
+   -tpsolver <solver>    Defines the transportation solver. Possible arguments are cplex or default.
+   -v                    Running verbose logging.
+   -h   shows this description
+`
+    documentation =  strings.Replace(documentation, "%VERSION%", VERSION, -1)
+    documentation =  strings.Replace(documentation, "%BUILD_DATE%", BUILD_DATE, -1)
+
+    fmt.Println(documentation)
+
+}
 
 func main() {
 	lambda := 1.0
 	TPSolver := earthmover.FindOptimal
 	log.SetOutput(ioutil.Discard)
-	var filename string
+	filename := "NOFILENAMECHOSEN"
 	
 	for i := 1; i < len(os.Args); i++ {
 		if os.Args[i] == "-l" {
@@ -44,14 +63,21 @@ func main() {
 			i++
 		} else if os.Args[i] == "-v" {
 			log.SetOutput(os.Stderr)
+        } else if os.Args[i] == "-h" {
+            printdocumentation()
+            os.Exit(0)
 		} else {
-			arg := getOrFail(i, "expected a file but there was nothing")
-			
-			filename = arg
+		    filename = getOrFail(i, "expected a file but there was nothing")
 		}
 	}
-	
-	mc, err = compiler.Parse(os.Args[i])
+
+
+    if filename == "NOFILENAMECHOSEN" {
+        printdocumentation()
+        os.Exit(0)
+    }
+    
+    mc, err := compiler.Parse(filename)
 			
 	if err != nil {
 		fail(err.Error())
@@ -75,6 +101,7 @@ func getOrFail(i int, message string) string {
 
 func fail(message string) {
 	fmt.Println(message)
+    printdocumentation()
 	os.Exit(1)
 }
 

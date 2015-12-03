@@ -1,5 +1,5 @@
 #!/bin/bash
 
 export GOPATH=$PWD
-export runner="go run main.go"
+export runner="./run"
 

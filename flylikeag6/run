@@ -1,5 +1,10 @@
 #!/bin/bash
 
-export GOPATH=$PWD
 
-go run main.go
+./build
+
+
+if [ $? -eq 0 ] ; then
+	./main "examples/faircoin.lmc"
+	rm main
+fi
