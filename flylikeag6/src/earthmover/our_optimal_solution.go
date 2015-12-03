@@ -41,14 +41,14 @@ func recoverBasicNodesRecursive(node *coupling.Node, traversed []IntPair) {
 	t := traversed
 	
 	for _, pair := range t {
-		// find index immediately left to the current index as i and j
+		// find index immediately right to the current index as i and j
 		i, j := pair.I, (pair.J + 1) % len(node.Adj[0])
 		
 		if node.Adj[i][j].Basic {
 			continue
 		}
 		
-		// assuming index (i,j) is basic, we see what we can reach if it was
+		// assuming index (i,j) is basic, we see what we can reach if it was basic
 		tprime := findAllTraversableBasic(node, IntPair{i, j}, traversed)
 		
 		if len(tprime) == len(traversed) {
@@ -75,13 +75,9 @@ func recoverBasicNodesRecursive(node *coupling.Node, traversed []IntPair) {
 func findFirstBasic(node *coupling.Node) IntPair {
 	for i, row := range node.Adj {
 		for j, edge := range row {
-			pair := IntPair{i, j}
-			
-			if !edge.Basic {
-				continue
+			if edge.Basic {
+				return IntPair{i, j}
 			}
-			
-			return pair
 		}
 	}
 	return IntPair{-1, -1}
@@ -104,13 +100,11 @@ func traverseHorizontal(node *coupling.Node, basicsfound []IntPair, i int) []Int
 	for j := range node.Adj[0] {
 		pair := IntPair{i, j}
 		
-		if !node.Adj[i][j].Basic || IsIntPairInSlice(pair, basicsfound) {
-			continue
+		if node.Adj[i][j].Basic && !IsIntPairInSlice(pair, basicsfound) {
+			basicsfound = append(basicsfound, pair)
+		
+			basicsfound = traverseVertical(node, basicsfound, j)
 		}
-		
-		basicsfound = append(basicsfound, pair)
-		
-		basicsfound = traverseVertical(node, basicsfound, j)
 	}
 	
 	return basicsfound
@@ -120,13 +114,11 @@ func traverseVertical(node *coupling.Node, basicsfound []IntPair, j int) []IntPa
 	for i := range node.Adj {
 		pair := IntPair{i, j}
 		
-		if !node.Adj[i][j].Basic || IsIntPairInSlice(pair, basicsfound) {
-			continue
+		if node.Adj[i][j].Basic && !IsIntPairInSlice(pair, basicsfound) {
+			basicsfound = append(basicsfound, pair)
+		
+			basicsfound = traverseHorizontal(node, basicsfound, i)
 		}
-		
-		basicsfound = append(basicsfound, pair)
-		
-		basicsfound = traverseHorizontal(node, basicsfound, i)
 	}
 	
 	return basicsfound

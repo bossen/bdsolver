@@ -83,15 +83,15 @@ func BipseudoMetric(m markov.MarkovChain, lambda float64, TPSolver func(markov.M
 		log.Printf("Run with node: (%v,%v)", s, t)
 		
 		if m.Labels[s] != m.Labels[t] {
-			// s and t have the same label, so we complete it and continue to the next one
+			// s and t have the same label, so we set its distance to 0, and its exact and visited to true
 			log.Printf("State %v and %v had different labels", s, t)
-			d[s][t], d[t][s] = 1, 1
-			exact[s][t], exact[t][s] = true, true
-			visited[s][t], visited[t][s] = true, true
+			d[s][t]= 1
+			exact[s][t]= true
+			visited[s][t] = true
 			continue
 		} else if s == t {
-			// s and t are the same state, so we complete it and continue to the next one
-			log.Printf("State %v %v was the same state", s, t)
+			// s and t are the same state, so we set its distance to 1, and its exact and visited to true
+			log.Printf("State %v %v) was the same state", s, t)
 			d[s][t] = 0
 			exact[s][t] = true
 			visited[s][t] = true
@@ -113,12 +113,10 @@ func BipseudoMetric(m markov.MarkovChain, lambda float64, TPSolver func(markov.M
 		
 		removeExactEdges(node, exact)
 		
-		// remove everything that been computed to exact, such that we can not try to solve it again
+		// remove everything that has been computed to exact, such that we will not try to solve it again
 		tocompute = *sets.DifferensReal(&tocompute, &exact)
 	}
-	for i := range d {
-		log.Println(d[i])
-	}
+	
 	return d
 }
 
@@ -126,7 +124,7 @@ func updateUntilOptimalSolutionsFound(lambda float64, m markov.MarkovChain, node
 	log.Printf("find optimal for: (%v,%v)", node.S, node.T)
 	min, i, j := Uvmethod(node, d)
 	
-	// if min is negative, we cannot improve it further, so we skip using the TPSolver
+	// if min is negative, we can further improve it, so we update it using the TPSolver and iterated until we cannot improve it further
 	for min < 0 {
 		TPSolver(m, node, d, min, i, j)
 		setpair(m, node, exact, visited, d, &c)
@@ -135,7 +133,7 @@ func updateUntilOptimalSolutionsFound(lambda float64, m markov.MarkovChain, node
 		min, i, j = Uvmethod(node, d)
 	}
 	
-	// append solved nodes such that we to not end up recurively calling nodes that have already been found to be optimal
+	// append solved nodes such that we do not end up recurively calling nodes that have already been found to be optimal
 	solvedNodes = append(solvedNodes, node)
 	
 	for _, child := range coupling.Reachable(node) {
@@ -145,7 +143,7 @@ func updateUntilOptimalSolutionsFound(lambda float64, m markov.MarkovChain, node
 		}
 		
 		if coupling.IsNodeInSlice(child, solvedNodes) {
-			// the child has already been solves, so we skip it
+			// the child has already been solved, so we skip it
 			continue
 		}
 		
