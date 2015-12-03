@@ -14,6 +14,7 @@ import (
 	"markov"
 	"coupling"
 	"utils"
+	"earthmover"
 )
 
 //credits: https://stackoverflow.com/questions/20437336/how-to-execute-system-command-in-golang-with-unknown-arguments
@@ -116,12 +117,19 @@ func updateNode(node *coupling.Node, newValues []float64) {
 	k := 0
 	for i := range (*node).Adj {
 		for _, edge := range (*node).Adj[i] {
-			//TODO increment or decrement basiccount
+			prevBasic := edge.Basic
 			prob := newValues[k]
+
 			if utils.ApproxEqual(prob, 0.0) {
 				edge.Basic = false
+				if (prevBasic) {
+					node.BasicCount--
+				}
 			} else {
 				edge.Basic = true
+				if (!prevBasic) {
+					node.BasicCount++
+				}
 			}
 			edge.Prob = prob
 			k++
@@ -141,5 +149,8 @@ func CplexOptimize(markov markov.MarkovChain, node *coupling.Node, d [][]float64
 	newValues := optimize(dbuffer.String(), constraints.String(), rowcount, columncount)
 	log.Printf("Updating node with new values: %v", newValues)
 	updateNode(node, newValues)
-	//TODO recoverBasicNodes(node)
+	if node.BasicCount < len(node.Adj) + (len(node.Adj[0]) - 1) {
+		log.Printf("Recover basic nodes for node (%v,%v)", node.S, node.T)
+		earthmover.RecoverBasicNodes(node)
+	}
 }

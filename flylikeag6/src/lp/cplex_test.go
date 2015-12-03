@@ -176,9 +176,8 @@ func buildSlice(n int) []float64 {
 }
 
 func TestUpdateNode(t *testing.T) {
-	c, m, d := setUpTest()
+	c, m, _ := setUpTest()
 	node := earthmover.FindFeasibleMatching(m, 0, 3, &c)
-	_ = d
 
 	adjlen := len(node.Adj) * len(node.Adj[0])
 
@@ -199,4 +198,5 @@ func TestUpdateNode(t *testing.T) {
 			k++
 		}
 	}
+	assert.Equal(t, 11, node.BasicCount, "node.BasicCount had a wrong value")
 }
