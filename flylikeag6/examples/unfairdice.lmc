@@ -2,6 +2,7 @@
 // and another die with an unfair coin, where heads 
 // have a probability of 2/3 and tail 1/3
 States
+// states for the fair dice
 1 start
 2 left
 3 right
@@ -16,6 +17,7 @@ States
 12 rightleftright
 13 rightrightleft
 
+// states for the unfair dice
 14 start
 15 left
 16 right
@@ -31,6 +33,7 @@ States
 26 rightrightleft
 
 Edges
+// edges for the fair dice
 1 -> 2 1/2
 1 -> 3 1/2
 
@@ -55,6 +58,7 @@ Edges
 12 -> 12 1/1
 13 -> 13 1/1
 
+// edges for the unfair dice
 14 -> 15 1/3
 14 -> 16 2/3
 

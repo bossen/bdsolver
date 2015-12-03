@@ -1,3 +1,5 @@
+// a markov chain defining a fair coin, and an 
+// unfair coin with probability of 3/4 for head and 1/4 for tail
 States
 1 start
 2 head
