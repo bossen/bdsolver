@@ -137,7 +137,7 @@ func TestBasicNodesRecovered(t *testing.T) {
 	
 	assert.False(t, res, "stepping stone completed despite not enough basic nodes")
 
-	recoverBasicNodes(w)
+	RecoverBasicNodes(w)
 	
 	assert.True(t, w.Adj[0][1].Basic, "node (0,1) were not set as basic")
 	assert.True(t, w.Adj[1][2].Basic, "node (1,2) were not set as basic")
@@ -154,7 +154,7 @@ func TestBasicNodesRecovered(t *testing.T) {
 	
 	assert.False(t, res, "stepping stone completed despite not enough basic nodes")
 	
-	recoverBasicNodes(w)
+	RecoverBasicNodes(w)
 	
 	assert.True(t, w.Adj[0][2].Basic, "node (0,1) were not set as basic")
 	
@@ -188,7 +188,7 @@ func TestBasicNodesRecovered2(t *testing.T) {
 	res = SteppingStone(w, 3, 1)
 	assert.False(t, res, "stepping stone completed despite not enough basic nodes")
 	
-	recoverBasicNodes(w)
+	RecoverBasicNodes(w)
 	
 	assert.True(t, w.Adj[0][2].Basic)
 	

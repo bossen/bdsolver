@@ -12,7 +12,7 @@ func FindOptimal(m markov.MarkovChain, n *coupling.Node, d [][]float64, min floa
 		
 		if n.BasicCount < len(n.Adj) + (len(n.Adj[0]) - 1) {
 			log.Printf("Recover basic nodes for node (%v,%v)", n.S, n.T)
-			recoverBasicNodes(n)
+			RecoverBasicNodes(n)
 		}
 		
 		min, i, j = Uvmethod(n, d)
@@ -26,7 +26,7 @@ type IntPair struct {
 	I, J int
 }
 
-func recoverBasicNodes(node *coupling.Node) {
+func RecoverBasicNodes(node *coupling.Node) {
 	// the first basic node we have not traversed yet, such that we try and connect it with the other basic nodes
 	firstbasic := findFirstBasic(node)
 	
