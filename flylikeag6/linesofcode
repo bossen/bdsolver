@@ -1,3 +1,3 @@
 #!/bin/bash
 
-wc -l src/coupling/coupling* src/earthmover/* src/markov/* src/sets/* main.go src/compiler/*.go src/utils/*.go src/scanner/*.go
+wc -l  $(for folder in $(ls src/ | grep -v github);do echo -n "src/$folder/*.go ";done)
