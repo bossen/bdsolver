@@ -54,7 +54,7 @@ func filloutAdj(row, col []int, lenrow, lencol int, w [][]*coupling.Edge, c *cou
 	}
 }
 
-func findFeasibleMatching(m markov.MarkovChain, u int, v int, c *coupling.Coupling) *coupling.Node {
+func FindFeasibleMatching(m markov.MarkovChain, u int, v int, c *coupling.Coupling) *coupling.Node {
 	n := len(m.Transitions[u])
 
 	u, v = utils.GetMinMax(u, v)

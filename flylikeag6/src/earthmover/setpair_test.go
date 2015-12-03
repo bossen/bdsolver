@@ -11,7 +11,7 @@ func TestCorrectRecursiveSetPairCall(t *testing.T) {
 	// the same functions used for random matching testing
 	c, m, visited, exact, d := setUpTest()
 
-	w := findFeasibleMatching(m, 0, 3, &c)
+	w := FindFeasibleMatching(m, 0, 3, &c)
 	setpair(m, w, exact, visited, d, &c)
 
 	assert.NotEqual(t, w.Adj, nil, "the adjacency matrix has not been filled for (0,3)")
@@ -40,7 +40,7 @@ func TestCorrectVisited(t *testing.T) {
 
 	c, m, visited, exact, d := setUpTest()
 
-	w := findFeasibleMatching(m, 0, 3, &c)
+	w := FindFeasibleMatching(m, 0, 3, &c)
 	setpair(m, w, exact, visited, d, &c)
 
 	for i := 0; i < len(expected); i++ {
@@ -62,7 +62,7 @@ func TestCorrectExact(t *testing.T) {
 
 	c, m, visited, exact, d := setUpTest()
 
-	w := findFeasibleMatching(m, 0, 3, &c)
+	w := FindFeasibleMatching(m, 0, 3, &c)
 	setpair(m, w, exact, visited, d, &c)
 
 	for i := 0; i < len(expected); i++ {
@@ -79,7 +79,7 @@ func TestCorrectNestedMatchingFound(t *testing.T) {
 	// the same functions used for random matching testing
 	c, m, visited, exact, d := setUpTest()
 
-	w := findFeasibleMatching(m, 0, 3, &c)
+	w := FindFeasibleMatching(m, 0, 3, &c)
 	setpair(m, w, exact, visited, d, &c)
 
 	node := w.Adj[2][2].To
@@ -97,7 +97,7 @@ func TestCorrectNestedBasicFound(t *testing.T) {
 	// the same functions used for random matching testing
 	c, m, visited, exact, d := setUpTest()
 
-	w := findFeasibleMatching(m, 0, 3, &c)
+	w := FindFeasibleMatching(m, 0, 3, &c)
 	setpair(m, w, exact, visited, d, &c)
 
 	node := w.Adj[2][2].To
@@ -113,7 +113,7 @@ func TestCorrectNestedSuccessorFound(t *testing.T) {
 	// the same functions used for random matching testing
 	c, m, visited, exact, d := setUpTest()
 
-	w := findFeasibleMatching(m, 0, 3, &c)
+	w := FindFeasibleMatching(m, 0, 3, &c)
 	setpair(m, w, exact, visited, d, &c)
 
 	node := w.Adj[2][2].To

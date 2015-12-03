@@ -18,7 +18,7 @@ func TestCorrectMatchingFound(t *testing.T) {
 	c := setUpCouplingMatching()
 	m := setUpMarkov()
 
-	w := findFeasibleMatching(m, 0, 3, &c)
+	w := FindFeasibleMatching(m, 0, 3, &c)
 
 	for i := 0; i < len(expected); i++ {
 		for j := 0; j < len(expected[0]); j++ {
@@ -37,7 +37,7 @@ func TestCorrectBasicFound(t *testing.T) {
 	c := setUpCouplingMatching()
 	m := setUpMarkov()
 
-	w := findFeasibleMatching(m, 0, 3, &c)
+	w := FindFeasibleMatching(m, 0, 3, &c)
 
 	for i := 0; i < len(expected); i++ {
 		for j := 0; j < len(expected[0]); j++ {
@@ -52,7 +52,7 @@ func TestCorrectSuccessorFound(t *testing.T) {
 	c := setUpCouplingMatching()
 	m := setUpMarkov()
 
-	w := findFeasibleMatching(m, 0, 3, &c)
+	w := FindFeasibleMatching(m, 0, 3, &c)
 	log.Println(w.Adj[2][2].To)
 	assert.True(t, coupling.IsNodeInSlice(w, w.Adj[0][0].To.Succ), "node (0,3) did not become a successor for (0,1)")
 	assert.True(t, coupling.IsNodeInSlice(w, w.Adj[1][1].To.Succ), "node (0,3) did not become a successor for (1,2)")
