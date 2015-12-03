@@ -5,7 +5,7 @@ ILOSTLBEGIN
 //Example: ./program.out 2 3 1 0 1 1 1 0 0.5 0.5 0.33333333337 0.33333333337 0.33333333337
 int main (int argc, char **argv) {
   IloEnv env;
-  int err = 0;
+  int err = EXIT_SUCCESS;
   int n = atoi(argv[1]), m = atoi(argv[2]),
       arrayLength = n*m;
   try {
@@ -87,16 +87,13 @@ int main (int argc, char **argv) {
   }
   catch (IloException& e) {
     cerr << "Concert exception caught: " << e << endl;
-    err = 1;
+    err = EXIT_FAILURE;
   }
   catch (...) {
     cerr << "Unknown exception caught" << endl;
-    err = 1;
+    err = EXIT_FAILURE;
   }
   env.end();
   
-  if (err) {
-    return EXIT_FAILURE;
-  }
-  return EXIT_SUCCESS;
+  return err;
 }
