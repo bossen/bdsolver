@@ -8,35 +8,45 @@ int main (int argc, char **argv) {
   int err = EXIT_SUCCESS;
   int n = atoi(argv[1]), m = atoi(argv[2]),
       arrayLength = n*m;
+
+	std::streambuf *psbuf, *backup;
+  std::ofstream filestr;
+  filestr.open ("cplex.log");
+
+  backup = std::clog.rdbuf();     // back up cout's streambuf
+
+  psbuf = filestr.rdbuf();        // get file's streambuf
+  std::clog.rdbuf(psbuf);         // assign streambuf to cout
+
   try {
         int i = 3, k = 0;
 
     IloModel model(env);
 
-    //env.out() << "bounds" << endl;
+    clog << "bounds" << endl;
     //Define non-negative variables
     IloNumVarArray vars(env);
     for (int i = 0; i < arrayLength; i++) {
       vars.add(IloNumVar(env, 0.0, ILOFLOAT));
-      //env.out() << "x_" << i << " >= 0" << endl;
+      clog << "x_" << i << " >= 0" << endl;
     }
 
-    //env.out() << "min" << endl;
+    clog << "min" << endl;
     //Define the linear function to be minimized
     IloObjective obj = IloMinimize(env);
     while (i < arrayLength + 3) {
-      //env.out() << atof(argv[i]) <<  " x_" << k << " + ";
+      clog << atof(argv[i]) <<  " x_" << k << " + ";
       obj.setLinearCoef(vars[k++], atof(argv[i++]));
     }
-    //env.out() << endl;
+    clog << endl;
     model.add(obj);
 
-    //env.out() << "st" << endl;
+    clog << "st" << endl;
     //Define problem constraints equal value
     IloRangeArray c(env);
     while (i < argc) {
       double constraint = atof(argv[i++]);
-      //env.out() << "c[" << i-10 << "] = " << constraint << endl;
+      clog << "c[" << i-10 << "] = " << constraint << endl;
       c.add(IloRange(env, constraint, constraint));
     }
     
@@ -45,13 +55,13 @@ int main (int argc, char **argv) {
     i = 0;
     while (i < n) {
       int j = 0;
-      //env.out() << "c[" << i << "]";
+      clog << "c[" << i << "]";
       while (j < m) {
-        //env.out() << " x_" << k << " +";
+        clog << " x_" << k << " +";
         c[i].setLinearCoef(vars[k++], 1.0);
         j++; 
       }
-      //env.out() << endl;
+      clog << endl;
       i++;
     }
 
@@ -59,13 +69,13 @@ int main (int argc, char **argv) {
     k = 0;
     while (i < n + m) {
       int j = 0;
-      //env.out() << "c[" << i << "]";
+      clog << "c[" << i << "]";
       while (j < n) {
-        //env.out() << " x_" << (j*m)+k << " +";
+        clog << " x_" << (j*m)+k << " +";
         c[i].setLinearCoef(vars[(j * m) + k], 1.0);
         j++; 
       }
-      //env.out() << endl;
+      clog << endl;
       k++;
       i++;
     }
@@ -80,8 +90,8 @@ int main (int argc, char **argv) {
       throw(-1);
     }
     IloNumArray vals(env);
-    //env.out() << "Solution status = " << cplex.getStatus() << endl;
-    //env.out() << "Solution value = " << cplex.getObjValue() << endl;
+    clog << "Solution status = " << cplex.getStatus() << endl;
+    //clog << "Solution value = " << cplex.getObjValue() << endl;
     cplex.getValues(vals, vars);
     env.out() << "Values = " << vals << endl;
   }
@@ -95,5 +105,7 @@ int main (int argc, char **argv) {
   }
   env.end();
   
+  std::clog.rdbuf(backup); 
+  filestr.close();
   return err;
 }

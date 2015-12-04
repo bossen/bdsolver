@@ -94,7 +94,7 @@ func optimize(dbuffer, constraints string, rowcount, columncount int) []float64 
 	wg := new(sync.WaitGroup)
 	wg.Add(1)
 
-	command := fmt.Sprintf("./../../program.out %v %v %v%v", rowcount, columncount, dbuffer, constraints)
+	command := fmt.Sprintf("./cplexoptimizer %v %v %v%v", rowcount, columncount, dbuffer, constraints)
 	output := exeCmd(command, wg)
 	wg.Wait()
 
