@@ -78,6 +78,7 @@ func stringArrayToFloat(input []string) []float64 {
 }
 
 func cplexOutputToArray(input string) []string {
+	log.Println(input)
 	re := regexp.MustCompile(`(\d+(\.\d+)?,\s)*(\d+(\.\d+)?)`)
 	match := re.FindStringSubmatch(input)
 	if (len(match) == 0) {
@@ -94,7 +95,7 @@ func optimize(dbuffer, constraints string, rowcount, columncount int) []float64 
 	wg := new(sync.WaitGroup)
 	wg.Add(1)
 
-	command := fmt.Sprintf("./../../program.out %v %v %v%v", rowcount, columncount, dbuffer, constraints)
+	command := fmt.Sprintf("./cplexoptimizer %v %v %v%v", rowcount, columncount, dbuffer, constraints)
 	output := exeCmd(command, wg)
 	wg.Wait()
 
@@ -138,6 +139,7 @@ func updateNode(node *coupling.Node, newValues []float64) {
 }
 
 func CplexOptimize(markov markov.MarkovChain, node *coupling.Node, d [][]float64, min float64, i, j int) {
+	log.Println("Running cplex optimizer")
 	var dbuffer, constraints bytes.Buffer
 	rowcount, rowused := findConstraints(&constraints, markov.Transitions[node.S])
 	columncount, columnused := findConstraints(&constraints, markov.Transitions[node.T])
