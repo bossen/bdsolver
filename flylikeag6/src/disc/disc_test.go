@@ -1,9 +1,12 @@
-package earthmover
+package disc
 
 import (
 	"github.com/stretchr/testify/assert"
 	"testing"
 	"utils"
+	"coupling"
+	"matching"
+	"setpair"
 )
 
 func TestSettingZeroDistanceAndExact(t *testing.T) {
@@ -16,10 +19,10 @@ func TestSettingZeroDistanceAndExact(t *testing.T) {
 		[]bool{false, false, false, false, false, false, false},
 		[]bool{false, false, false, false, false, false, false}}
 	
-	c, m, visited, exact, d := setUpTest()
+	c, m, visited, exact, d := coupling.SetUpTest()
 	
-	w := FindFeasibleMatching(m, 0, 3, &c)
-	setpair(m, w, exact, visited, d, &c)
+	w := matching.FindFeasibleMatching(m, 0, 3, &c)
+	setpair.Setpair(m, w, exact, visited, d, &c)
 	
 	nonz := findNonZero(w, exact, d, &c)
 	
@@ -46,24 +49,24 @@ func TestGuassian(t *testing.T) {
 }
 
 func TestDisc(t *testing.T) {
-	c, m, visited, exact, d := setUpTest()
+	c, m, visited, exact, d := coupling.SetUpTest()
 	
-	w := FindFeasibleMatching(m, 0, 3, &c)
-	setpair(m, w, exact, visited, d, &c)
+	w := matching.FindFeasibleMatching(m, 0, 3, &c)
+	setpair.Setpair(m, w, exact, visited, d, &c)
 	
-	disc(1.0, w, exact, d, &c)
+	Disc(1.0, w, exact, d, &c)
 	
 	assert.True(t, utils.ApproxEqual(d[0][3], 0.9133), "the distance was not correctly set")
 	assert.True(t, utils.ApproxEqual(d[2][3], 0.49), "the distance was not correctly set")
 }
 
 func TestDiscResetsVisited(t *testing.T) {
-	c, m, visited, exact, d := setUpTest()
+	c, m, visited, exact, d := coupling.SetUpTest()
 	
-	w := FindFeasibleMatching(m, 0, 3, &c)
-	setpair(m, w, exact, visited, d, &c)
+	w := matching.FindFeasibleMatching(m, 0, 3, &c)
+	setpair.Setpair(m, w, exact, visited, d, &c)
 	
-	disc(1, w, exact, d, &c)
+	Disc(1, w, exact, d, &c)
 	
 	for _, node := range c.Nodes {
 		assert.False(t, node.Visited, "visited for node (%v,%v) was true", node.S, node.T)

@@ -1,4 +1,4 @@
-package earthmover
+package disc
 
 
 import (
@@ -6,6 +6,8 @@ import (
 	"testing"
 	"coupling"
 	"utils"
+	"matching"
+	"setpair"
 )
 
 func setUpLinearEquationFrame() ([][]float64, []float64, []*coupling.Node) {
@@ -51,10 +53,10 @@ func TestAddsNewLinearEquationCorrectly(t *testing.T) {
 }
 
 func TestCorrectLinearFunctionsCreated(t *testing.T) {
-	c, m, visited, exact, d := setUpTest()
+	c, m, visited, exact, d := coupling.SetUpTest()
 	
-	w := FindFeasibleMatching(m, 0, 3, &c)
-	setpair(m, w, exact, visited, d, &c)
+	w := matching.FindFeasibleMatching(m, 0, 3, &c)
+	setpair.Setpair(m, w, exact, visited, d, &c)
 	
 	a, b, index := setUpLinearEquationFrame()
 	
@@ -72,10 +74,10 @@ func TestCorrectLinearFunctionsCreated(t *testing.T) {
 }
 
 func TestCorrectLinearFunctionsCreatedLoops(t *testing.T) {
-	c, m, visited, exact, d := setUpTest()
+	c, m, visited, exact, d := coupling.SetUpTest()
 	
-	w := FindFeasibleMatching(m, 0, 3, &c)
-	setpair(m, w, exact, visited, d, &c)
+	w := matching.FindFeasibleMatching(m, 0, 3, &c)
+	setpair.Setpair(m, w, exact, visited, d, &c)
 	
 	a, b, index := setUpLinearEquationFrame()
 	

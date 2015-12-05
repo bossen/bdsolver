@@ -2,6 +2,7 @@ package main
 
 import (
 	"earthmover"
+	"ouroptimal"
 	"log"
 	"fmt"
     "compiler"
@@ -35,7 +36,7 @@ Arguments:
 func main() {
     log.SetFlags(log.Lshortfile)
 	lambda := 1.0
-	TPSolver := earthmover.FindOptimal
+	TPSolver := ouroptimal.FindOptimal
 	log.SetOutput(ioutil.Discard)
 	filename := "NOFILENAMECHOSEN"
 	
@@ -120,7 +121,7 @@ func debug() {
 			[]float64{0.4, 0.4, 0.2, 0.0, 0.0, 0.0, 0.0},
 			[]float64{0.0, 0.1, 0.0, 0.2, 0.5, 0.2, 0.0},
 			[]float64{0.0, 0.2, 0.33333, 0.0, 0.1, 0.2, 0.16667}}}
-	earthmover.BipseudoMetric(mymarkov, 1.0, earthmover.FindOptimal)
+	earthmover.BipseudoMetric(mymarkov, 1.0, ouroptimal.FindOptimal)
 	
 	mymarkov = markov.MarkovChain {
 		Labels: []int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12},

@@ -5,22 +5,6 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func setUpCoupling() Coupling {
-	c := New()
-    n1 := Node{S: 0, T: 0}
-    n2 := Node{S: 0, T: 1}
-    n3 := Node{S: 1, T: 0}
-    n4 := Node{S: 1, T: 1}
-    e1 := Edge{&n1, 0.5, true}
-    e2 := Edge{&n2, 0.2, true}
-    e3 := Edge{&n3, 0, false}
-    e4 := Edge{&n4, 0.3, true}
-    n2.Adj = [][]*Edge{[]*Edge{&e1, &e2}, []*Edge{&e3, &e4}}
-    c.Nodes = []*Node{&n1, &n2, &n3, &n4}
-    
-    return c
-}
-
 func TestReachableNilAdj(t *testing.T) {
 	c := setUpCoupling()
     r := Reachable(c.Nodes[0])

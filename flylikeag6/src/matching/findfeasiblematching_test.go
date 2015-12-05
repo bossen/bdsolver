@@ -1,4 +1,4 @@
-package earthmover
+package matching
 
 import (
 	"github.com/stretchr/testify/assert"
@@ -15,8 +15,8 @@ func TestCorrectMatchingFound(t *testing.T) {
 		[]float64{0.0, 0.0, 0.17},
 		[]float64{0.0, 0.0, 0.17}}
 	
-	c := setUpCouplingMatching()
-	m := setUpMarkov()
+	c := coupling.New()
+	m := coupling.SetUpMarkov()
 
 	w := FindFeasibleMatching(m, 0, 3, &c)
 
@@ -34,8 +34,8 @@ func TestCorrectBasicFound(t *testing.T) {
 		[]bool{false, false, true},
 		[]bool{false, false, true}}
 	
-	c := setUpCouplingMatching()
-	m := setUpMarkov()
+	c := coupling.New()
+	m := coupling.SetUpMarkov()
 
 	w := FindFeasibleMatching(m, 0, 3, &c)
 
@@ -49,8 +49,8 @@ func TestCorrectBasicFound(t *testing.T) {
 }
 
 func TestCorrectSuccessorFound(t *testing.T) {
-	c := setUpCouplingMatching()
-	m := setUpMarkov()
+	c := coupling.New()
+	m := coupling.SetUpMarkov()
 
 	w := FindFeasibleMatching(m, 0, 3, &c)
 	log.Println(w.Adj[2][2].To)

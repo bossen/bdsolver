@@ -1,16 +1,18 @@
-package earthmover
+package disc
 
 import (
 	"github.com/stretchr/testify/assert"
 	"testing"
 	"coupling"
+	"matching"
+	"setpair"
 )
 
 func TestCorrectFilterNonZero(t *testing.T) {
-	c, m, visited, exact, d := setUpTest()
+	c, m, visited, exact, d := coupling.SetUpTest()
 	
-	w := FindFeasibleMatching(m, 0, 3, &c)
-	setpair(m, w, exact, visited, d, &c)
+	w := matching.FindFeasibleMatching(m, 0, 3, &c)
+	setpair.Setpair(m, w, exact, visited, d, &c)
 	
 	reachables := coupling.Reachable(w)
 	nonZeroReachables := filterZeros(reachables, exact, d)
@@ -23,10 +25,10 @@ func TestCorrectFilterNonZero(t *testing.T) {
 }
 
 func TestCorrectReverseCouplingNodesFound(t *testing.T) {
-	c, m, visited, exact, d := setUpTest()
+	c, m, visited, exact, d := coupling.SetUpTest()
 	
-	w := FindFeasibleMatching(m, 0, 3, &c)
-	setpair(m, w, exact, visited, d, &c)
+	w := matching.FindFeasibleMatching(m, 0, 3, &c)
+	setpair.Setpair(m, w, exact, visited, d, &c)
 	
 	nonZeroReachables := []*coupling.Node{}
 	
@@ -46,10 +48,10 @@ func TestCorrectReverseCouplingNodesFound(t *testing.T) {
 }
 
 func TestCorrectFindNonZeros(t *testing.T) {
-	c, m, visited, exact, d := setUpTest()
+	c, m, visited, exact, d := coupling.SetUpTest()
 	
-	w := FindFeasibleMatching(m, 0, 3, &c)
-	setpair(m, w, exact, visited, d, &c)
+	w := matching.FindFeasibleMatching(m, 0, 3, &c)
+	setpair.Setpair(m, w, exact, visited, d, &c)
 	
 	nonZero := findNonZero(w, exact, d, &c)
 	

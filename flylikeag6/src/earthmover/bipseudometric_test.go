@@ -3,47 +3,16 @@ package earthmover
 import (
 	"github.com/stretchr/testify/assert"
 	"testing"
-	"sets"
 	"coupling"
-	"markov"
+	"matching"
+	"setpair"
 )
 
-func setUpCouplingMatching() coupling.Coupling {
-	return coupling.New()
-}
-
-func setUpMarkov() markov.MarkovChain {
-	return markov.MarkovChain{
-		Labels: []int{0, 1, 0, 0, 0, 1, 0},
-		Transitions: [][]float64{
-			[]float64{0.0, 0.33, 0.33, 0.17, 0.0, 0.17, 0.0},
-			[]float64{0.0, 0.0, 0.4, 0.4, 0.0, 0.2, 0.0},
-			[]float64{0.0, 0.5, 0.5, 0.0, 0.0, 0.0, 0.0},
-			[]float64{0.33, 0.33, 0.34, 0.0, 0.0, 0.0, 0.0},
-			[]float64{0.4, 0.4, 0.2, 0.0, 0.0, 0.0, 0.0},
-			[]float64{0.0, 0.1, 0.0, 0.2, 0.5, 0.2, 0.0},
-			[]float64{0.0, 0.2, 0.33, 0.0, 0.1, 0.2, 0.17}}}
-}
-
-func setUpTest() (coupling.Coupling, markov.MarkovChain, [][]bool, [][]bool, [][]float64) {
-	c := setUpCouplingMatching()
-	m := setUpMarkov()
-	n := len(m.Transitions)
-	visited := sets.MakeMatrix(n)
-	exact := sets.MakeMatrix(n)
-	d := make([][]float64, n, n)
-	for i := 0; i < n; i++ {
-		d[i] = make([]float64, n, n)
-	}
-	
-	return c, m, visited, exact, d
-}
-
 func TestCorrectEdgesRemoved(t *testing.T) {
-	c, m, visited, exact, d := setUpTest()
+	c, m, visited, exact, d := coupling.SetUpTest()
 	
-	w := FindFeasibleMatching(m, 0, 3, &c)
-	setpair(m, w, exact, visited, d, &c)
+	w := matching.FindFeasibleMatching(m, 0, 3, &c)
+	setpair.Setpair(m, w, exact, visited, d, &c)
 	
 	n := w.Adj[2][2].To
 	
@@ -56,10 +25,10 @@ func TestCorrectEdgesRemoved(t *testing.T) {
 }
 
 func TestCorrectSuccNodesRemoved(t *testing.T) {
-	c, m, visited, exact, d := setUpTest()
+	c, m, visited, exact, d := coupling.SetUpTest()
 	
-	w := FindFeasibleMatching(m, 0, 3, &c)
-	setpair(m, w, exact, visited, d, &c)
+	w := matching.FindFeasibleMatching(m, 0, 3, &c)
+	setpair.Setpair(m, w, exact, visited, d, &c)
 	
 	n := w.Adj[2][2].To
 	n2 := n.Adj[1][2].To
@@ -73,10 +42,10 @@ func TestCorrectSuccNodesRemoved(t *testing.T) {
 }
 
 func TestCorrectExactSet(t *testing.T) {
-	c, m, visited, exact, d := setUpTest()
+	c, m, visited, exact, d := coupling.SetUpTest()
 	
-	w := FindFeasibleMatching(m, 0, 3, &c)
-	setpair(m, w, exact, visited, d, &c)
+	w := matching.FindFeasibleMatching(m, 0, 3, &c)
+	setpair.Setpair(m, w, exact, visited, d, &c)
 	
 	n := w.Adj[2][2].To
 	
@@ -87,7 +56,7 @@ func TestCorrectExactSet(t *testing.T) {
 }
 
 func TestInitializeD(t *testing.T) {
-	d := initD(100)
+	d := InitD(100)
 	for i := range d {
 		for j := range d[i] {
 			if i == j {
