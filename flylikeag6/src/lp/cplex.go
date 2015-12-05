@@ -123,6 +123,7 @@ func updateNode(node *coupling.Node, newValues []float64) {
 
 			if utils.ApproxEqual(prob, 0.0) {
 				edge.Basic = false
+				coupling.DeleteNodeInSlice(node, &edge.To.Succ)
 				if (prevBasic) {
 					node.BasicCount--
 				}
@@ -130,6 +131,9 @@ func updateNode(node *coupling.Node, newValues []float64) {
 				edge.Basic = true
 				if (!prevBasic) {
 					node.BasicCount++
+				}
+				if !coupling.IsNodeInSlice(node, edge.To.Succ) {
+					edge.To.Succ = append(edge.To.Succ, node)
 				}
 			}
 			edge.Prob = prob
