@@ -1,10 +1,11 @@
-package earthmover
+package ouroptimal
 
 import (
 	"coupling"
 	"github.com/stretchr/testify/assert"
 	"testing"
     "utils"
+    "matching"
 )
 
 func setUpCoupling() coupling.Coupling {
@@ -145,10 +146,10 @@ func TestCorrectDeletedSuccNodes(t *testing.T) {
 }
 
 func TestCorrectBasicCount(t *testing.T) {
-	c := setUpCouplingMatching()
-	m := setUpMarkov()
+	c := coupling.New()
+	m := coupling.SetUpMarkov()
 
-	w := FindFeasibleMatching(m, 0, 3, &c)
+	w := matching.FindFeasibleMatching(m, 0, 3, &c)
 	
 	SteppingStone(w, 2, 0)
 	

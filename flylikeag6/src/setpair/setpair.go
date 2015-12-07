@@ -1,9 +1,10 @@
-package earthmover
+package setpair
 
 import (
 	"coupling"
 	"log"
 	"markov"
+	"matching"
     "utils"
 )
 
@@ -26,7 +27,7 @@ func findDemandedPairs(w *coupling.Node, visited [][]bool) []*coupling.Edge {
 	return demanded
 }
 
-func setpair(m markov.MarkovChain, w *coupling.Node, exact [][]bool, visited [][]bool, dist [][]float64, c *coupling.Coupling) {
+func Setpair(m markov.MarkovChain, w *coupling.Node, exact [][]bool, visited [][]bool, dist [][]float64, c *coupling.Coupling) {
 	log.Printf("Setting pair for %v and %v", w.S, w.T)
 	visited[w.S][w.T] = true
 
@@ -45,8 +46,8 @@ func setpair(m markov.MarkovChain, w *coupling.Node, exact [][]bool, visited [][
 			exact[u][v]= true
 		} else if !(exact[u][v] || exact[v][u]) {
 			log.Printf("%v and %v have the same label ", u, v)
-			w2 := FindFeasibleMatching(m, u, v, c)
-			setpair(m, w2, exact, visited, dist, c)
+			w2 := matching.FindFeasibleMatching(m, u, v, c)
+			Setpair(m, w2, exact, visited, dist, c)
 		}
 	}
 }

@@ -1,18 +1,19 @@
-package earthmover
+package setpair
 
 import (
 	"github.com/stretchr/testify/assert"
 	"testing"
     "utils"
     "coupling"
+    "matching"
 )
 
 func TestCorrectRecursiveSetPairCall(t *testing.T) {
 	// the same functions used for random matching testing
-	c, m, visited, exact, d := setUpTest()
+	c, m, visited, exact, d := coupling.SetUpTest()
 
-	w := FindFeasibleMatching(m, 0, 3, &c)
-	setpair(m, w, exact, visited, d, &c)
+	w := matching.FindFeasibleMatching(m, 0, 3, &c)
+	Setpair(m, w, exact, visited, d, &c)
 
 	assert.NotEqual(t, w.Adj, nil, "the adjacency matrix has not been filled for (0,3)")
 	assert.NotEqual(t, w.Adj[2][2].To.Adj, nil, "the adjacency matrix has not been filled for (2,3)")
@@ -38,10 +39,10 @@ func TestCorrectVisited(t *testing.T) {
 		[]bool{false, false, false, false, false, false, false},
 		[]bool{false, false, false, false, false, false, false}}
 
-	c, m, visited, exact, d := setUpTest()
+	c, m, visited, exact, d := coupling.SetUpTest()
 
-	w := FindFeasibleMatching(m, 0, 3, &c)
-	setpair(m, w, exact, visited, d, &c)
+	w := matching.FindFeasibleMatching(m, 0, 3, &c)
+	Setpair(m, w, exact, visited, d, &c)
 
 	for i := 0; i < len(expected); i++ {
 		for j := 0; j < len(expected[0]); j++ {
@@ -60,10 +61,10 @@ func TestCorrectExact(t *testing.T) {
 		[]bool{false, false, false, false, false, false, false},
 		[]bool{false, false, false, false, false, false, false}}
 
-	c, m, visited, exact, d := setUpTest()
+	c, m, visited, exact, d := coupling.SetUpTest()
 
-	w := FindFeasibleMatching(m, 0, 3, &c)
-	setpair(m, w, exact, visited, d, &c)
+	w := matching.FindFeasibleMatching(m, 0, 3, &c)
+	Setpair(m, w, exact, visited, d, &c)
 
 	for i := 0; i < len(expected); i++ {
 		for j := 0; j < len(expected[0]); j++ {
@@ -77,10 +78,10 @@ func TestCorrectNestedMatchingFound(t *testing.T) {
 		[]float64{0.33, 0.17, 0.0},
 		[]float64{0.0, 0.16, 0.34}}
 	// the same functions used for random matching testing
-	c, m, visited, exact, d := setUpTest()
+	c, m, visited, exact, d := coupling.SetUpTest()
 
-	w := FindFeasibleMatching(m, 0, 3, &c)
-	setpair(m, w, exact, visited, d, &c)
+	w := matching.FindFeasibleMatching(m, 0, 3, &c)
+	Setpair(m, w, exact, visited, d, &c)
 
 	node := w.Adj[2][2].To
 
@@ -95,10 +96,10 @@ func TestCorrectNestedBasicFound(t *testing.T) {
 		[]bool{true, true, false},
 		[]bool{false, true, true}}
 	// the same functions used for random matching testing
-	c, m, visited, exact, d := setUpTest()
+	c, m, visited, exact, d := coupling.SetUpTest()
 
-	w := FindFeasibleMatching(m, 0, 3, &c)
-	setpair(m, w, exact, visited, d, &c)
+	w := matching.FindFeasibleMatching(m, 0, 3, &c)
+	Setpair(m, w, exact, visited, d, &c)
 
 	node := w.Adj[2][2].To
 
@@ -111,10 +112,10 @@ func TestCorrectNestedBasicFound(t *testing.T) {
 
 func TestCorrectNestedSuccessorFound(t *testing.T) {
 	// the same functions used for random matching testing
-	c, m, visited, exact, d := setUpTest()
+	c, m, visited, exact, d := coupling.SetUpTest()
 
-	w := FindFeasibleMatching(m, 0, 3, &c)
-	setpair(m, w, exact, visited, d, &c)
+	w := matching.FindFeasibleMatching(m, 0, 3, &c)
+	Setpair(m, w, exact, visited, d, &c)
 
 	node := w.Adj[2][2].To
 	

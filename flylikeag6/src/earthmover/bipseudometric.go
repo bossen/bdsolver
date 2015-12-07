@@ -4,11 +4,15 @@ import (
 	"coupling"
 	"markov"
 	"sets"
+	"matching"
+	"setpair"
+	"ouroptimal"
+	"disc"
 	"utils"
 	"log"
 )
 
-func initD(n int) [][]float64{
+func InitD(n int) [][]float64{
 	d := make([][]float64, n, n)
 	for i := 0; i < n; i++ {
 		d[i] = make([]float64, n, n)
@@ -73,7 +77,7 @@ func BipseudoMetric(m markov.MarkovChain, lambda float64, TPSolver func(markov.M
 	visited := sets.MakeMatrix(n)
 	exact := sets.MakeMatrix(n)
 	c := coupling.New()
-	d := initD(n)
+	d := InitD(n)
 	
 	for !sets.EmptySet(tocompute) {
 		var node *coupling.Node
@@ -100,14 +104,14 @@ func BipseudoMetric(m markov.MarkovChain, lambda float64, TPSolver func(markov.M
 		
 		if !visited[s][t] {
 			log.Printf("State %v %v had the same label and we haven't visited it yet", s, t)
-			node = FindFeasibleMatching(m, s, t, &c)
-			setpair(m, node, exact, visited, d, &c)
+			node = matching.FindFeasibleMatching(m, s, t, &c)
+			setpair.Setpair(m, node, exact, visited, d, &c)
 		} else {
 			log.Printf("State %v %v had the same label and we have already visited it", s, t)
 			node = coupling.FindNode(s, t, &c)
 		}
 	
-		disc(lambda, node, exact, d, &c)
+		disc.Disc(lambda, node, exact, d, &c)
 		
 		updateUntilOptimalSolutionsFound(lambda, m, node, exact, visited, d, c, TPSolver, []*coupling.Node{})
 		
@@ -122,15 +126,20 @@ func BipseudoMetric(m markov.MarkovChain, lambda float64, TPSolver func(markov.M
 
 func updateUntilOptimalSolutionsFound(lambda float64, m markov.MarkovChain, node *coupling.Node, exact [][]bool, visited [][]bool, d [][]float64, c coupling.Coupling, TPSolver func(markov.MarkovChain, *coupling.Node, [][]float64, float64, int, int), solvedNodes []*coupling.Node) {
 	log.Printf("find optimal for: (%v,%v)", node.S, node.T)
-	min, i, j := Uvmethod(node, d)
-	
+	min, i, j := ouroptimal.Uvmethod(node, d)
+	log.Printf("running find optimal with TPSolver: %v", TPSolver)
 	// if min is negative, we can further improve it, so we update it using the TPSolver and iterated until we cannot improve it further
 	for min < 0 {
+		previ, prevj := i, j
 		TPSolver(m, node, d, min, i, j)
-		setpair(m, node, exact, visited, d, &c)
-		disc(lambda, node, exact, d, &c)
+		setpair.Setpair(m, node, exact, visited, d, &c)
+		disc.Disc(lambda, node, exact, d, &c)
 		
-		min, i, j = Uvmethod(node, d)
+		min, i, j = ouroptimal.Uvmethod(node, d)
+		
+		if previ == i && prevj == j && min < 0 {
+			break
+		}
 	}
 	
 	// append solved nodes such that we do not end up recurively calling nodes that have already been found to be optimal
