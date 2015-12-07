@@ -123,14 +123,18 @@ func BipseudoMetric(m markov.MarkovChain, lambda float64, TPSolver func(markov.M
 func updateUntilOptimalSolutionsFound(lambda float64, m markov.MarkovChain, node *coupling.Node, exact [][]bool, visited [][]bool, d [][]float64, c coupling.Coupling, TPSolver func(markov.MarkovChain, *coupling.Node, [][]float64, float64, int, int), solvedNodes []*coupling.Node) {
 	log.Printf("find optimal for: (%v,%v)", node.S, node.T)
 	min, i, j := Uvmethod(node, d)
-	
 	// if min is negative, we can further improve it, so we update it using the TPSolver and iterated until we cannot improve it further
 	for min < 0 {
+		previ, prevj := i, j
 		TPSolver(m, node, d, min, i, j)
 		setpair(m, node, exact, visited, d, &c)
 		disc(lambda, node, exact, d, &c)
 		
 		min, i, j = Uvmethod(node, d)
+		
+		if previ == i && prevj == j && min < 0 {
+			break
+		}
 	}
 	
 	// append solved nodes such that we do not end up recurively calling nodes that have already been found to be optimal

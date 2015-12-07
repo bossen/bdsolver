@@ -7,6 +7,7 @@ import (
 )
 
 func FindOptimal(m markov.MarkovChain, n *coupling.Node, d [][]float64, min float64, i, j int) {
+	log.Println("Running default optimizer")
 	for min < 0 {
 		SteppingStone(n, i, j)
 		

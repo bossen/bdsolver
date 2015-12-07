@@ -10,6 +10,7 @@ import (
     "strconv"
     "io/ioutil"
     "strings"
+    "lp"
 )
 
 var version = "No version provided"
@@ -57,14 +58,14 @@ func main() {
 			arg := getOrFail(i+1, "expected cplex or default after -tpsolver but there was nothing")
 			
 			if arg == "cplex" {
-				TPSolver = earthmover.FindOptimal
+				TPSolver = lp.CplexOptimize
 			} else  if arg != "default" {
 				fail(fmt.Sprintf("expected cplex or default after -tpsolver but got %s", arg))
 			}
 			
 			i++
 		} else if os.Args[i] == "-v" {
-			log.SetOutput(os.Stderr)
+			log.SetOutput(os.Stdout)
         } else if os.Args[i] == "-h" {
             printdocumentation()
             os.Exit(0)
