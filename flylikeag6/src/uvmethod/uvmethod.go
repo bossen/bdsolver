@@ -1,8 +1,9 @@
-package ouroptimal
+package uvmethod
 
 import (
 	"coupling"
 	"log"
+    "utils"
 )
 
 func findMinimum(tableu [][]*coupling.Edge, u []float64, v []float64, d [][]float64) (float64, int, int) {
@@ -31,7 +32,7 @@ func findMinimum(tableu [][]*coupling.Edge, u []float64, v []float64, d [][]floa
 	return min, iresult, jresult
 }
 
-func Uvmethod(node *coupling.Node, d [][]float64) (float64, int, int) {
+func Run(node *coupling.Node, d [][]float64) (float64, int, int) {
 	if node.Adj == nil {
 		panic("Empty node!")
 	}
@@ -63,7 +64,7 @@ func Uvmethod(node *coupling.Node, d [][]float64) (float64, int, int) {
 }
 
 func calculateuv(tableu [][]*coupling.Edge, u []float64, v []float64, udefined []bool, vdefined []bool, d [][]float64) {
-	var unfinished []IntPair
+	var unfinished []utils.IntPair
 	finished := true
 	
 	// here we calculate the u-v modifiers possible in the first iteration
@@ -77,7 +78,7 @@ func calculateuv(tableu [][]*coupling.Edge, u []float64, v []float64, udefined [
 			
 			// if neither the u or v modifier has already been definied for the row/column pair, we add the index pair (i,j) so we can complete it later
 			if !udefined[i] && !vdefined[j] {
-				unfinished = append(unfinished, IntPair{i, j})
+				unfinished = append(unfinished, utils.IntPair{i, j})
 				finished = false
 				continue
 			}

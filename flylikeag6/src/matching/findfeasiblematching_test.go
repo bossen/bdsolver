@@ -8,6 +8,7 @@ import (
     "coupling"
 )
 
+
 func TestCorrectMatchingFound(t *testing.T) {
 	expected := [][]float64{
 		[]float64{0.33, 0.0, 0.0},
@@ -61,3 +62,4 @@ func TestCorrectSuccessorFound(t *testing.T) {
 	assert.False(t, coupling.IsNodeInSlice(w, w.Adj[0][1].To.Succ), "node (0,3) become a successor for (1,1)")
 	assert.False(t, coupling.IsNodeInSlice(w, w.Adj[1][0].To.Succ), "node (0,3) become a successor for (0,2)")
 }
+

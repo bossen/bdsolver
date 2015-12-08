@@ -2,4 +2,5 @@
 
 export GOPATH=$PWD
 export runner="./run"
+export tester="./test"
 

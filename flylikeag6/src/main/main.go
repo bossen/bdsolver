@@ -2,7 +2,8 @@ package main
 
 import (
 	"earthmover"
-	"ouroptimal"
+	"tpsolverdefault"
+	"tpsolvercplex"
 	"log"
 	"fmt"
     "compiler"
@@ -11,7 +12,6 @@ import (
     "strconv"
     "io/ioutil"
     "strings"
-    "lp"
 )
 
 var version = "No version provided"
@@ -36,7 +36,7 @@ Arguments:
 func main() {
     log.SetFlags(log.Lshortfile)
 	lambda := 1.0
-	TPSolver := ouroptimal.FindOptimal
+	TPSolver := tpsolverdefault.Solve
 	log.SetOutput(ioutil.Discard)
 	filename := "NOFILENAMECHOSEN"
 	
@@ -59,7 +59,7 @@ func main() {
 			arg := getOrFail(i+1, "expected cplex or default after -tpsolver but there was nothing")
 			
 			if arg == "cplex" {
-				TPSolver = lp.CplexOptimize
+				TPSolver = tpsolvercplex.Solve
 			} else  if arg != "default" {
 				fail(fmt.Sprintf("expected cplex or default after -tpsolver but got %s", arg))
 			}
@@ -121,7 +121,7 @@ func debug() {
 			[]float64{0.4, 0.4, 0.2, 0.0, 0.0, 0.0, 0.0},
 			[]float64{0.0, 0.1, 0.0, 0.2, 0.5, 0.2, 0.0},
 			[]float64{0.0, 0.2, 0.33333, 0.0, 0.1, 0.2, 0.16667}}}
-	earthmover.BipseudoMetric(mymarkov, 1.0, ouroptimal.FindOptimal)
+	earthmover.BipseudoMetric(mymarkov, 1.0, tpsolverdefault.Solve)
 	
 	mymarkov = markov.MarkovChain {
 		Labels: []int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12},

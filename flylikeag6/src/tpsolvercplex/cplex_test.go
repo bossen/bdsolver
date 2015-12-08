@@ -1,4 +1,4 @@
-package lp
+package tpsolvercplex
 
 import (
 		"sync"
@@ -60,7 +60,7 @@ func setUpTest() (coupling.Coupling, markov.MarkovChain, [][]float64) {
 func TestCplexOptimize(t *testing.T) {
 	c, m, d := setUpTest()
 	node := matching.FindFeasibleMatching(m, 0, 3, &c)
-	CplexOptimize(m, node, d, 0.0, 0, 0)
+    Solve(m, node, d, 0.0, 0, 0)
 	k := 0
 	for i := range node.Adj {
 		for _, edge := range node.Adj[i] {

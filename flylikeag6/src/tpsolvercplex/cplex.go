@@ -1,4 +1,4 @@
-package lp
+package tpsolvercplex
 
 import (
 	"strconv"
@@ -14,7 +14,6 @@ import (
 	"markov"
 	"coupling"
 	"utils"
-	"ouroptimal"
 )
 
 //credits: https://stackoverflow.com/questions/20437336/how-to-execute-system-command-in-golang-with-unknown-arguments
@@ -142,7 +141,7 @@ func updateNode(node *coupling.Node, newValues []float64) {
 	}
 }
 
-func CplexOptimize(markov markov.MarkovChain, node *coupling.Node, d [][]float64, min float64, i, j int) {
+func Solve(markov markov.MarkovChain, node *coupling.Node, d [][]float64, min float64, i, j int) {
 	log.Println("Running cplex optimizer")
 	var dbuffer, constraints bytes.Buffer
 	rowcount, rowused := findConstraints(&constraints, markov.Transitions[node.S])
@@ -157,6 +156,6 @@ func CplexOptimize(markov markov.MarkovChain, node *coupling.Node, d [][]float64
 	updateNode(node, newValues)
 	if node.BasicCount < len(node.Adj) + (len(node.Adj[0]) - 1) {
 		log.Printf("Recover basic nodes for node (%v,%v)", node.S, node.T)
-		ouroptimal.RecoverBasicNodes(node)
+		coupling.RecoverBasicNodes(node)
 	}
 }

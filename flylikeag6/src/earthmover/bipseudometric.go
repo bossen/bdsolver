@@ -6,7 +6,7 @@ import (
 	"sets"
 	"matching"
 	"setpair"
-	"ouroptimal"
+	"uvmethod"
 	"disc"
 	"utils"
 	"log"
@@ -126,7 +126,7 @@ func BipseudoMetric(m markov.MarkovChain, lambda float64, TPSolver func(markov.M
 
 func updateUntilOptimalSolutionsFound(lambda float64, m markov.MarkovChain, node *coupling.Node, exact [][]bool, visited [][]bool, d [][]float64, c coupling.Coupling, TPSolver func(markov.MarkovChain, *coupling.Node, [][]float64, float64, int, int), solvedNodes []*coupling.Node) {
 	log.Printf("find optimal for: (%v,%v)", node.S, node.T)
-	min, i, j := ouroptimal.Uvmethod(node, d)
+	min, i, j := uvmethod.Run(node, d)
 	// if min is negative, we can further improve it, so we update it using the TPSolver and iterated until we cannot improve it further
 	for min < 0 {
 		previ, prevj := i, j
@@ -134,7 +134,7 @@ func updateUntilOptimalSolutionsFound(lambda float64, m markov.MarkovChain, node
 		setpair.Setpair(m, node, exact, visited, d, &c)
 		disc.Disc(lambda, node, exact, d, &c)
 		
-		min, i, j = ouroptimal.Uvmethod(node, d)
+		min, i, j = uvmethod.Run(node, d)
 		
 		if previ == i && prevj == j && min < 0 {
 			break

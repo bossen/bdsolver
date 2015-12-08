@@ -3,6 +3,7 @@ package coupling
 import (
 	"testing"
 	"github.com/stretchr/testify/assert"
+//    "utils"
 )
 
 func TestReachableNilAdj(t *testing.T) {
@@ -66,3 +67,85 @@ func TestVisitReturnsCorrectCardinality(t *testing.T) {
 	
 	assert.Equal(t, len(r), 3, "visit returns a result set that does not have size 3")
 }
+
+
+/*
+
+func TestTraverseVetical(t *testing.T) {
+	c, m, visited, exact, d := SetUpTest()
+	
+	w := matching.FindFeasibleMatching(m, 0, 3, &c)
+	setpair.Setpair(m, w, exact, visited, d, &c)
+	
+	w.Adj[1][2].Basic = false
+	
+	traversed := traverseVertical(w, []utils.IntPair{}, 0)
+	
+	assert.Equal(t, 3, len(traversed), "the number of traversable basic nodes was not exactly 3")
+	
+	traversed = traverseVertical(w, []utils.IntPair{}, 2)
+	
+	assert.Equal(t, 2, len(traversed), "the number of traversable basic nodes was not exactly 2")
+	
+	w.Adj[1][2].Basic = true
+	
+	traversed = traverseVertical(w, []utils.IntPair{}, 2)
+	
+	assert.Equal(t, 6, len(traversed), "the number of traversable basic nodes was not exactly 6")
+}
+
+
+func TestTraverseHorizontal(t *testing.T) {
+	c, m, _, _, _ := coupling.SetUpTest()
+	
+	w := matching.FindFeasibleMatching(m, 0, 3, &c)
+	
+	w.Adj[1][2].Basic = false
+	
+	traversed := traverseHorizontal(w, []utils.IntPair{}, 0)
+	
+	assert.Equal(t, 3, len(traversed), "the number of traversable basic nodes was not exactly 3")
+	
+	traversed = traverseHorizontal(w, []utils.IntPair{}, 2)
+	
+	assert.Equal(t, 2, len(traversed), "the number of traversable basic nodes was not exactly 2")
+	
+	w.Adj[1][2].Basic = true
+	
+	traversed = traverseHorizontal(w, []utils.IntPair{}, 2)
+	
+	assert.Equal(t, 6, len(traversed), "the number of traversable basic nodes was not exactly 6")
+}
+
+func TestFindAllTraversableBasic(t *testing.T) {
+	c, m, _, _, _ := coupling.SetUpTest()
+	
+	w := matching.FindFeasibleMatching(m, 0, 3, &c)
+	
+	w.Adj[1][2].Basic = false
+	
+	traversed := findAllTraversableBasic(w, utils.IntPair{1, 2}, []utils.IntPair{})
+	
+	assert.Equal(t, 5, len(traversed), "the number of traversable basic nodes was not exactly 5")
+	
+	w.Adj[1][2].Basic = true
+	
+	traversed = findAllTraversableBasic(w, utils.IntPair{1, 2}, []utils.IntPair{})
+	
+	assert.Equal(t, 6, len(traversed), "the number of traversable basic nodes was not exactly 6")
+}
+
+func TestFindFirstBasic(t *testing.T) {
+	c, m, _, _, _ := coupling.SetUpTest()
+	
+	w := matching.FindFeasibleMatching(m, 0, 3, &c)
+	
+	index := findFirstBasic(w)
+	
+	assert.Equal(t, utils.IntPair{0, 0}, index, "the index found for first basic was not correct")
+	
+	w.Adj[0][0].Basic = false
+
+}
+
+*/
