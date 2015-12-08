@@ -1,0 +1,1279 @@
+States
+
+1 label
+2 labell
+3 labelr
+4 labelll
+5 labellr
+6 labellll
+7 labelllr
+8 labelllll
+9 labellllr
+10 labellllll
+11 labelllllr
+12 labelllllll
+13 labellllllr
+14 labellllllll
+15 labelllllllr
+16 labellllllrl
+17 labellllllrr
+18 labelllllrl
+19 labelllllrr
+20 labelllllrll
+21 labelllllrlr
+22 labelllllrrl
+23 labelllllrrr
+24 labellllrl
+25 labellllrr
+26 labellllrll
+27 labellllrlr
+28 labellllrlll
+29 labellllrllr
+30 labellllrlrl
+31 labellllrlrr
+32 labellllrrl
+33 labellllrrr
+34 labellllrrll
+35 labellllrrlr
+36 labellllrrrl
+37 labellllrrrr
+38 labelllrl
+39 labelllrr
+40 labelllrll
+41 labelllrlr
+42 labelllrlll
+43 labelllrllr
+44 labelllrllll
+45 labelllrlllr
+46 labelllrllrl
+47 labelllrllrr
+48 labelllrlrl
+49 labelllrlrr
+50 labelllrlrll
+51 labelllrlrlr
+52 labelllrlrrl
+53 labelllrlrrr
+54 labelllrrl
+55 labelllrrr
+56 labelllrrll
+57 labelllrrlr
+58 labelllrrlll
+59 labelllrrllr
+60 labelllrrlrl
+61 labelllrrlrr
+62 labelllrrrl
+63 labelllrrrr
+64 labelllrrrll
+65 labelllrrrlr
+66 labelllrrrrl
+67 labelllrrrrr
+68 labellrl
+69 labellrr
+70 labellrll
+71 labellrlr
+72 labellrlll
+73 labellrllr
+74 labellrllll
+75 labellrlllr
+76 labellrlllll
+77 labellrllllr
+78 labellrlllrl
+79 labellrlllrr
+80 labellrllrl
+81 labellrllrr
+82 labellrllrll
+83 labellrllrlr
+84 labellrllrrl
+85 labellrllrrr
+86 labellrlrl
+87 labellrlrr
+88 labellrlrll
+89 labellrlrlr
+90 labellrlrlll
+91 labellrlrllr
+92 labellrlrlrl
+93 labellrlrlrr
+94 labellrlrrl
+95 labellrlrrr
+96 labellrlrrll
+97 labellrlrrlr
+98 labellrlrrrl
+99 labellrlrrrr
+100 labellrrl
+101 labellrrr
+102 labellrrll
+103 labellrrlr
+104 labellrrlll
+105 labellrrllr
+106 labellrrllll
+107 labellrrlllr
+108 labellrrllrl
+109 labellrrllrr
+110 labellrrlrl
+111 labellrrlrr
+112 labellrrlrll
+113 labellrrlrlr
+114 labellrrlrrl
+115 labellrrlrrr
+116 labellrrrl
+117 labellrrrr
+118 labellrrrll
+119 labellrrrlr
+120 labellrrrlll
+121 labellrrrllr
+122 labellrrrlrl
+123 labellrrrlrr
+124 labellrrrrl
+125 labellrrrrr
+126 labellrrrrll
+127 labellrrrrlr
+128 labellrrrrrl
+129 labellrrrrrr
+130 labelrl
+131 labelrr
+132 labelrll
+133 labelrlr
+134 labelrlll
+135 labelrllr
+136 labelrllll
+137 labelrlllr
+138 labelrlllll
+139 labelrllllr
+140 labelrllllll
+141 labelrlllllr
+142 labelrllllrl
+143 labelrllllrr
+144 labelrlllrl
+145 labelrlllrr
+146 labelrlllrll
+147 labelrlllrlr
+148 labelrlllrrl
+149 labelrlllrrr
+150 labelrllrl
+151 labelrllrr
+152 labelrllrll
+153 labelrllrlr
+154 labelrllrlll
+155 labelrllrllr
+156 labelrllrlrl
+157 labelrllrlrr
+158 labelrllrrl
+159 labelrllrrr
+160 labelrllrrll
+161 labelrllrrlr
+162 labelrllrrrl
+163 labelrllrrrr
+164 labelrlrl
+165 labelrlrr
+166 labelrlrll
+167 labelrlrlr
+168 labelrlrlll
+169 labelrlrllr
+170 labelrlrllll
+171 labelrlrlllr
+172 labelrlrllrl
+173 labelrlrllrr
+174 labelrlrlrl
+175 labelrlrlrr
+176 labelrlrlrll
+177 labelrlrlrlr
+178 labelrlrlrrl
+179 labelrlrlrrr
+180 labelrlrrl
+181 labelrlrrr
+182 labelrlrrll
+183 labelrlrrlr
+184 labelrlrrlll
+185 labelrlrrllr
+186 labelrlrrlrl
+187 labelrlrrlrr
+188 labelrlrrrl
+189 labelrlrrrr
+190 labelrlrrrll
+191 labelrlrrrlr
+192 labelrlrrrrl
+193 labelrlrrrrr
+194 labelrrl
+195 labelrrr
+196 labelrrll
+197 labelrrlr
+198 labelrrlll
+199 labelrrllr
+200 labelrrllll
+201 labelrrlllr
+202 labelrrlllll
+203 labelrrllllr
+204 labelrrlllrl
+205 labelrrlllrr
+206 labelrrllrl
+207 labelrrllrr
+208 labelrrllrll
+209 labelrrllrlr
+210 labelrrllrrl
+211 labelrrllrrr
+212 labelrrlrl
+213 labelrrlrr
+214 labelrrlrll
+215 labelrrlrlr
+216 labelrrlrlll
+217 labelrrlrllr
+218 labelrrlrlrl
+219 labelrrlrlrr
+220 labelrrlrrl
+221 labelrrlrrr
+222 labelrrlrrll
+223 labelrrlrrlr
+224 labelrrlrrrl
+225 labelrrlrrrr
+226 labelrrrl
+227 labelrrrr
+228 labelrrrll
+229 labelrrrlr
+230 labelrrrlll
+231 labelrrrllr
+232 labelrrrllll
+233 labelrrrlllr
+234 labelrrrllrl
+235 labelrrrllrr
+236 labelrrrlrl
+237 labelrrrlrr
+238 labelrrrlrll
+239 labelrrrlrlr
+240 labelrrrlrrl
+241 labelrrrlrrr
+242 labelrrrrl
+243 labelrrrrr
+244 labelrrrrll
+245 labelrrrrlr
+246 labelrrrrlll
+247 labelrrrrllr
+248 labelrrrrlrl
+249 labelrrrrlrr
+250 labelrrrrrl
+251 labelrrrrrr
+252 labelrrrrrll
+253 labelrrrrrlr
+254 labelrrrrrrl
+255 labelrrrrrrr
+256 label
+257 labell
+258 labelr
+259 labelll
+260 labellr
+261 labellll
+262 labelllr
+263 labelllll
+264 labellllr
+265 labellllll
+266 labelllllr
+267 labelllllll
+268 labellllllr
+269 labellllllll
+270 labelllllllr
+271 labellllllrl
+272 labellllllrr
+273 labelllllrl
+274 labelllllrr
+275 labelllllrll
+276 labelllllrlr
+277 labelllllrrl
+278 labelllllrrr
+279 labellllrl
+280 labellllrr
+281 labellllrll
+282 labellllrlr
+283 labellllrlll
+284 labellllrllr
+285 labellllrlrl
+286 labellllrlrr
+287 labellllrrl
+288 labellllrrr
+289 labellllrrll
+290 labellllrrlr
+291 labellllrrrl
+292 labellllrrrr
+293 labelllrl
+294 labelllrr
+295 labelllrll
+296 labelllrlr
+297 labelllrlll
+298 labelllrllr
+299 labelllrllll
+300 labelllrlllr
+301 labelllrllrl
+302 labelllrllrr
+303 labelllrlrl
+304 labelllrlrr
+305 labelllrlrll
+306 labelllrlrlr
+307 labelllrlrrl
+308 labelllrlrrr
+309 labelllrrl
+310 labelllrrr
+311 labelllrrll
+312 labelllrrlr
+313 labelllrrlll
+314 labelllrrllr
+315 labelllrrlrl
+316 labelllrrlrr
+317 labelllrrrl
+318 labelllrrrr
+319 labelllrrrll
+320 labelllrrrlr
+321 labelllrrrrl
+322 labelllrrrrr
+323 labellrl
+324 labellrr
+325 labellrll
+326 labellrlr
+327 labellrlll
+328 labellrllr
+329 labellrllll
+330 labellrlllr
+331 labellrlllll
+332 labellrllllr
+333 labellrlllrl
+334 labellrlllrr
+335 labellrllrl
+336 labellrllrr
+337 labellrllrll
+338 labellrllrlr
+339 labellrllrrl
+340 labellrllrrr
+341 labellrlrl
+342 labellrlrr
+343 labellrlrll
+344 labellrlrlr
+345 labellrlrlll
+346 labellrlrllr
+347 labellrlrlrl
+348 labellrlrlrr
+349 labellrlrrl
+350 labellrlrrr
+351 labellrlrrll
+352 labellrlrrlr
+353 labellrlrrrl
+354 labellrlrrrr
+355 labellrrl
+356 labellrrr
+357 labellrrll
+358 labellrrlr
+359 labellrrlll
+360 labellrrllr
+361 labellrrllll
+362 labellrrlllr
+363 labellrrllrl
+364 labellrrllrr
+365 labellrrlrl
+366 labellrrlrr
+367 labellrrlrll
+368 labellrrlrlr
+369 labellrrlrrl
+370 labellrrlrrr
+371 labellrrrl
+372 labellrrrr
+373 labellrrrll
+374 labellrrrlr
+375 labellrrrlll
+376 labellrrrllr
+377 labellrrrlrl
+378 labellrrrlrr
+379 labellrrrrl
+380 labellrrrrr
+381 labellrrrrll
+382 labellrrrrlr
+383 labellrrrrrl
+384 labellrrrrrr
+385 labelrl
+386 labelrr
+387 labelrll
+388 labelrlr
+389 labelrlll
+390 labelrllr
+391 labelrllll
+392 labelrlllr
+393 labelrlllll
+394 labelrllllr
+395 labelrllllll
+396 labelrlllllr
+397 labelrllllrl
+398 labelrllllrr
+399 labelrlllrl
+400 labelrlllrr
+401 labelrlllrll
+402 labelrlllrlr
+403 labelrlllrrl
+404 labelrlllrrr
+405 labelrllrl
+406 labelrllrr
+407 labelrllrll
+408 labelrllrlr
+409 labelrllrlll
+410 labelrllrllr
+411 labelrllrlrl
+412 labelrllrlrr
+413 labelrllrrl
+414 labelrllrrr
+415 labelrllrrll
+416 labelrllrrlr
+417 labelrllrrrl
+418 labelrllrrrr
+419 labelrlrl
+420 labelrlrr
+421 labelrlrll
+422 labelrlrlr
+423 labelrlrlll
+424 labelrlrllr
+425 labelrlrllll
+426 labelrlrlllr
+427 labelrlrllrl
+428 labelrlrllrr
+429 labelrlrlrl
+430 labelrlrlrr
+431 labelrlrlrll
+432 labelrlrlrlr
+433 labelrlrlrrl
+434 labelrlrlrrr
+435 labelrlrrl
+436 labelrlrrr
+437 labelrlrrll
+438 labelrlrrlr
+439 labelrlrrlll
+440 labelrlrrllr
+441 labelrlrrlrl
+442 labelrlrrlrr
+443 labelrlrrrl
+444 labelrlrrrr
+445 labelrlrrrll
+446 labelrlrrrlr
+447 labelrlrrrrl
+448 labelrlrrrrr
+449 labelrrl
+450 labelrrr
+451 labelrrll
+452 labelrrlr
+453 labelrrlll
+454 labelrrllr
+455 labelrrllll
+456 labelrrlllr
+457 labelrrlllll
+458 labelrrllllr
+459 labelrrlllrl
+460 labelrrlllrr
+461 labelrrllrl
+462 labelrrllrr
+463 labelrrllrll
+464 labelrrllrlr
+465 labelrrllrrl
+466 labelrrllrrr
+467 labelrrlrl
+468 labelrrlrr
+469 labelrrlrll
+470 labelrrlrlr
+471 labelrrlrlll
+472 labelrrlrllr
+473 labelrrlrlrl
+474 labelrrlrlrr
+475 labelrrlrrl
+476 labelrrlrrr
+477 labelrrlrrll
+478 labelrrlrrlr
+479 labelrrlrrrl
+480 labelrrlrrrr
+481 labelrrrl
+482 labelrrrr
+483 labelrrrll
+484 labelrrrlr
+485 labelrrrlll
+486 labelrrrllr
+487 labelrrrllll
+488 labelrrrlllr
+489 labelrrrllrl
+490 labelrrrllrr
+491 labelrrrlrl
+492 labelrrrlrr
+493 labelrrrlrll
+494 labelrrrlrlr
+495 labelrrrlrrl
+496 labelrrrlrrr
+497 labelrrrrl
+498 labelrrrrr
+499 labelrrrrll
+500 labelrrrrlr
+501 labelrrrrlll
+502 labelrrrrllr
+503 labelrrrrlrl
+504 labelrrrrlrr
+505 labelrrrrrl
+506 labelrrrrrr
+507 labelrrrrrll
+508 labelrrrrrlr
+509 labelrrrrrrl
+510 labelrrrrrrr
+
+Edges
+
+1 -> 2 1/2
+1 -> 3 1/2
+2 -> 4 1/2
+2 -> 5 1/2
+4 -> 6 1/2
+4 -> 7 1/2
+6 -> 8 1/2
+6 -> 9 1/2
+8 -> 10 1/2
+8 -> 11 1/2
+10 -> 12 1/2
+10 -> 13 1/2
+12 -> 14 1/2
+12 -> 15 1/2
+14 -> 14 1/1
+15 -> 15 1/1
+13 -> 16 1/2
+13 -> 17 1/2
+16 -> 16 1/1
+17 -> 17 1/1
+11 -> 18 1/2
+11 -> 19 1/2
+18 -> 20 1/2
+18 -> 21 1/2
+20 -> 20 1/1
+21 -> 21 1/1
+19 -> 22 1/2
+19 -> 23 1/2
+22 -> 22 1/1
+23 -> 23 1/1
+9 -> 24 1/2
+9 -> 25 1/2
+24 -> 26 1/2
+24 -> 27 1/2
+26 -> 28 1/2
+26 -> 29 1/2
+28 -> 28 1/1
+29 -> 29 1/1
+27 -> 30 1/2
+27 -> 31 1/2
+30 -> 30 1/1
+31 -> 31 1/1
+25 -> 32 1/2
+25 -> 33 1/2
+32 -> 34 1/2
+32 -> 35 1/2
+34 -> 34 1/1
+35 -> 35 1/1
+33 -> 36 1/2
+33 -> 37 1/2
+36 -> 36 1/1
+37 -> 37 1/1
+7 -> 38 1/2
+7 -> 39 1/2
+38 -> 40 1/2
+38 -> 41 1/2
+40 -> 42 1/2
+40 -> 43 1/2
+42 -> 44 1/2
+42 -> 45 1/2
+44 -> 44 1/1
+45 -> 45 1/1
+43 -> 46 1/2
+43 -> 47 1/2
+46 -> 46 1/1
+47 -> 47 1/1
+41 -> 48 1/2
+41 -> 49 1/2
+48 -> 50 1/2
+48 -> 51 1/2
+50 -> 50 1/1
+51 -> 51 1/1
+49 -> 52 1/2
+49 -> 53 1/2
+52 -> 52 1/1
+53 -> 53 1/1
+39 -> 54 1/2
+39 -> 55 1/2
+54 -> 56 1/2
+54 -> 57 1/2
+56 -> 58 1/2
+56 -> 59 1/2
+58 -> 58 1/1
+59 -> 59 1/1
+57 -> 60 1/2
+57 -> 61 1/2
+60 -> 60 1/1
+61 -> 61 1/1
+55 -> 62 1/2
+55 -> 63 1/2
+62 -> 64 1/2
+62 -> 65 1/2
+64 -> 64 1/1
+65 -> 65 1/1
+63 -> 66 1/2
+63 -> 67 1/2
+66 -> 66 1/1
+67 -> 67 1/1
+5 -> 68 1/2
+5 -> 69 1/2
+68 -> 70 1/2
+68 -> 71 1/2
+70 -> 72 1/2
+70 -> 73 1/2
+72 -> 74 1/2
+72 -> 75 1/2
+74 -> 76 1/2
+74 -> 77 1/2
+76 -> 76 1/1
+77 -> 77 1/1
+75 -> 78 1/2
+75 -> 79 1/2
+78 -> 78 1/1
+79 -> 79 1/1
+73 -> 80 1/2
+73 -> 81 1/2
+80 -> 82 1/2
+80 -> 83 1/2
+82 -> 82 1/1
+83 -> 83 1/1
+81 -> 84 1/2
+81 -> 85 1/2
+84 -> 84 1/1
+85 -> 85 1/1
+71 -> 86 1/2
+71 -> 87 1/2
+86 -> 88 1/2
+86 -> 89 1/2
+88 -> 90 1/2
+88 -> 91 1/2
+90 -> 90 1/1
+91 -> 91 1/1
+89 -> 92 1/2
+89 -> 93 1/2
+92 -> 92 1/1
+93 -> 93 1/1
+87 -> 94 1/2
+87 -> 95 1/2
+94 -> 96 1/2
+94 -> 97 1/2
+96 -> 96 1/1
+97 -> 97 1/1
+95 -> 98 1/2
+95 -> 99 1/2
+98 -> 98 1/1
+99 -> 99 1/1
+69 -> 100 1/2
+69 -> 101 1/2
+100 -> 102 1/2
+100 -> 103 1/2
+102 -> 104 1/2
+102 -> 105 1/2
+104 -> 106 1/2
+104 -> 107 1/2
+106 -> 106 1/1
+107 -> 107 1/1
+105 -> 108 1/2
+105 -> 109 1/2
+108 -> 108 1/1
+109 -> 109 1/1
+103 -> 110 1/2
+103 -> 111 1/2
+110 -> 112 1/2
+110 -> 113 1/2
+112 -> 112 1/1
+113 -> 113 1/1
+111 -> 114 1/2
+111 -> 115 1/2
+114 -> 114 1/1
+115 -> 115 1/1
+101 -> 116 1/2
+101 -> 117 1/2
+116 -> 118 1/2
+116 -> 119 1/2
+118 -> 120 1/2
+118 -> 121 1/2
+120 -> 120 1/1
+121 -> 121 1/1
+119 -> 122 1/2
+119 -> 123 1/2
+122 -> 122 1/1
+123 -> 123 1/1
+117 -> 124 1/2
+117 -> 125 1/2
+124 -> 126 1/2
+124 -> 127 1/2
+126 -> 126 1/1
+127 -> 127 1/1
+125 -> 128 1/2
+125 -> 129 1/2
+128 -> 128 1/1
+129 -> 129 1/1
+3 -> 130 1/2
+3 -> 131 1/2
+130 -> 132 1/2
+130 -> 133 1/2
+132 -> 134 1/2
+132 -> 135 1/2
+134 -> 136 1/2
+134 -> 137 1/2
+136 -> 138 1/2
+136 -> 139 1/2
+138 -> 140 1/2
+138 -> 141 1/2
+140 -> 140 1/1
+141 -> 141 1/1
+139 -> 142 1/2
+139 -> 143 1/2
+142 -> 142 1/1
+143 -> 143 1/1
+137 -> 144 1/2
+137 -> 145 1/2
+144 -> 146 1/2
+144 -> 147 1/2
+146 -> 146 1/1
+147 -> 147 1/1
+145 -> 148 1/2
+145 -> 149 1/2
+148 -> 148 1/1
+149 -> 149 1/1
+135 -> 150 1/2
+135 -> 151 1/2
+150 -> 152 1/2
+150 -> 153 1/2
+152 -> 154 1/2
+152 -> 155 1/2
+154 -> 154 1/1
+155 -> 155 1/1
+153 -> 156 1/2
+153 -> 157 1/2
+156 -> 156 1/1
+157 -> 157 1/1
+151 -> 158 1/2
+151 -> 159 1/2
+158 -> 160 1/2
+158 -> 161 1/2
+160 -> 160 1/1
+161 -> 161 1/1
+159 -> 162 1/2
+159 -> 163 1/2
+162 -> 162 1/1
+163 -> 163 1/1
+133 -> 164 1/2
+133 -> 165 1/2
+164 -> 166 1/2
+164 -> 167 1/2
+166 -> 168 1/2
+166 -> 169 1/2
+168 -> 170 1/2
+168 -> 171 1/2
+170 -> 170 1/1
+171 -> 171 1/1
+169 -> 172 1/2
+169 -> 173 1/2
+172 -> 172 1/1
+173 -> 173 1/1
+167 -> 174 1/2
+167 -> 175 1/2
+174 -> 176 1/2
+174 -> 177 1/2
+176 -> 176 1/1
+177 -> 177 1/1
+175 -> 178 1/2
+175 -> 179 1/2
+178 -> 178 1/1
+179 -> 179 1/1
+165 -> 180 1/2
+165 -> 181 1/2
+180 -> 182 1/2
+180 -> 183 1/2
+182 -> 184 1/2
+182 -> 185 1/2
+184 -> 184 1/1
+185 -> 185 1/1
+183 -> 186 1/2
+183 -> 187 1/2
+186 -> 186 1/1
+187 -> 187 1/1
+181 -> 188 1/2
+181 -> 189 1/2
+188 -> 190 1/2
+188 -> 191 1/2
+190 -> 190 1/1
+191 -> 191 1/1
+189 -> 192 1/2
+189 -> 193 1/2
+192 -> 192 1/1
+193 -> 193 1/1
+131 -> 194 1/2
+131 -> 195 1/2
+194 -> 196 1/2
+194 -> 197 1/2
+196 -> 198 1/2
+196 -> 199 1/2
+198 -> 200 1/2
+198 -> 201 1/2
+200 -> 202 1/2
+200 -> 203 1/2
+202 -> 202 1/1
+203 -> 203 1/1
+201 -> 204 1/2
+201 -> 205 1/2
+204 -> 204 1/1
+205 -> 205 1/1
+199 -> 206 1/2
+199 -> 207 1/2
+206 -> 208 1/2
+206 -> 209 1/2
+208 -> 208 1/1
+209 -> 209 1/1
+207 -> 210 1/2
+207 -> 211 1/2
+210 -> 210 1/1
+211 -> 211 1/1
+197 -> 212 1/2
+197 -> 213 1/2
+212 -> 214 1/2
+212 -> 215 1/2
+214 -> 216 1/2
+214 -> 217 1/2
+216 -> 216 1/1
+217 -> 217 1/1
+215 -> 218 1/2
+215 -> 219 1/2
+218 -> 218 1/1
+219 -> 219 1/1
+213 -> 220 1/2
+213 -> 221 1/2
+220 -> 222 1/2
+220 -> 223 1/2
+222 -> 222 1/1
+223 -> 223 1/1
+221 -> 224 1/2
+221 -> 225 1/2
+224 -> 224 1/1
+225 -> 225 1/1
+195 -> 226 1/2
+195 -> 227 1/2
+226 -> 228 1/2
+226 -> 229 1/2
+228 -> 230 1/2
+228 -> 231 1/2
+230 -> 232 1/2
+230 -> 233 1/2
+232 -> 232 1/1
+233 -> 233 1/1
+231 -> 234 1/2
+231 -> 235 1/2
+234 -> 234 1/1
+235 -> 235 1/1
+229 -> 236 1/2
+229 -> 237 1/2
+236 -> 238 1/2
+236 -> 239 1/2
+238 -> 238 1/1
+239 -> 239 1/1
+237 -> 240 1/2
+237 -> 241 1/2
+240 -> 240 1/1
+241 -> 241 1/1
+227 -> 242 1/2
+227 -> 243 1/2
+242 -> 244 1/2
+242 -> 245 1/2
+244 -> 246 1/2
+244 -> 247 1/2
+246 -> 246 1/1
+247 -> 247 1/1
+245 -> 248 1/2
+245 -> 249 1/2
+248 -> 248 1/1
+249 -> 249 1/1
+243 -> 250 1/2
+243 -> 251 1/2
+250 -> 252 1/2
+250 -> 253 1/2
+252 -> 252 1/1
+253 -> 253 1/1
+251 -> 254 1/2
+251 -> 255 1/2
+254 -> 254 1/1
+255 -> 255 1/1
+256 -> 257 2/3
+256 -> 258 1/3
+257 -> 259 2/3
+257 -> 260 1/3
+259 -> 261 2/3
+259 -> 262 1/3
+261 -> 263 2/3
+261 -> 264 1/3
+263 -> 265 2/3
+263 -> 266 1/3
+265 -> 267 2/3
+265 -> 268 1/3
+267 -> 269 2/3
+267 -> 270 1/3
+269 -> 269 1/1
+270 -> 270 1/1
+268 -> 271 2/3
+268 -> 272 1/3
+271 -> 271 1/1
+272 -> 272 1/1
+266 -> 273 2/3
+266 -> 274 1/3
+273 -> 275 2/3
+273 -> 276 1/3
+275 -> 275 1/1
+276 -> 276 1/1
+274 -> 277 2/3
+274 -> 278 1/3
+277 -> 277 1/1
+278 -> 278 1/1
+264 -> 279 2/3
+264 -> 280 1/3
+279 -> 281 2/3
+279 -> 282 1/3
+281 -> 283 2/3
+281 -> 284 1/3
+283 -> 283 1/1
+284 -> 284 1/1
+282 -> 285 2/3
+282 -> 286 1/3
+285 -> 285 1/1
+286 -> 286 1/1
+280 -> 287 2/3
+280 -> 288 1/3
+287 -> 289 2/3
+287 -> 290 1/3
+289 -> 289 1/1
+290 -> 290 1/1
+288 -> 291 2/3
+288 -> 292 1/3
+291 -> 291 1/1
+292 -> 292 1/1
+262 -> 293 2/3
+262 -> 294 1/3
+293 -> 295 2/3
+293 -> 296 1/3
+295 -> 297 2/3
+295 -> 298 1/3
+297 -> 299 2/3
+297 -> 300 1/3
+299 -> 299 1/1
+300 -> 300 1/1
+298 -> 301 2/3
+298 -> 302 1/3
+301 -> 301 1/1
+302 -> 302 1/1
+296 -> 303 2/3
+296 -> 304 1/3
+303 -> 305 2/3
+303 -> 306 1/3
+305 -> 305 1/1
+306 -> 306 1/1
+304 -> 307 2/3
+304 -> 308 1/3
+307 -> 307 1/1
+308 -> 308 1/1
+294 -> 309 2/3
+294 -> 310 1/3
+309 -> 311 2/3
+309 -> 312 1/3
+311 -> 313 2/3
+311 -> 314 1/3
+313 -> 313 1/1
+314 -> 314 1/1
+312 -> 315 2/3
+312 -> 316 1/3
+315 -> 315 1/1
+316 -> 316 1/1
+310 -> 317 2/3
+310 -> 318 1/3
+317 -> 319 2/3
+317 -> 320 1/3
+319 -> 319 1/1
+320 -> 320 1/1
+318 -> 321 2/3
+318 -> 322 1/3
+321 -> 321 1/1
+322 -> 322 1/1
+260 -> 323 2/3
+260 -> 324 1/3
+323 -> 325 2/3
+323 -> 326 1/3
+325 -> 327 2/3
+325 -> 328 1/3
+327 -> 329 2/3
+327 -> 330 1/3
+329 -> 331 2/3
+329 -> 332 1/3
+331 -> 331 1/1
+332 -> 332 1/1
+330 -> 333 2/3
+330 -> 334 1/3
+333 -> 333 1/1
+334 -> 334 1/1
+328 -> 335 2/3
+328 -> 336 1/3
+335 -> 337 2/3
+335 -> 338 1/3
+337 -> 337 1/1
+338 -> 338 1/1
+336 -> 339 2/3
+336 -> 340 1/3
+339 -> 339 1/1
+340 -> 340 1/1
+326 -> 341 2/3
+326 -> 342 1/3
+341 -> 343 2/3
+341 -> 344 1/3
+343 -> 345 2/3
+343 -> 346 1/3
+345 -> 345 1/1
+346 -> 346 1/1
+344 -> 347 2/3
+344 -> 348 1/3
+347 -> 347 1/1
+348 -> 348 1/1
+342 -> 349 2/3
+342 -> 350 1/3
+349 -> 351 2/3
+349 -> 352 1/3
+351 -> 351 1/1
+352 -> 352 1/1
+350 -> 353 2/3
+350 -> 354 1/3
+353 -> 353 1/1
+354 -> 354 1/1
+324 -> 355 2/3
+324 -> 356 1/3
+355 -> 357 2/3
+355 -> 358 1/3
+357 -> 359 2/3
+357 -> 360 1/3
+359 -> 361 2/3
+359 -> 362 1/3
+361 -> 361 1/1
+362 -> 362 1/1
+360 -> 363 2/3
+360 -> 364 1/3
+363 -> 363 1/1
+364 -> 364 1/1
+358 -> 365 2/3
+358 -> 366 1/3
+365 -> 367 2/3
+365 -> 368 1/3
+367 -> 367 1/1
+368 -> 368 1/1
+366 -> 369 2/3
+366 -> 370 1/3
+369 -> 369 1/1
+370 -> 370 1/1
+356 -> 371 2/3
+356 -> 372 1/3
+371 -> 373 2/3
+371 -> 374 1/3
+373 -> 375 2/3
+373 -> 376 1/3
+375 -> 375 1/1
+376 -> 376 1/1
+374 -> 377 2/3
+374 -> 378 1/3
+377 -> 377 1/1
+378 -> 378 1/1
+372 -> 379 2/3
+372 -> 380 1/3
+379 -> 381 2/3
+379 -> 382 1/3
+381 -> 381 1/1
+382 -> 382 1/1
+380 -> 383 2/3
+380 -> 384 1/3
+383 -> 383 1/1
+384 -> 384 1/1
+258 -> 385 2/3
+258 -> 386 1/3
+385 -> 387 2/3
+385 -> 388 1/3
+387 -> 389 2/3
+387 -> 390 1/3
+389 -> 391 2/3
+389 -> 392 1/3
+391 -> 393 2/3
+391 -> 394 1/3
+393 -> 395 2/3
+393 -> 396 1/3
+395 -> 395 1/1
+396 -> 396 1/1
+394 -> 397 2/3
+394 -> 398 1/3
+397 -> 397 1/1
+398 -> 398 1/1
+392 -> 399 2/3
+392 -> 400 1/3
+399 -> 401 2/3
+399 -> 402 1/3
+401 -> 401 1/1
+402 -> 402 1/1
+400 -> 403 2/3
+400 -> 404 1/3
+403 -> 403 1/1
+404 -> 404 1/1
+390 -> 405 2/3
+390 -> 406 1/3
+405 -> 407 2/3
+405 -> 408 1/3
+407 -> 409 2/3
+407 -> 410 1/3
+409 -> 409 1/1
+410 -> 410 1/1
+408 -> 411 2/3
+408 -> 412 1/3
+411 -> 411 1/1
+412 -> 412 1/1
+406 -> 413 2/3
+406 -> 414 1/3
+413 -> 415 2/3
+413 -> 416 1/3
+415 -> 415 1/1
+416 -> 416 1/1
+414 -> 417 2/3
+414 -> 418 1/3
+417 -> 417 1/1
+418 -> 418 1/1
+388 -> 419 2/3
+388 -> 420 1/3
+419 -> 421 2/3
+419 -> 422 1/3
+421 -> 423 2/3
+421 -> 424 1/3
+423 -> 425 2/3
+423 -> 426 1/3
+425 -> 425 1/1
+426 -> 426 1/1
+424 -> 427 2/3
+424 -> 428 1/3
+427 -> 427 1/1
+428 -> 428 1/1
+422 -> 429 2/3
+422 -> 430 1/3
+429 -> 431 2/3
+429 -> 432 1/3
+431 -> 431 1/1
+432 -> 432 1/1
+430 -> 433 2/3
+430 -> 434 1/3
+433 -> 433 1/1
+434 -> 434 1/1
+420 -> 435 2/3
+420 -> 436 1/3
+435 -> 437 2/3
+435 -> 438 1/3
+437 -> 439 2/3
+437 -> 440 1/3
+439 -> 439 1/1
+440 -> 440 1/1
+438 -> 441 2/3
+438 -> 442 1/3
+441 -> 441 1/1
+442 -> 442 1/1
+436 -> 443 2/3
+436 -> 444 1/3
+443 -> 445 2/3
+443 -> 446 1/3
+445 -> 445 1/1
+446 -> 446 1/1
+444 -> 447 2/3
+444 -> 448 1/3
+447 -> 447 1/1
+448 -> 448 1/1
+386 -> 449 2/3
+386 -> 450 1/3
+449 -> 451 2/3
+449 -> 452 1/3
+451 -> 453 2/3
+451 -> 454 1/3
+453 -> 455 2/3
+453 -> 456 1/3
+455 -> 457 2/3
+455 -> 458 1/3
+457 -> 457 1/1
+458 -> 458 1/1
+456 -> 459 2/3
+456 -> 460 1/3
+459 -> 459 1/1
+460 -> 460 1/1
+454 -> 461 2/3
+454 -> 462 1/3
+461 -> 463 2/3
+461 -> 464 1/3
+463 -> 463 1/1
+464 -> 464 1/1
+462 -> 465 2/3
+462 -> 466 1/3
+465 -> 465 1/1
+466 -> 466 1/1
+452 -> 467 2/3
+452 -> 468 1/3
+467 -> 469 2/3
+467 -> 470 1/3
+469 -> 471 2/3
+469 -> 472 1/3
+471 -> 471 1/1
+472 -> 472 1/1
+470 -> 473 2/3
+470 -> 474 1/3
+473 -> 473 1/1
+474 -> 474 1/1
+468 -> 475 2/3
+468 -> 476 1/3
+475 -> 477 2/3
+475 -> 478 1/3
+477 -> 477 1/1
+478 -> 478 1/1
+476 -> 479 2/3
+476 -> 480 1/3
+479 -> 479 1/1
+480 -> 480 1/1
+450 -> 481 2/3
+450 -> 482 1/3
+481 -> 483 2/3
+481 -> 484 1/3
+483 -> 485 2/3
+483 -> 486 1/3
+485 -> 487 2/3
+485 -> 488 1/3
+487 -> 487 1/1
+488 -> 488 1/1
+486 -> 489 2/3
+486 -> 490 1/3
+489 -> 489 1/1
+490 -> 490 1/1
+484 -> 491 2/3
+484 -> 492 1/3
+491 -> 493 2/3
+491 -> 494 1/3
+493 -> 493 1/1
+494 -> 494 1/1
+492 -> 495 2/3
+492 -> 496 1/3
+495 -> 495 1/1
+496 -> 496 1/1
+482 -> 497 2/3
+482 -> 498 1/3
+497 -> 499 2/3
+497 -> 500 1/3
+499 -> 501 2/3
+499 -> 502 1/3
+501 -> 501 1/1
+502 -> 502 1/1
+500 -> 503 2/3
+500 -> 504 1/3
+503 -> 503 1/1
+504 -> 504 1/1
+498 -> 505 2/3
+498 -> 506 1/3
+505 -> 507 2/3
+505 -> 508 1/3
+507 -> 507 1/1
+508 -> 508 1/1
+506 -> 509 2/3
+506 -> 510 1/3
+509 -> 509 1/1
+510 -> 510 1/1

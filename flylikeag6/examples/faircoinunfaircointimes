@@ -1,0 +1,57 @@
+#!/usr/bin/python
+# --coding:UTF8
+
+import logging
+import sys
+import itertools
+log = logging.getLogger("changeme")
+
+n = int(sys.argv[1]) -1
+filename = sys.argv[2]
+
+states = []
+edges = []
+statenumbergen = itertools.count(1)
+
+f = open(filename, "w")
+
+def write(msg):
+    f.write(msg + "\n")
+
+
+def makenode(originname, originstatenumber, i, probr, probl):
+    if i == 0:
+        edges.append( (originstatenumber, originstatenumber, "1/1"))
+        return
+    left = statenumbergen.next()
+    right = statenumbergen.next()
+
+    states.append( (left, originname+"l"))
+    states.append( (right, originname+"r"))
+
+    edges.append( (originstatenumber, left, probl))
+    edges.append( (originstatenumber, right, probr))
+
+    makenode(originname+"l", left, i - 1, probr, probl)
+    makenode(originname+"r", right, i - 1, probr, probl)
+
+def startmakenode(originname, i, probr, probl):
+    origin = statenumbergen.next()
+    states.append( (origin, originname))
+    makenode(originname, origin, i, probr, probl)
+
+
+startmakenode("label", n, "1/2", "1/2")
+startmakenode("label", n, "1/3", "2/3")
+
+write("States\n")
+
+for state in states:
+    write("{} {}".format(state[0], state[1]))
+
+write("\nEdges\n")
+
+for edge in edges:
+    write("{} -> {} {}".format(edge[0], edge[1], edge[2]))
+
+f.close()
