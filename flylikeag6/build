@@ -2,4 +2,4 @@
 
 export GOPATH=$PWD
 
-go build -ldflags "-X main.version 1`date -u +.%y%m%d`" main
+go build -ldflags "-X main.version=1`date -u +.%y%m%d`" main
