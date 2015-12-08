@@ -9,7 +9,7 @@ import (
 
 		"coupling"
 		"markov"
-		"earthmover"
+		"matching"
 		"utils"
 
 		"github.com/stretchr/testify/assert"
@@ -59,7 +59,7 @@ func setUpTest() (coupling.Coupling, markov.MarkovChain, [][]float64) {
 
 func TestCplexOptimize(t *testing.T) {
 	c, m, d := setUpTest()
-	node := earthmover.FindFeasibleMatching(m, 0, 3, &c)
+	node := matching.FindFeasibleMatching(m, 0, 3, &c)
 	CplexOptimize(m, node, d, 0.0, 0, 0)
 	k := 0
 	for i := range node.Adj {
@@ -153,7 +153,7 @@ func TestCplexOutputToArray(t *testing.T) {
 
 func TestUpdateNodeWrongAmount(t *testing.T) {
 	c, m, d := setUpTest()
-	node := earthmover.FindFeasibleMatching(m, 0, 3, &c)
+	node := matching.FindFeasibleMatching(m, 0, 3, &c)
 	_ = d
 
 	var values = []float64{1, 2, 3, 4, 5}
@@ -177,7 +177,7 @@ func buildSlice(n int) []float64 {
 
 func TestUpdateNode(t *testing.T) {
 	c, m, _ := setUpTest()
-	node := earthmover.FindFeasibleMatching(m, 0, 3, &c)
+	node := matching.FindFeasibleMatching(m, 0, 3, &c)
 
 	adjlen := len(node.Adj) * len(node.Adj[0])
 

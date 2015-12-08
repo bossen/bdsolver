@@ -100,3 +100,17 @@ func InitToCompute(n int) [][]bool {
 	}
 	return toCompute
 }
+
+func InitD(n int) [][]float64{
+	d := make([][]float64, n, n)
+	for i := 0; i < n; i++ {
+		d[i] = make([]float64, n, n)
+		for j := range d[i] {
+			if i != j {
+				// when i and j is the same, we use the default value 0
+				d[i][j] = 1
+			}
+		}
+	}
+	return d
+}

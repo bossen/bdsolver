@@ -1,4 +1,4 @@
-package earthmover
+package disc
 
 import (
 	"coupling"
@@ -44,7 +44,7 @@ func solveLinearEquations(n *coupling.Node, exact [][]bool, d [][]float64, lambd
 	return x, index
 }
 
-func disc(lambda float64, n *coupling.Node, exact [][]bool, d[][]float64, c *coupling.Coupling) {
+func Disc(lambda float64, n *coupling.Node, exact [][]bool, d[][]float64, c *coupling.Coupling) {
 	log.Printf("tries to calculate linear equations for node (%v,%v)", n.S, n.T)
 	nonzero := findNonZero(n, exact, d, c)
 	

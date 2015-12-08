@@ -14,7 +14,7 @@ import (
 	"markov"
 	"coupling"
 	"utils"
-	"earthmover"
+	"ouroptimal"
 )
 
 //credits: https://stackoverflow.com/questions/20437336/how-to-execute-system-command-in-golang-with-unknown-arguments
@@ -78,6 +78,7 @@ func stringArrayToFloat(input []string) []float64 {
 }
 
 func cplexOutputToArray(input string) []string {
+	log.Println(input)
 	re := regexp.MustCompile(`(\d+(\.\d+)?,\s)*(\d+(\.\d+)?)`)
 	match := re.FindStringSubmatch(input)
 	if (len(match) == 0) {
@@ -122,6 +123,7 @@ func updateNode(node *coupling.Node, newValues []float64) {
 
 			if utils.ApproxEqual(prob, 0.0) {
 				edge.Basic = false
+				coupling.DeleteNodeInSlice(node, &edge.To.Succ)
 				if (prevBasic) {
 					node.BasicCount--
 				}
@@ -129,6 +131,9 @@ func updateNode(node *coupling.Node, newValues []float64) {
 				edge.Basic = true
 				if (!prevBasic) {
 					node.BasicCount++
+				}
+				if !coupling.IsNodeInSlice(node, edge.To.Succ) {
+					edge.To.Succ = append(edge.To.Succ, node)
 				}
 			}
 			edge.Prob = prob
@@ -138,6 +143,7 @@ func updateNode(node *coupling.Node, newValues []float64) {
 }
 
 func CplexOptimize(markov markov.MarkovChain, node *coupling.Node, d [][]float64, min float64, i, j int) {
+	log.Println("Running cplex optimizer")
 	var dbuffer, constraints bytes.Buffer
 	rowcount, rowused := findConstraints(&constraints, markov.Transitions[node.S])
 	columncount, columnused := findConstraints(&constraints, markov.Transitions[node.T])
@@ -151,6 +157,6 @@ func CplexOptimize(markov markov.MarkovChain, node *coupling.Node, d [][]float64
 	updateNode(node, newValues)
 	if node.BasicCount < len(node.Adj) + (len(node.Adj[0]) - 1) {
 		log.Printf("Recover basic nodes for node (%v,%v)", node.S, node.T)
-		earthmover.RecoverBasicNodes(node)
+		ouroptimal.RecoverBasicNodes(node)
 	}
 }

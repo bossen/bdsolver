@@ -1,4 +1,4 @@
-package earthmover
+package disc
  
 import (
     "errors"
