@@ -4,6 +4,6 @@
 
 
 if [ $? -eq 0 ] ; then
-	./main "examples/faircoin.lmc"
+	./main "examples/raduscoin.lmc" -v 
 	rm main
 fi
