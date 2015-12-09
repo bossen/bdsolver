@@ -1,0 +1,9 @@
+#!/bin/bash
+
+export GOPATH=$PWD
+export PATH=$PATH:/usr/local/go/bin
+
+
+
+
+./gox -output "bin/bdsolver_{{.OS}}_{{.Arch}}" -ldflags "-X main.version 1`date -u +.%y%m%d`" main
