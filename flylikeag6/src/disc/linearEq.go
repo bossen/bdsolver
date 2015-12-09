@@ -64,7 +64,7 @@ func addLinearEquation(a *[][]float64, b *[]float64, index *[]*coupling.Node, no
 	// ... and a new slice to the outer slice with the same length as the inner slices
 	*a = append(*a, make([]float64, rowlen))
 	
-	(*a)[rowlen-1][rowlen-1] = 1.0
+    (*a)[rowlen-1][rowlen-1] = 1.0
 	
 	// append a new NodePair to the index, since we have to manage a new linear equation
 	*index = append(*index, node)

@@ -155,8 +155,8 @@ func Parse(filename string) (markov.MarkovChain, error) {
         c.Fail("A programmer error. Someone forgot a continue")
     }
 
-    log.Printf("%+v", labelmapper)
-    log.Printf("%+v", labels)
-    log.Printf("%+v", transitions)
+    log.Printf("Labelmapper %+v", labelmapper)
+    log.Printf("Labels %+v", labels)
+    log.Printf("Transitions %+v", transitions)
     return markov.MarkovChain{labels, transitions}, nil
 }

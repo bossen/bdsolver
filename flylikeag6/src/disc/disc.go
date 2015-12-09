@@ -3,6 +3,7 @@ package disc
 import (
 	"coupling"
 	"log"
+    "utils"
 )
 
 func setZerosDistanceToZero(n *coupling.Node, nonzero []*coupling.Node, exact [][]bool, d[][]float64, c *coupling.Coupling) {
@@ -22,13 +23,18 @@ func solveLinearEquations(n *coupling.Node, exact [][]bool, d [][]float64, lambd
 	// initial setup for the first linear equation, since there will always be at least one
 	a := make([][]float64, 1)
 	a[0] = make([]float64, 1)
-	a[0][0] = 1.0
+    a[0][0] = 1.0
 	b := make([]float64, 1)
 	index := make([]*coupling.Node, 1)
 	index[0] = n
+    
+    
+    log.Printf("Before solving linear equation with A:%v b:%v", a, b)
 	
-	// manipulates a, b, and index using pointers
+	// manipulates a, b, and index using pointer
 	setUpLinearEquations(n, exact, d, &a, &b, 0, &index, lambda)
+    
+    log.Printf("After solving linear equation with A:%v b:%v", a, b)
 	
 	// solve the linear equations
 	x, err := GaussPartial(a, b)
@@ -36,7 +42,18 @@ func solveLinearEquations(n *coupling.Node, exact [][]bool, d [][]float64, lambd
 	if err != nil {
 		log.Panic("it was not possible to calculate the linear updations for node (%v,%v)", n.S, n.T)
 	}
-	
+
+    log.Printf("Solution x is %v", x)
+
+    log.Printf("Checking if the solution is true:")
+    for i := range a {
+        sum := 0.0
+        for j := range a {
+            sum += a[i][j] * x[i]
+        }
+        log.Printf("\t - %v ?= %v   %v", sum + b[i], x[i], utils.ApproxEqual(sum + b[i], x[i]))
+    }
+
 	for _, node := range index {
 		node.Visited = false
 	}
