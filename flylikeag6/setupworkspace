@@ -1,5 +1,6 @@
 #!/bin/bash
 
+export PATH=$PATH:/usr/local/go/bin
 export GOPATH=$PWD
 export runner="./run"
 export tester="./test"
