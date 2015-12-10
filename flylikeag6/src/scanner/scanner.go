@@ -70,6 +70,44 @@ func (c *Scanner) EndOfFile() bool {
     }
 }
 
+
+
+func (c *Scanner) EatWhitespaceAndComments() {
+    run := true
+    for run {
+        c.eatwhitespace()
+        run = c.eatcomment()
+    }
+    c.eatwhitespace()
+}
+
+func (c *Scanner) eatwhitespace() {
+    for !c.EndOfFile() {
+        if utils.IsWhitespace(c.Peek()) {
+            c.ReadChar()
+        } else {
+            break
+        }
+    }
+}
+
+// Checks if comments exists. If it does, it eats it and returns true. Else returns false
+func (c *Scanner) eatcomment() bool {
+    chars, err := c.reader.Peek(2)
+
+    if err != nil {
+        return false
+    }
+
+    if !c.EndOfFile() && chars[0] == '/' && chars[1] == '/' {
+        c.ReadChar()
+        c.ReadChar()
+        c.eatuntil('\n')
+        return true
+    }
+    return false
+}
+
 func (c *Scanner) eatuntil(a byte) {
 
     for !c.EndOfFile()  {
@@ -83,29 +121,6 @@ func (c *Scanner) eatuntil(a byte) {
     }
 }
 
-func (c *Scanner) EatWhitespaceAndComments() {
-    for !c.EndOfFile() {
-        if utils.IsWhitespace(c.Peek()) {
-            c.ReadChar()
-        } else {
-            break
-        }
-    }
-
-    chars, err := c.reader.Peek(2)
-
-    if err != nil {
-        return 
-    }
-
-    if !c.EndOfFile() && chars[0] == '/' && chars[1] == '/' {
-        c.ReadChar()
-        c.ReadChar()
-        c.eatuntil('\n')
-    }
-}
-
-
 func (c *Scanner) LineNumber() int {
     return c.line
 }
@@ -113,8 +128,6 @@ func (c *Scanner) LineNumber() int {
 
 
 func (c *Scanner) ReadNumber() int {
-    c.EatWhitespaceAndComments()
-
     number := ""
     for !c.EndOfFile() {
         if utils.IsNumeric(c.Peek()) {
@@ -139,7 +152,6 @@ func (c *Scanner) ReadNumber() int {
 }
 
 func (c *Scanner) ReadWord() string {
-    c.EatWhitespaceAndComments()
     word := ""
     for !c.EndOfFile() {
         if utils.IsAlphabetic(c.Peek()) {
