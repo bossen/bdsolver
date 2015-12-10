@@ -8,7 +8,6 @@ import (
     "markov"
     "errors"
     "fmt"
-    "os"
 )
 
 type token struct {
@@ -51,14 +50,13 @@ func scan(c* scanner.Scanner) token {
 
 func getExpectedToken(c* scanner.Scanner, expected string) string {
     token := scan(c)
-    expectToken(token, expected, c)
+    expectToken(token, expected)
     return token.value
 }
 
-func expectToken(found token, expected string, s *scanner.Scanner) {
+func expectToken(found token, expected string) {
     if found.tokentype != expected {
-        fmt.Println("On line ", s.LineNumber(), "; Expected ", expected, " found ", found.tokentype, " with value '", found.value, "'")
-        os.Exit(1)
+        log.Fatal("Expected ", expected, " found ", found.tokentype, " with value '", found.value, "'")
     }
 
 }
@@ -93,11 +91,10 @@ func Parse(filename string) (markov.MarkovChain, error) {
             }
             break
         }
-
         token := scan(&c)
 
         if state == 0 { // We are before States:
-            expectToken(token, "States", &c)
+            expectToken(token, "States")
             log.Printf("Going to states")
             state = 1
             continue
@@ -135,10 +132,10 @@ func Parse(filename string) (markov.MarkovChain, error) {
 
         } else if state == 2 {  // We are in Edges
 
-            expectToken(token, "Integer", &c)
+            expectToken(token, "Integer")
             // The reason why it is not nessecary to check for errors, is
             // that the scanner checks if it is a integer.
-            expectToken(token, "Integer", &c)
+            expectToken(token, "Integer")
             from, _ := strconv.Atoi(token.value)
             getExpectedToken(&c, "To")
             to, _ := strconv.Atoi(getExpectedToken(&c, "Integer"))

@@ -4,6 +4,6 @@
 
 
 if [ $? -eq 0 ] ; then
-	./bdsolver -v "examples/unfairdice.lmc"
-	rm bdsolver
+	./main "examples/faircoin.lmc"
+	rm main
 fi
