@@ -31,16 +31,6 @@ func TestReadNumber(t *testing.T) {
 }
 
 
-func TestReadNumberWithPrefixWhitespace(t *testing.T) {
-    scanner, _ := New("main.go")
-
-    // Overwrite the reader, so we can fake it
-    scanner.reader = *bufio.NewReader(strings.NewReader("\t    \t321321"))
-
-    assert.Equal(t, scanner.ReadNumber(), 321321)
-
-}
-
 func TestReadNumberWithSufixWhitespace(t *testing.T) {
     scanner, _ := New("main.go")
 
@@ -57,16 +47,6 @@ func TestReadWord(t *testing.T) {
 
     // Overwrite the reader, so we can fake it
     scanner.reader = *bufio.NewReader(strings.NewReader("someword"))
-
-    assert.Equal(t, scanner.ReadWord(), "someword")
-
-}
-
-func TestReadWordWithPrefixWhitespace(t *testing.T) {
-    scanner, _ := New("main.go")
-
-    // Overwrite the reader, so we can fake it
-    scanner.reader = *bufio.NewReader(strings.NewReader("\t    someword"))
 
     assert.Equal(t, scanner.ReadWord(), "someword")
 
