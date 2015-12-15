@@ -16,10 +16,11 @@ def _generateedgesfornode(branchingfactor):
 
 
 def generatenodes(nlabels, nstates, branchingfactor):
-    global output
+    output = ""
     labels = map(lambda o: "label" + str(o), range(nlabels))
     for i in range(1, nstates+1):
         output += "{} {}\n".format(i, labels[random.randint(0, nlabels-1)])
+    return output
 
 def getstatenotin(nstates, edgesto):
     while True:
@@ -28,7 +29,7 @@ def getstatenotin(nstates, edgesto):
             return tostate
 
 def generateedges(nstates, branchingfactor):
-    global output
+    output = ""
     states = range(1, nstates+1)
     edges = []
     for fromstate in states:
@@ -37,18 +38,14 @@ def generateedges(nstates, branchingfactor):
             tostate = getstatenotin(nstates, edgesto)
             edgesto.append(tostate)
             output += "{} -> {} {}/100\n".format(fromstate, tostate, edgeprob)
-
-        
-output = ""
-
+    return output
 
 def main(nlabels, nstates, branchingfactor): 
-    global output
-    output += "States\n"
-    generatenodes(nlabels, nstates, branchingfactor)
+    output = "States\n"
+    output += generatenodes(nlabels, nstates, branchingfactor)
     
     output += "Edges\n"
-    generateedges(nstates, branchingfactor)
+    output += generateedges(nstates, branchingfactor)
     return output
 
 def printhelpmenu():
