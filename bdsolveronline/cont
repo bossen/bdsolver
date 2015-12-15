@@ -1,0 +1,33 @@
+#!/bin/bash
+
+export debug=0
+
+# Load variables in
+. ./setvars
+
+if [ $NAME == "CHANGE_ME" ] ; then
+	echo "ERROR! Please change the name in setvars"
+	exit 1
+fi
+
+export PIDFILE=/tmp/PID$NAME.pid
+
+
+
+if [ $1 == "start" ] ; then
+	echo "Starting $NAME by running '$runner'"
+	$runner &
+	echo $!
+	echo "$!" > $PIDFILE
+elif [ $1 == "stop" ] ; then
+	PID=`cat $PIDFILE`
+	echo "Stopping $NAME with pid $PID"
+	kill $PID
+	rm $PIDFILE
+
+elif [ $1 == "installdeps" ] ; then
+	$installdeps
+else
+	echo "Wrong control message. Please write ./cont <start|stop|installdeps>"
+fi
+

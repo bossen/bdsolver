@@ -1,0 +1,16 @@
+#!/bin/bash
+
+export NAME="bdsolverinit"
+export installdeps="sudo apt-get install ipython python-pytest python-flask"
+
+if [ $debug -eq 1 ] ; then
+	echo "Setting as debug"
+	export runner="./main.py"
+	export tester="py.test"
+elif [ $debug -eq 0 ] ; then 
+	echo "Setting as production"
+	export runner="./main.py"
+	export tester="py.test"
+else
+	echo "Could not set, please set debug"
+fi
