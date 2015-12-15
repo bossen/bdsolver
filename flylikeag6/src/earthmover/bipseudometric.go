@@ -128,7 +128,7 @@ func updateUntilOptimalSolutionsFound(lambda float64, m markov.MarkovChain, node
 	log.Printf("find optimal for: (%v,%v)", node.S, node.T)
 	min, i, j := uvmethod.Run(node, d)
 	// if min is negative, we can further improve it, so we update it using the TPSolver and iterated until we cannot improve it further
-	for min < 0 {
+	for min < 0 && utils.ApproxEqual(min, 0) {
 		previ, prevj := i, j
 		TPSolver(m, node, d, min, i, j)
 		setpair.Setpair(m, node, exact, visited, d, &c)
