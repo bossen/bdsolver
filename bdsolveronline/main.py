@@ -7,7 +7,7 @@ from common import log
 
 from flask import request, Flask
 
-app = Flask(__init__)
+app = Flask(__name__)
 
 
 @app.route("/")
@@ -22,7 +22,8 @@ def runit():
         return "Wrong token!"
 
     lmc = request.form["lmc"]
-
+    
+    return "bdsolver"
 
 if __name__ == "__main__":
-    main()
+    app.run(host="0.0.0.0", port=5000)
