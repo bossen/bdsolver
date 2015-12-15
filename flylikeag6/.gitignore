@@ -1,2 +1,6 @@
 main
 cplex.log
+
+bin/
+cprof
+
