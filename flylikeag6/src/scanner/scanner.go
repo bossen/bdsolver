@@ -152,9 +152,12 @@ func (c *Scanner) ReadNumber() int {
 }
 
 func (c *Scanner) ReadWord() string {
-    word := ""
+    if !utils.IsAlphabetic(c.Peek()) {
+        c.Fail("Could not read word")
+    }
+    word := string(c.ReadChar())
     for !c.EndOfFile() {
-        if utils.IsAlphabetic(c.Peek()) {
+        if utils.IsAlphabetic(c.Peek()) || utils.IsNumeric(c.Peek()) {
             word += string(c.ReadChar())
         } else if utils.IsWhitespace(c.Peek()) || c.Peek() == '/' {
             break
