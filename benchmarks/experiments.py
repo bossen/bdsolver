@@ -2,14 +2,34 @@
 # --coding:UTF8
 
 import  os
+import sys
 import subprocess
 from time import time
 import json
 
 bdsolverpath = "./bdsolver -tpsolver cplex"
 makerandompath = "./makerandommarkov.py"
-saveto = "files"
 
+try:
+    nstatefrom = int(sys.argv[1])
+    nstateto = int(sys.argv[2])
+    step = int(sys.argv[3])
+    nlabels = int(sys.argv[4])
+    bf = int(sys.argv[5])
+    saveto = sys.argv[6]
+except IndexError:
+    print("Usage ./experiments <nstatesfrom> <nstatesto> <step> <nlabels> <bf> <safeto>")
+    exit(0)
+os.mkdir(saveto)
+
+
+"""
+    nstatefrom = 500
+    nstateto = 700
+    step = 100
+    nlabels = 3
+    bf = 2
+"""
 
 def generatemarkov(args):
     os.system("{} {} {} {} {}".format(
@@ -62,11 +82,6 @@ def rungenerator(gen):
 
 
 def generator_state():
-    nstatefrom = 100
-    nstateto = 300
-    step = 50
-    nlabels = 3
-    bf = 2
     for i in range(nstatefrom, nstateto, step):
         args =  {
             "nlabels":  nlabels,
