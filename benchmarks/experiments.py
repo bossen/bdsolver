@@ -11,25 +11,27 @@ makerandompath = "./makerandommarkov.py"
 saveto = "files"
 
 
-def runone(nlabels, nstates, bf):
-    filename = "{}/{}labels_{}states_{}bf.lmc".format(saveto, nlabels, nstates, bf)
-    os.system("{} {} {} {} {}".format(makerandompath, nlabels, nstates, bf, filename))
+def generatemarkov(args):
+    os.system("{} {} {} {} {}".format(
+        makerandompath,
+        args['nlabels'],
+        args['nstates'], 
+        args['bf'], 
+        args['filename']))
 
+
+def runone(args):
     t = time()
-    p = subprocess.Popen("{} {}".format(bdsolverpath, filename),
+    p = subprocess.Popen("{} {}".format(bdsolverpath, args['filename']),
             shell=True, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
+    p.communicate()
     p.wait()
     ret = p.returncode
     t = time() -t
 
 
-    result = {
-        "nlabels": nlabels,
-        "nstates": nstates,
-        "bf": bf,
-        "time": t,
-        "return": ret}
-    return result
+    args['time'] = t
+    args['return'] =  ret
 
 
 def writeresult():
@@ -44,28 +46,35 @@ def writeresult():
 results = []
 nerrors = 0
 
-def makeresults(gen):
+def rungenerator(gen):
     global results
     while True:
         try:
-            nlabels, nstates, bf  = gen.next()
+            args  = gen.next()
         except StopIteration:
             return results
 
-        result = runone(nlabels, nstates, bf)
+        runone(args)
 
-        results.append(result)
+        results.append(args)
         writeresult()
-        print(result)
+        print(args)
 
 
 def generator_state(nstatefrom, nstateto, nlabels, bf):
     for i in range(nstatefrom, nstateto, 50):
-        yield (nlabels, i, bf)
+        args =  {
+            "nlabels":  nlabels,
+            "nstates": i,
+            "bf": bf,
+            "filename": "{}/{}labels_{}states_{}bf.lmc".format(saveto, nlabels, i, bf)
+        }
+        generatemarkov(args)
+        yield args
 
 
-x = generator_state(50,500, 3, 2)
-makeresults(x)
+x = generator_state(50,300, 3, 2)
+rungenerator(x)
 
 msg = "No errors occured" if nerrors == 0 else "{} of errors".format(nerrors)
 print("Done experiments with: " + msg)
