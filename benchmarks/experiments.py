@@ -62,11 +62,12 @@ def rungenerator(gen):
 
 
 def generator_state():
-    nstatefrom = 50
-    nstateto =  300
+    nstatefrom = 100
+    nstateto = 300
+    step = 50
     nlabels = 3
     bf = 2
-    for i in range(nstatefrom, nstateto, 50):
+    for i in range(nstatefrom, nstateto, step):
         args =  {
             "nlabels":  nlabels,
             "nstates": i,
