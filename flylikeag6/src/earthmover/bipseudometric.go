@@ -104,7 +104,10 @@ func BipseudoMetric(m markov.MarkovChain, lambda float64, TPSolver func(markov.M
 		
 		node = coupling.FindNode(s, t, &c)
 		
-		if node == nil || node.Adj == nil {
+		if node == nil {
+			node = matching.FindFeasibleMatching(m, s, t, &c)
+			setpair.Setpair(m, node, exact, visited, d, &c)
+		} else if node.Adj == nil {
 			node = matching.FindFeasibleMatching(m, s, t, &c)
 			setpair.Setpair(m, node, exact, visited, d, &c)
 		}
