@@ -78,7 +78,7 @@ func stringArrayToFloat(input []string) []float64 {
 
 func cplexOutputToArray(input string) []string {
 	log.Println(input)
-	re := regexp.MustCompile(`(\d+(\.\d+)?,\s)*(\d+(\.\d+)?)`)
+	re := regexp.MustCompile(`(\d+(\.[0-9\-e]+)?,\s)*(\d+(\.[0-9\-e]+)?)`)
 	match := re.FindStringSubmatch(input)
 	if (len(match) == 0) {
 		fmt.Println("Error in cplex output")
