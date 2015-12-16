@@ -3,4 +3,5 @@ cplex.log
 
 bin/
 cprof
+bdsolver
 
