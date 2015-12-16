@@ -73,8 +73,7 @@ def generator_state(nstatefrom, nstateto, nlabels, bf):
         yield args
 
 
-x = generator_state(50,300, 3, 2)
-rungenerator(x)
+rungenerator(generator_state(50,300, 3, 2))
 
 msg = "No errors occured" if nerrors == 0 else "{} of errors".format(nerrors)
 print("Done experiments with: " + msg)
