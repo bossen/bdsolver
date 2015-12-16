@@ -78,7 +78,7 @@ func stringArrayToFloat(input []string) []float64 {
 
 func cplexOutputToArray(input string) []string {
 	log.Println(input)
-	re := regexp.MustCompile(`(\d+(\.\d+)?,\s)*(\d+(\.\d+)?)`)
+	re := regexp.MustCompile(`(\d+(\.[0-9\-e]+)?,\s)*(\d+(\.[0-9\-e]+)?)`)
 	match := re.FindStringSubmatch(input)
 	if (len(match) == 0) {
 		fmt.Println("Error in cplex output")
@@ -111,6 +111,7 @@ func optimize(dbuffer, constraints string, rowcount, columncount int) []float64 
 
 func updateNode(node *coupling.Node, newValues []float64) {
 	if (len(node.Adj) * len(node.Adj[0])) != len(newValues) {
+		log.Printf("%v %v", (len(node.Adj) * len(node.Adj[0])), len(newValues))
 		panic("The amount of new values does not match the adjacency matrix!")
 	}
 

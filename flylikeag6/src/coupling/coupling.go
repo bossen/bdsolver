@@ -55,11 +55,6 @@ func Reachable(root *Node) []*Node {
 	// Find all reachables from the  u,v node
 	reachables = visit(root, reachables)
 
-	log.Println("reachables:")
-	for _, t := range reachables {
-		log.Println(t)
-	}
-
 	for _, n := range reachables {
 		n.Visited = false
 	}
@@ -80,7 +75,7 @@ func visit(root *Node, results []*Node) []*Node {
 			
 			if !edge.Basic || toVisit.Visited {
 				continue
-			} else if edge.Prob > 0 {
+			} else if !utils.ApproxEqual(edge.Prob, 0) {
 				toVisit.Visited = true
 				results = append(results, toVisit)
 				results = visit(toVisit, results)

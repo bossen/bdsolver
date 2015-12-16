@@ -102,13 +102,11 @@ func BipseudoMetric(m markov.MarkovChain, lambda float64, TPSolver func(markov.M
 			continue
 		} 
 		
-		if !visited[s][t] {
-			log.Printf("State %v %v had the same label and we haven't visited it yet", s, t)
+		node = coupling.FindNode(s, t, &c)
+		
+		if node == nil || node.Adj == nil {
 			node = matching.FindFeasibleMatching(m, s, t, &c)
 			setpair.Setpair(m, node, exact, visited, d, &c)
-		} else {
-			log.Printf("State %v %v had the same label and we have already visited it", s, t)
-			node = coupling.FindNode(s, t, &c)
 		}
 	
 		disc.Disc(lambda, node, exact, d, &c)
