@@ -2,6 +2,7 @@
 # --coding:UTF8
 
 import  os
+import subprocess
 from time import time
 import json
 
@@ -11,11 +12,14 @@ saveto = "files"
 
 
 def runone(nlabels, nstates, bf):
-    filename = "{}/{}labels_{}states_{}bf".format(saveto, nlabels, nstates, bf)
-    os.system("{} {} {} {} {} >> /dev/null".format(makerandompath, nlabels, nstates, bf, filename))
+    filename = "{}/{}labels_{}states_{}bf.lmc".format(saveto, nlabels, nstates, bf)
+    os.system("{} {} {} {} {}".format(makerandompath, nlabels, nstates, bf, filename))
 
     t = time()
-    os.system("{} {}".format(bdsolverpath, filename))
+    p = subprocess.Popen("{} {}".format(bdsolverpath, filename),
+            shell=True, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
+    p.wait()
+    ret = p.returncode
     t = time() -t
 
 
@@ -23,7 +27,8 @@ def runone(nlabels, nstates, bf):
         "nlabels": nlabels,
         "nstates": nstates,
         "bf": bf,
-        "time": t}
+        "time": t,
+        "return": ret}
     return result
 
 
@@ -54,9 +59,9 @@ def makeresults(gen):
 
 
 def generator_state(nstatefrom, nstateto, nlabels, bf):
-    for i in range(nstatefrom, nstateto, 30):
+    for i in range(nstatefrom, nstateto, 50):
         yield (nlabels, i, bf)
 
 
-x = generator_state(100, 400, 3, 2)
+x = generator_state(50,500, 3, 2)
 makeresults(x)
