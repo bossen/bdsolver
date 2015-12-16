@@ -146,7 +146,7 @@ func updateUntilOptimalSolutionsFound(lambda float64, m markov.MarkovChain, node
 	
 	for _, row := range node.Adj {
 		for _, edge := range row {
-			if edge.To.Adj == nil || exact[edge.To.S][edge.To.T] {
+			if edge.To.Adj == nil {
 				// if the node do not have an adjacency matrix or is exact, we do not have to proccess it
 				continue
 			}
@@ -158,6 +158,9 @@ func updateUntilOptimalSolutionsFound(lambda float64, m markov.MarkovChain, node
 			updateUntilOptimalSolutionsFound(lambda, m, edge.To, exact, visited, d, c, TPSolver, solvedNodes)
 		}
 	}
+	
+	exact[node.S][node.T] = true
+	exact[node.S][node.T] = true
 	
 	return
 }
