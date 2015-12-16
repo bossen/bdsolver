@@ -42,6 +42,7 @@ def writeresult():
             f.write("{}\t{}\n".format(result['nstates'], result['time']))
 
 results = []
+nerrors = 0
 
 def makeresults(gen):
     global results
@@ -65,3 +66,6 @@ def generator_state(nstatefrom, nstateto, nlabels, bf):
 
 x = generator_state(50,500, 3, 2)
 makeresults(x)
+
+msg = "No errors occured" if nerrors == 0 else "{} of errors".format(nerrors)
+print("Done experiments with: " + msg)
