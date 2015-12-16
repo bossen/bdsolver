@@ -73,8 +73,7 @@ func main() {
             printdocumentation()
             os.Exit(0)
         } else if os.Args[i] == "-m" {
-            resultPrinter = printMatrix
-        }
+            resultPrinter = printDistanceMatrix
 		} else {
 		    filename = getOrFail(i, "expected a file but there was nothing")
 		}
