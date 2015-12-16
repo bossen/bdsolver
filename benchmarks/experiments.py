@@ -2,19 +2,13 @@
 # --coding:UTF8
 
 import  os
-import sys
 import subprocess
 from time import time
 import json
 
 bdsolverpath = "./bdsolver -tpsolver cplex"
 makerandompath = "./makerandommarkov"
-
-try:
-    saveto = sys.argv[1]
-except:
-    print("Usage ./experiments <outputdir>")
-    exit(1)
+saveto = "files"
 
 
 def runone(nlabels, nstates, bf):
