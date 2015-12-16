@@ -7,7 +7,7 @@ from time import time
 import json
 
 bdsolverpath = "./bdsolver -tpsolver cplex"
-makerandompath = "./makerandommarkov"
+makerandompath = "./makerandommarkov.py"
 saveto = "files"
 
 
