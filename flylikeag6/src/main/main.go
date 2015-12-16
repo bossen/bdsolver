@@ -25,8 +25,8 @@ Arguments:
    -l <lambda>           Defines the lambda. The lambda has to be larger than 0 up to 1.
    -tpsolver <solver>    Defines the transportation solver. Possible arguments are cplex or default.
    -v                    Running verbose logging.
-   -m                    Print result as a adjancy matrix
-   -h                    Shows this description
+   -m                    Print result as an adjacency matrix.
+   -h                    Shows this description.
 `
     documentation =  strings.Replace(documentation, "%version%", version, -1)
 
