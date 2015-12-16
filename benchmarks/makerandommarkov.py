@@ -3,41 +3,50 @@
 import os
 import sys
 import logging
-import random
+from random import randint
 
-def _generateedgesfornode(branchingfactor):
-    a = []
+"""def _generateedgesfornode(bf):
+    print(a)
+
+    print(a)
+    print(sum(a))
+
+
     for i in range(branchingfactor):
         if i+1 == branchingfactor:
             a.append(100-sum(a))
         else:
-            a.append(random.randint(0, 100-sum(a)))
+            a.append(randint(0, 100-sum(a)))
+
+    exit(0)
     return a
 
+"""
 
 def generatenodes(nlabels, nstates, branchingfactor):
     output = ""
     labels = map(lambda o: "label" + str(o), range(nlabels))
     for i in range(1, nstates+1):
-        output += "{} {}\n".format(i, labels[random.randint(0, nlabels-1)])
+        output += "{} {}\n".format(i, labels[randint(0, nlabels-1)])
     return output
 
 def getstatenotin(nstates, edgesto):
     while True:
-        tostate = random.randint(1, nstates)
+        tostate = randint(1, nstates)
         if tostate not in edgesto:
             return tostate
 
-def generateedges(nstates, branchingfactor):
+def generateedges(nstates, bf):
     output = ""
     states = range(1, nstates+1)
     edges = []
     for fromstate in states:
         edgesto = []
-        for edgeprob in _generateedgesfornode(branchingfactor):
+        allEdgeProbs = [randint(100,200) for _ in range(bf)]
+        for edgeprob in allEdgeProbs:
             tostate = getstatenotin(nstates, edgesto)
             edgesto.append(tostate)
-            output += "{} -> {} {}/100\n".format(fromstate, tostate, edgeprob)
+            output += "{} -> {} {}/{}\n".format(fromstate, tostate, edgeprob, sum(allEdgeProbs))
     return output
 
 def main(nlabels, nstates, branchingfactor): 

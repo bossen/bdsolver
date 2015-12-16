@@ -61,8 +61,13 @@ def rungenerator(gen):
         print(args)
 
 
-def generator_state(nstatefrom, nstateto, nlabels, bf):
-    for i in range(nstatefrom, nstateto, 50):
+def generator_state():
+    nstatefrom = 100
+    nstateto = 300
+    step = 50
+    nlabels = 3
+    bf = 2
+    for i in range(nstatefrom, nstateto, step):
         args =  {
             "nlabels":  nlabels,
             "nstates": i,
@@ -73,7 +78,7 @@ def generator_state(nstatefrom, nstateto, nlabels, bf):
         yield args
 
 
-rungenerator(generator_state(50,300, 3, 2))
+rungenerator(generator_state())
 
 msg = "No errors occured" if nerrors == 0 else "{} of errors".format(nerrors)
 print("Done experiments with: " + msg)
