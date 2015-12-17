@@ -1,0 +1,74 @@
+[
+    {
+        "bf": 2, 
+        "return": 0, 
+        "filename": "test_100-500states_3labels_2bf-2/3labels_100states_2bf.lmc", 
+        "time": 0.2839488983154297, 
+        "nlabels": 3, 
+        "nstates": 100
+    }, 
+    {
+        "bf": 2, 
+        "return": 0, 
+        "filename": "test_100-500states_3labels_2bf-2/3labels_150states_2bf.lmc", 
+        "time": 1.3196260929107666, 
+        "nlabels": 3, 
+        "nstates": 150
+    }, 
+    {
+        "bf": 2, 
+        "return": 0, 
+        "filename": "test_100-500states_3labels_2bf-2/3labels_200states_2bf.lmc", 
+        "time": 2.6188690662384033, 
+        "nlabels": 3, 
+        "nstates": 200
+    }, 
+    {
+        "bf": 2, 
+        "return": 0, 
+        "filename": "test_100-500states_3labels_2bf-2/3labels_250states_2bf.lmc", 
+        "time": 5.96302604675293, 
+        "nlabels": 3, 
+        "nstates": 250
+    }, 
+    {
+        "bf": 2, 
+        "return": 0, 
+        "filename": "test_100-500states_3labels_2bf-2/3labels_300states_2bf.lmc", 
+        "time": 11.526490926742554, 
+        "nlabels": 3, 
+        "nstates": 300
+    }, 
+    {
+        "bf": 2, 
+        "return": 0, 
+        "filename": "test_100-500states_3labels_2bf-2/3labels_350states_2bf.lmc", 
+        "time": 20.938508987426758, 
+        "nlabels": 3, 
+        "nstates": 350
+    }, 
+    {
+        "bf": 2, 
+        "return": 0, 
+        "filename": "test_100-500states_3labels_2bf-2/3labels_400states_2bf.lmc", 
+        "time": 40.22220206260681, 
+        "nlabels": 3, 
+        "nstates": 400
+    }, 
+    {
+        "bf": 2, 
+        "return": 0, 
+        "filename": "test_100-500states_3labels_2bf-2/3labels_450states_2bf.lmc", 
+        "time": 55.81857204437256, 
+        "nlabels": 3, 
+        "nstates": 450
+    }, 
+    {
+        "bf": 2, 
+        "return": 0, 
+        "filename": "test_100-500states_3labels_2bf-2/3labels_500states_2bf.lmc", 
+        "time": 90.2432508468628, 
+        "nlabels": 3, 
+        "nstates": 500
+    }
+]
