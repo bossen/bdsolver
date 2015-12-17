@@ -102,13 +102,18 @@ func BipseudoMetric(m markov.MarkovChain, lambda float64, TPSolver func(markov.M
 			continue
 		} 
 		
-		if !visited[s][t] {
-			log.Printf("State %v %v had the same label and we haven't visited it yet", s, t)
+		// since the pair of states is not the same and share a label, we have to further process it
+		// try to find the correpsonding node in the coupling
+		node = coupling.FindNode(s, t, &c)
+		
+		if node == nil {
+			// if FindNode returned a nil pointer, the node does not exist, and we have to make it
 			node = matching.FindFeasibleMatching(m, s, t, &c)
 			setpair.Setpair(m, node, exact, visited, d, &c)
-		} else {
-			log.Printf("State %v %v had the same label and we have already visited it", s, t)
-			node = coupling.FindNode(s, t, &c)
+		} else if node.Adj == nil {
+			// if FindNode did return a node reference, but its adjacency matrix(matching) is nil, we have to create it
+			node = matching.FindFeasibleMatching(m, s, t, &c)
+			setpair.Setpair(m, node, exact, visited, d, &c)
 		}
 	
 		disc.Disc(lambda, node, exact, d, &c)
@@ -128,7 +133,7 @@ func updateUntilOptimalSolutionsFound(lambda float64, m markov.MarkovChain, node
 	log.Printf("find optimal for: (%v,%v)", node.S, node.T)
 	min, i, j := uvmethod.Run(node, d)
 	// if min is negative, we can further improve it, so we update it using the TPSolver and iterated until we cannot improve it further
-	for min < 0 {
+	for min < 0 && !utils.ApproxEqual(min, 0) {
 		previ, prevj := i, j
 		TPSolver(m, node, d, min, i, j)
 		setpair.Setpair(m, node, exact, visited, d, &c)
@@ -144,19 +149,23 @@ func updateUntilOptimalSolutionsFound(lambda float64, m markov.MarkovChain, node
 	// append solved nodes such that we do not end up recurively calling nodes that have already been found to be optimal
 	solvedNodes = append(solvedNodes, node)
 	
-	for _, child := range coupling.Reachable(node) {
-		if child.Adj == nil || exact[child.S][child.T] {
-			// if the child do not have an adjacency matrix, he must already be exact
-			continue
+	for _, row := range node.Adj {
+		for _, edge := range row {
+			if edge.To.Adj == nil {
+				// if the node do not have an adjacency matrix or is exact, we do not have to proccess it
+				continue
+			}
+			if coupling.IsNodeInSlice(edge.To, solvedNodes) {
+				// if the node has already been proccesses, we do not have to do it again
+				continue
+			}
+			
+			updateUntilOptimalSolutionsFound(lambda, m, edge.To, exact, visited, d, c, TPSolver, solvedNodes)
 		}
-		
-		if coupling.IsNodeInSlice(child, solvedNodes) {
-			// the child has already been solved, so we skip it
-			continue
-		}
-		
-		updateUntilOptimalSolutionsFound(lambda, m, child, exact, visited, d, c, TPSolver, solvedNodes)
 	}
+	
+	exact[node.S][node.T] = true
+	exact[node.S][node.T] = true
 	
 	return
 }

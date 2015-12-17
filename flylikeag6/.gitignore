@@ -1,1 +1,7 @@
 main
+cplex.log
+
+bin/
+cprof
+bdsolver
+

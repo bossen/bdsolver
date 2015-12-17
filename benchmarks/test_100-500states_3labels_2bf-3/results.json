@@ -1,0 +1,74 @@
+[
+    {
+        "bf": 2, 
+        "return": 0, 
+        "filename": "test_100-500states_3labels_2bf-3/3labels_100states_2bf.lmc", 
+        "time": 0.29285097122192383, 
+        "nlabels": 3, 
+        "nstates": 100
+    }, 
+    {
+        "bf": 2, 
+        "return": 0, 
+        "filename": "test_100-500states_3labels_2bf-3/3labels_150states_2bf.lmc", 
+        "time": 0.9710729122161865, 
+        "nlabels": 3, 
+        "nstates": 150
+    }, 
+    {
+        "bf": 2, 
+        "return": 0, 
+        "filename": "test_100-500states_3labels_2bf-3/3labels_200states_2bf.lmc", 
+        "time": 2.660640001296997, 
+        "nlabels": 3, 
+        "nstates": 200
+    }, 
+    {
+        "bf": 2, 
+        "return": 0, 
+        "filename": "test_100-500states_3labels_2bf-3/3labels_250states_2bf.lmc", 
+        "time": 5.862385034561157, 
+        "nlabels": 3, 
+        "nstates": 250
+    }, 
+    {
+        "bf": 2, 
+        "return": 0, 
+        "filename": "test_100-500states_3labels_2bf-3/3labels_300states_2bf.lmc", 
+        "time": 11.014631986618042, 
+        "nlabels": 3, 
+        "nstates": 300
+    }, 
+    {
+        "bf": 2, 
+        "return": 0, 
+        "filename": "test_100-500states_3labels_2bf-3/3labels_350states_2bf.lmc", 
+        "time": 20.5403470993042, 
+        "nlabels": 3, 
+        "nstates": 350
+    }, 
+    {
+        "bf": 2, 
+        "return": 0, 
+        "filename": "test_100-500states_3labels_2bf-3/3labels_400states_2bf.lmc", 
+        "time": 34.93534708023071, 
+        "nlabels": 3, 
+        "nstates": 400
+    }, 
+    {
+        "bf": 2, 
+        "return": 0, 
+        "filename": "test_100-500states_3labels_2bf-3/3labels_450states_2bf.lmc", 
+        "time": 55.8570339679718, 
+        "nlabels": 3, 
+        "nstates": 450
+    }, 
+    {
+        "bf": 2, 
+        "return": 0, 
+        "filename": "test_100-500states_3labels_2bf-3/3labels_500states_2bf.lmc", 
+        "time": 86.83660793304443, 
+        "nlabels": 3, 
+        "nstates": 500
+    }
+]
