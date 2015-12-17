@@ -7,7 +7,7 @@ import subprocess
 from time import time
 import json
 
-bdsolverpath = "./bdsolver -tpsolver cplex"
+bdsolverpath = "./bdsolver"
 makerandompath = "./makerandommarkov.py"
 
 try:
