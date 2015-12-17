@@ -46,9 +46,9 @@ func solveLinearEquations(n *coupling.Node, exact [][]bool, d [][]float64, lambd
 
 func Disc(lambda float64, n *coupling.Node, exact [][]bool, d[][]float64, c *coupling.Coupling) {
 	log.Printf("tries to calculate linear equations for node (%v,%v)", n.S, n.T)
-	//nonzero := findNonZero(n, exact, d, c)
+	nonzero := findNonZero(n, exact, d, c)
 	
-	//setZerosDistanceToZero(n, nonzero, exact, d, c)
+	setZerosDistanceToZero(n, nonzero, exact, d, c)
 	
 	x, index := solveLinearEquations(n, exact, d, lambda)
 	
