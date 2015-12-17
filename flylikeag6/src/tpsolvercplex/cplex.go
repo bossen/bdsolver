@@ -111,6 +111,7 @@ func optimize(dbuffer, constraints string, rowcount, columncount int) []float64 
 
 func updateNode(node *coupling.Node, newValues []float64) {
 	if (len(node.Adj) * len(node.Adj[0])) != len(newValues) {
+		log.Printf("%v %v", (len(node.Adj) * len(node.Adj[0])), len(newValues))
 		panic("The amount of new values does not match the adjacency matrix!")
 	}
 

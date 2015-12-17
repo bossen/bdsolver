@@ -1,0 +1,74 @@
+[
+    {
+        "bf": 2, 
+        "return": 0, 
+        "filename": "test_100-500states_3labels_2bf-1/3labels_100states_2bf.lmc", 
+        "time": 0.2816810607910156, 
+        "nlabels": 3, 
+        "nstates": 100
+    }, 
+    {
+        "bf": 2, 
+        "return": 0, 
+        "filename": "test_100-500states_3labels_2bf-1/3labels_150states_2bf.lmc", 
+        "time": 1.0016310214996338, 
+        "nlabels": 3, 
+        "nstates": 150
+    }, 
+    {
+        "bf": 2, 
+        "return": 0, 
+        "filename": "test_100-500states_3labels_2bf-1/3labels_200states_2bf.lmc", 
+        "time": 2.635697841644287, 
+        "nlabels": 3, 
+        "nstates": 200
+    }, 
+    {
+        "bf": 2, 
+        "return": 0, 
+        "filename": "test_100-500states_3labels_2bf-1/3labels_250states_2bf.lmc", 
+        "time": 5.819975137710571, 
+        "nlabels": 3, 
+        "nstates": 250
+    }, 
+    {
+        "bf": 2, 
+        "return": 0, 
+        "filename": "test_100-500states_3labels_2bf-1/3labels_300states_2bf.lmc", 
+        "time": 11.473598003387451, 
+        "nlabels": 3, 
+        "nstates": 300
+    }, 
+    {
+        "bf": 2, 
+        "return": 0, 
+        "filename": "test_100-500states_3labels_2bf-1/3labels_350states_2bf.lmc", 
+        "time": 22.410456895828247, 
+        "nlabels": 3, 
+        "nstates": 350
+    }, 
+    {
+        "bf": 2, 
+        "return": 0, 
+        "filename": "test_100-500states_3labels_2bf-1/3labels_400states_2bf.lmc", 
+        "time": 34.131206035614014, 
+        "nlabels": 3, 
+        "nstates": 400
+    }, 
+    {
+        "bf": 2, 
+        "return": 0, 
+        "filename": "test_100-500states_3labels_2bf-1/3labels_450states_2bf.lmc", 
+        "time": 56.385868072509766, 
+        "nlabels": 3, 
+        "nstates": 450
+    }, 
+    {
+        "bf": 2, 
+        "return": 0, 
+        "filename": "test_100-500states_3labels_2bf-1/3labels_500states_2bf.lmc", 
+        "time": 87.72311806678772, 
+        "nlabels": 3, 
+        "nstates": 500
+    }
+]
