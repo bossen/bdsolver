@@ -1,27 +1,10 @@
 #!/usr/bin/python2
 # --coding:UTF8
-import os
 import sys
-import logging
-from random import randint
+import random
 
-"""def _generateedgesfornode(bf):
-    print(a)
-
-    print(a)
-    print(sum(a))
-
-
-    for i in range(branchingfactor):
-        if i+1 == branchingfactor:
-            a.append(100-sum(a))
-        else:
-            a.append(randint(0, 100-sum(a)))
-
-    exit(0)
-    return a
-
-"""
+# normal random is not random enough.
+randint = random.SystemRandom(random.seed()).randint
 
 def generatenodes(nlabels, nstates, branchingfactor):
     output = ""
