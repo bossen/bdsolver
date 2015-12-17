@@ -32,6 +32,3 @@ def generate_state():
 
 
 generate_state()
-
-msg = "No errors occured" if nerrors == 0 else "{} of errors".format(nerrors)
-print("Done experiments with: " + msg)
