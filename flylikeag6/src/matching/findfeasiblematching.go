@@ -74,9 +74,6 @@ func FindFeasibleMatching(m markov.MarkovChain, u int, v int, c *coupling.Coupli
 	// copies the transitions of u and v such that we do not makes changes in the markov chain
 	copy(uTransitions, m.Transitions[u])
 	copy(vTransitions, m.Transitions[v])
-
-	log.Printf("Transitions for %v: %s", u, uTransitions)
-	log.Printf("Transitions for %v: %s", v, vTransitions)
 	
 	// finds the length of the rows and columns in the matching for u and v
 	lenrow, lencol := matchingDimensions(uTransitions, vTransitions, n)

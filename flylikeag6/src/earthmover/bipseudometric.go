@@ -102,13 +102,18 @@ func BipseudoMetric(m markov.MarkovChain, lambda float64, TPSolver func(markov.M
 			continue
 		} 
 		
-		if !visited[s][t] {
-			log.Printf("State %v %v had the same label and we haven't visited it yet", s, t)
+		// since the pair of states is not the same and share a label, we have to further process it
+		// try to find the correpsonding node in the coupling
+		node = coupling.FindNode(s, t, &c)
+		
+		if node == nil {
+			// if FindNode returned a nil pointer, the node does not exist, and we have to make it
 			node = matching.FindFeasibleMatching(m, s, t, &c)
 			setpair.Setpair(m, node, exact, visited, d, &c)
-		} else {
-			log.Printf("State %v %v had the same label and we have already visited it", s, t)
-			node = coupling.FindNode(s, t, &c)
+		} else if node.Adj == nil {
+			// if FindNode did return a node reference, but its adjacency matrix(matching) is nil, we have to create it
+			node = matching.FindFeasibleMatching(m, s, t, &c)
+			setpair.Setpair(m, node, exact, visited, d, &c)
 		}
 	
 		disc.Disc(lambda, node, exact, d, &c)
