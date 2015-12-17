@@ -151,10 +151,11 @@ func updateUntilOptimalSolutionsFound(lambda float64, m markov.MarkovChain, node
 	
 	for _, row := range node.Adj {
 		for _, edge := range row {
-			if edge.To.Adj == nil {
+			if exact[edge.To.S][edge.To.T] || edge.To.Adj == nil {
 				// if the node do not have an adjacency matrix or is exact, we do not have to proccess it
 				continue
 			}
+			
 			if coupling.IsNodeInSlice(edge.To, solvedNodes) {
 				// if the node has already been proccesses, we do not have to do it again
 				continue
