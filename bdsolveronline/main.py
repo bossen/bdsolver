@@ -8,16 +8,20 @@ import subprocess
 from common import log
 
 from flask import request, Flask, render_template
+import slog
 
 app = Flask(__name__)
+slog.register("bdsolveronline")
 
 def runbd(lmc, l, v, tpsolver):
-    tmp = tempfile.NamedTemporaryFile(delete=False)
+    tmp = tempfile.NamedTemporaryFile(delete=False, dir="lmcs")
     tmp.write(lmc)
     tmp.close()
+    vstring = " -v" if v else ""
+    log.info("./bdsolver -l " + str(l) + vstring + " -tpsolver " + tpsolver + " file: " + tmp.name)
 
     try:
-        return subprocess.check_output(["./bdsolver", "-l", str(l), "-v" if v else "", "-tpsolver", tpsolver, tmp.name])
+        return subprocess.check_output(["./bdsolver", "-l", str(l), vstring, "-tpsolver", tpsolver, tmp.name])
     except:
         return "An error has occurred!"
 
@@ -47,7 +51,8 @@ def runit():
     selected = request.form.getlist('verbose') 
     verbose = bool(selected)
 
-    return runbd(lmc, l, verbose, tpsolver).replace('\n', '<br />')
+    res = runbd(lmc, l, verbose, tpsolver).replace('\n', '<br />')
+    return res
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
