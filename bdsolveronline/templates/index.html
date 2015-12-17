@@ -1,0 +1,21 @@
+{% extends "layout.html" %}
+{% block body %}
+  <form action="/bdsolver" method="post">
+    <dl>
+      <dt>lmc:
+      <dd><textarea name=lmc cols=50 rows=30></textarea>
+      <dt>lambda
+      <input type=text name=lambda >
+      <dt>verbose
+      <input type=checkbox name=verbose >
+      <dt>tpsolver
+      <select name=tpsolver>
+        <option value=default>default</option>
+        <option value=cplex">cplex</option>
+      </select>
+      <dt>token
+      <input type=text name=token>
+      <input type=submit>
+    </dt>
+  </form>
+{% endblock %}
