@@ -1,4 +1,4 @@
-package earthmover
+package bp
 
 import (
 	"github.com/stretchr/testify/assert"
