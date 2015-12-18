@@ -74,6 +74,10 @@ func main() {
             os.Exit(0)
         } else if os.Args[i] == "-m" {
             resultPrinter = printDistanceMatrix
+        } else if os.Args[i] == "-p" {
+            go func() {
+                    log.Println(http.ListenAndServe("localhost:6060", nil))
+            }()
 		} else {
 		    filename = getOrFail(i, "expected a file but there was nothing")
 		}
