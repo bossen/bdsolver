@@ -1,4 +1,4 @@
-package earthmover
+package bp
 
 import (
 	"coupling"
@@ -70,7 +70,7 @@ func removeExactEdges(n *coupling.Node, exact [][]bool) {
 	return
 }
 
-func BipseudoMetric(m markov.MarkovChain, lambda float64, TPSolver func(markov.MarkovChain, *coupling.Node, [][]float64, float64, int, int)) [][]float64 {
+func PseudoMetric(m markov.MarkovChain, lambda float64, TPSolver func(markov.MarkovChain, *coupling.Node, [][]float64, float64, int, int)) [][]float64 {
 	// initialize all the sets and the coupling
 	n := len(m.Transitions)
 	tocompute := sets.InitToCompute(len(m.Transitions))

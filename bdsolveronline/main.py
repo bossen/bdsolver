@@ -17,8 +17,8 @@ def runbd(lmc, l, v, tpsolver):
     tmp = tempfile.NamedTemporaryFile(delete=False, dir="lmcs")
     tmp.write(lmc)
     tmp.close()
-    vstring = " -v" if v else ""
-    log.info("./bdsolver -l " + str(l) + vstring + " -tpsolver " + tpsolver + " file: " + tmp.name)
+    vstring = "-v" if v else ""
+    log.info("./bdsolver -l " + str(l) + " " + vstring + " -tpsolver " + tpsolver + " file: " + tmp.name)
 
     try:
         return subprocess.check_output(["./bdsolver", "-l", str(l), vstring, "-tpsolver", tpsolver, tmp.name])
