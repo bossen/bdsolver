@@ -12,6 +12,8 @@ import (
 	"strconv"
 	"io/ioutil"
 	"strings"
+    _ "net/http/pprof"
+    "net/http"
 )
 
 var version = "No version provided"
