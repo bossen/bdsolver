@@ -1,23 +1,23 @@
 package main
 
 import (
-	"earthmover"
+	"bp"
 	"tpsolverdefault"
 	"tpsolvercplex"
 	"log"
 	"fmt"
-    "compiler"
-    "markov"
-    "os"
-    "strconv"
-    "io/ioutil"
-    "strings"
+	"compiler"
+	"markov"
+	"os"
+	"strconv"
+	"io/ioutil"
+	"strings"
 )
 
 var version = "No version provided"
 
 func printdocumentation() {
-    documentation := `bdsolver - Bipseudometric distance solver version %version%
+    documentation := `bdsolver - Pseudometric distance solver version %version%
 
 usage: bdsolver [arguments] file        solve the specified file
 
@@ -91,7 +91,7 @@ func main() {
 		fail(err.Error())
 	}
 	
-	d := earthmover.BipseudoMetric(mc, lambda, TPSolver)
+	d := bp.PseudoMetric(mc, lambda, TPSolver)
     resultPrinter(d, mc)
 }
 
