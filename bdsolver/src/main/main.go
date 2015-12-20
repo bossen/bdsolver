@@ -17,7 +17,7 @@ import (
 var version = "No version provided"
 
 func printdocumentation() {
-    documentation := `bdsolver - Pseudometric distance solver version %version%
+    documentation := `bdsolver - Bisimilarity distance solver version '%version%'
 
 usage: bdsolver [arguments] file        solve the specified file
 
