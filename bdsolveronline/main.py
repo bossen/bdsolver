@@ -22,8 +22,8 @@ def runbd(lmc, l, v, tpsolver):
 
     try:
         return subprocess.check_output(["./bdsolver", "-l", str(l), vstring, "-tpsolver", tpsolver, tmp.name])
-    except:
-        return "An error has occurred!"
+    except Exception, e:
+        return str(e)
 
 @app.route("/")
 def main():
