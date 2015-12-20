@@ -1,7 +1,7 @@
 package main
 
 import (
-	"bp"
+	"pseudometric"
 	"tpsolverdefault"
 	"tpsolvercplex"
 	"log"
@@ -91,7 +91,7 @@ func main() {
 		fail(err.Error())
 	}
 	
-	d := bp.PseudoMetric(mc, lambda, TPSolver)
+	d := pseudometric.PseudoMetric(mc, lambda, TPSolver)
     resultPrinter(d, mc)
 }
 
