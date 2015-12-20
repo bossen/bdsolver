@@ -1,0 +1,4 @@
+/usr/bin/time: cannot run ./bdsolver: No such file or directory
+Command exited with non-zero status 127
+testclasses/1000states_3labels_2bf-2/3labels_1000states_2bf.lmc 0.00 127
+testclasses/1000states_3labels_2bf-2/3labels_1000states_2bf.lmc 1880.26 0
