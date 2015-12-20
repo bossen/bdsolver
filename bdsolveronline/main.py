@@ -23,7 +23,7 @@ def runbd(lmc, l, v, tpsolver):
     try:
         return subprocess.check_output(["./bdsolver", "-l", str(l), vstring, "-tpsolver", tpsolver, tmp.name])
     except Exception, e:
-        return str(e)
+        return str(e) + "<br><br> Maybe there is something wrong with your lmc or lambda value? Are you sure the lmc is stochastic?"
 
 @app.route("/")
 def main():
@@ -46,7 +46,10 @@ def runit():
     try:
         l = float(ilambda)
     except:
-        l = 1.0
+        return "Invalid lambda value"
+
+    if 0 >= l or 1 < l:
+        return "Invalid lambda value"
 
     selected = request.form.getlist('verbose') 
     verbose = bool(selected)
