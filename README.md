@@ -1,5 +1,5 @@
 # bdsolver
-[![Build Status](https://magnum.travis-ci.com/bossen/bdsolver.svg?token=QGzoMbCTh8y1pfy6iw25&branch=master)](https://magnum.travis-ci.com/bossen/bdsolver)
+[![Build Status](https://magnum.travis-ci.org/bossen/bdsolver.svg?branch=master)](https://magnum.travis-ci.org/bossen/bdsolver)
 
 ```
 bdsolver - Pseudometric distance solver version 1.151218
