@@ -1,7 +1,15 @@
-# P7-code
-[![Build Status](https://magnum.travis-ci.com/bossen/P7-code.svg?token=QGzoMbCTh8y1pfy6iw25&branch=master)](https://magnum.travis-ci.com/bossen/P7-code)
+# bdsolver
+[![Build Status](https://travis-ci.org/bossen/bdsolver.svg?branch=master)](https://travis-ci.org/bossen/bdsolver)
 
+```
+bdsolver - Pseudometric distance solver version 1.151218
 
-http://nvie.com/posts/a-successful-git-branching-model/
+usage: bdsolver [arguments] file        solve the specified file
 
-https://github.com/golang/go/wiki/SliceTricks
+Arguments:
+   -l <lambda>           Defines the lambda. The lambda has to be larger than 0 up to 1.
+   -tpsolver <solver>    Defines the transportation solver. Possible arguments are cplex or default.
+   -v                    Running verbose logging.
+   -m                    Print result as an adjacency matrix.
+   -h                    Shows this description.
+```

@@ -1,4 +1,4 @@
-package bp
+package pseudometric
 
 import (
 	"github.com/stretchr/testify/assert"

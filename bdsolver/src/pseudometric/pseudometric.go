@@ -1,4 +1,4 @@
-package bp
+package pseudometric
 
 import (
 	"coupling"
