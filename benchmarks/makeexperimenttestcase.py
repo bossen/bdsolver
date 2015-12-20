@@ -14,7 +14,7 @@ try:
     bf = int(sys.argv[5])
     saveto = sys.argv[6]
 except IndexError:
-    print("Usage ./makeexperiments.y <nstatesfrom> <nstatesto> <step> <nlabels> <bf> <safeto>")
+    print("Usage ./makeexperimenttestcase.py <nstatesfrom> <nstatesto> <step> <nlabels> <bf> <safeto>")
     exit(0)
 os.mkdir(saveto)
 
