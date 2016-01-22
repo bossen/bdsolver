@@ -4,6 +4,7 @@ import (
 	"pseudometric"
 	"tpsolverdefault"
 	"tpsolvercplex"
+    "tpsolvercomposite"
 	"log"
 	"fmt"
 	"compiler"
@@ -62,6 +63,8 @@ func main() {
 			
 			if arg == "cplex" {
 				TPSolver = tpsolvercplex.Solve
+			} else if arg == "composite" {
+                TPSolver = tpsolvercomposite.Solve
 			} else  if arg != "default" {
 				fail(fmt.Sprintf("expected cplex or default after -tpsolver but got %s", arg))
 			}
